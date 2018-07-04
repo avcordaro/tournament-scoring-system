@@ -39,7 +39,7 @@
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label minHeight="30.0" prefWidth="200.0" text="Total Archers">
+                              <Label fx:id="lblTotalArchers" minHeight="30.0" prefWidth="200.0" text="Total Archers">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -97,12 +97,12 @@
                               </Label>
                            </children>
                         </VBox>
-                        <VBox layoutX="10.0" layoutY="81.0">
+                        <VBox fx:id="vboxTournament" layoutX="10.0" layoutY="81.0">
                            <children>
                               <TextField fx:id="txtTitle" editable="false" maxHeight="30.0" minHeight="30.0" prefWidth="250.0" />
-                              <StackPane alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
+                              <StackPane fx:id="stpTournamentDate" alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                                  <children>
-                                    <DatePicker maxHeight="30.0" maxWidth="150.0" minHeight="30.0">
+                                    <DatePicker fx:id="datePicker" maxHeight="30.0" maxWidth="150.0" minHeight="30.0">
                                        <StackPane.margin>
                                           <Insets top="5.0" />
                                        </StackPane.margin>
@@ -160,12 +160,12 @@
                      <children>
                         <StackPane fx:id="stpEditSaveTournament">
                            <children>
-                              <Button fx:id="btnEditSaveTournament" mnemonicParsing="false" prefWidth="100.0" text="Save Edit">
+                              <Button fx:id="btnEditSaveTournament" mnemonicParsing="false" onAction="#saveEditTournament" prefWidth="100.0" text="Save Edit" visible="false">
                                  <StackPane.margin>
                                     <Insets bottom="20.0" left="30.0" />
                                  </StackPane.margin>
                               </Button>
-                              <Button fx:id="btnEditTournament" mnemonicParsing="false" prefWidth="100.0" text="Edit">
+                              <Button fx:id="btnEditTournament" disable="true" mnemonicParsing="false" onAction="#beginEditTournament" prefWidth="100.0" text="Edit">
                                  <HBox.margin>
                                     <Insets bottom="30.0" left="40.0" top="10.0" />
                                  </HBox.margin>
@@ -178,7 +178,7 @@
                               <Insets top="20.0" />
                            </HBox.margin>
                         </StackPane>
-                        <Button fx:id="btnDeleteTournament" mnemonicParsing="false" prefWidth="100.0" text="Delete">
+                        <Button fx:id="btnDeleteTournament" disable="true" mnemonicParsing="false" onAction="#deleteTournament" prefWidth="100.0" text="Delete">
                            <HBox.margin>
                               <Insets bottom="20.0" left="20.0" top="20.0" />
                            </HBox.margin>
@@ -203,7 +203,7 @@
                         <Insets left="80.0" top="365.0" />
                      </StackPane.margin>
                   </ImageView>
-                  <TitledPane expanded="false" text="Start New Tournament">
+                  <TitledPane text="Start New Tournament">
                     <content>
                         <HBox prefHeight="380.0" prefWidth="530.0">
                            <children>
@@ -288,12 +288,12 @@
                               </VBox>
                               <VBox prefWidth="320.0">
                                  <children>
-                                    <TextField maxHeight="30.0" maxWidth="250.0" minHeight="30.0" prefWidth="250.0">
+                                    <TextField fx:id="txtNewTitle" maxHeight="30.0" maxWidth="250.0" minHeight="30.0" prefWidth="250.0">
                                        <VBox.margin>
                                           <Insets top="40.0" />
                                        </VBox.margin>
                                     </TextField>
-                                    <DatePicker maxHeight="30.0" maxWidth="150.0" minHeight="30.0">
+                                    <DatePicker fx:id="newDatePicker" maxHeight="30.0" maxWidth="150.0" minHeight="30.0">
                                        <StackPane.margin>
                                           <Insets top="5.0" />
                                        </StackPane.margin>
@@ -301,32 +301,32 @@
                                           <Insets top="5.0" />
                                        </VBox.margin>
                                     </DatePicker>
-                                    <TextField maxHeight="30.0" maxWidth="150.0" minHeight="30.0">
+                                    <TextField fx:id="txtNewArchersPerTarget" maxHeight="30.0" maxWidth="150.0" minHeight="30.0">
                                        <VBox.margin>
                                           <Insets top="5.0" />
                                        </VBox.margin>
                                     </TextField>
-                                    <CheckBox mnemonicParsing="false">
+                                    <CheckBox fx:id="chkNewMetric" mnemonicParsing="false">
                                        <VBox.margin>
                                           <Insets top="20.0" />
                                        </VBox.margin>
                                     </CheckBox>
-                                    <CheckBox mnemonicParsing="false">
+                                    <CheckBox fx:id="chkNewTeams" mnemonicParsing="false">
                                        <VBox.margin>
                                           <Insets top="2.0" />
                                        </VBox.margin>
                                     </CheckBox>
-                                    <CheckBox mnemonicParsing="false">
+                                    <CheckBox fx:id="chkNewMarriedCouples" mnemonicParsing="false">
                                        <VBox.margin>
                                           <Insets top="2.0" />
                                        </VBox.margin>
                                     </CheckBox>
-                                    <CheckBox mnemonicParsing="false">
+                                    <CheckBox fx:id="chkNewBestGold" mnemonicParsing="false">
                                        <VBox.margin>
                                           <Insets top="2.0" />
                                        </VBox.margin>
                                     </CheckBox>
-                                    <CheckBox mnemonicParsing="false">
+                                    <CheckBox fx:id="chkNewWorstWhite" mnemonicParsing="false">
                                        <VBox.margin>
                                           <Insets top="2.0" />
                                        </VBox.margin>
