@@ -1,0 +1,115 @@
+.root {
+	-fx-background-color: white;
+}
+.button {
+	-fx-background-color: #3A539B;
+	-fx-background-radius: 5;
+	-fx-border-color: #3A539B;
+	-fx-border-width: 1;
+	-fx-border-radius: 5;
+	-fx-text-fill: white;
+	-fx-font-weight: bold;
+}
+.button:hover {
+	-fx-background-color: white;
+	-fx-background-radius: 5;
+	-fx-text-fill: black;
+	-fx-border-color: grey;
+	-fx-border-width: 1;
+	-fx-border-radius: 5;
+	-fx-cursor: hand
+}
+.text-field {
+	-fx-background-color: white;
+	-fx-border-color: grey;
+	-fx-border-radius: 5;
+	-fx-border-width: 1;
+}
+.combo-box {
+	-fx-background-color: white;
+	-fx-border-color: grey;
+	-fx-border-radius: 5;
+	-fx-border-width: 1;
+	-fx-cursor: hand;
+}
+.combo-box > .arrow-button > .arrow {
+	-fx-background-color: #3A539B;
+	-fx-scale-x: 1.2;
+	-fx-scale-y: 1.2;
+}
+.titled-pane > .title {
+	-fx-background-color: white;
+	-fx-border-color: grey;
+	-fx-border-radius: 5;
+	-fx-border-width: 1;
+}.titled-pane > .content {
+	-fx-background-color: white;
+	-fx-border-width: 0;
+}
+.titled-pane:expanded > .title > .arrow-button > .arrow {
+	-fx-background-color: #3A539B;
+}
+.check-box > .box {
+	-fx-background-color: white;
+	-fx-border-color: grey;
+	-fx-border-radius: 5;
+	-fx-border-width: 1;
+}
+.check-box > .box:hover {
+	-fx-background-color: #ECEFF8;
+	-fx-cursor: hand;
+}
+.tab-pane > .tab-header-area > .tab-header-background {
+	-fx-background-color: #ECEFF8;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab {
+	-fx-background-color: white;
+	-fx-border-width: 1;
+	-fx-border-color: lightgrey;
+	-fx-border-radius: 5 5 0 0;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab:hover {
+	-fx-background-color: #3A539B;
+	-fx-cursor: hand;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-label > .text {
+	-fx-fill: black;
+	-fx-font-weight: bold;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab:hover > .tab-container > .tab-label > .text {
+	-fx-fill: white;
+	-fx-font-weight: bold;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab:selected {
+	-fx-background-color: #3A539B;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab:selected > .tab-container > .tab-label > .text {
+	-fx-fill: white;
+	-fx-font-weight: bold;
+}
+.table-view > .column-header-background > .nested-column-header > .table-column {
+	-fx-background-color: #ECEFF8;
+	-fx-border-width: 0 1 1 1;
+	-fx-border-color: lightgrey;
+	-fx-cursor: hand;
+}
+.date-picker > .arrow-button {
+	-fx-background-color: #3A539B;
+	-fx-border-width: 1 1 1 0;
+	-fx-border-radius: 0 5 5 0;
+	-fx-border-color: #3A539B;
+}
+.date-picker > .arrow-button:hover {
+	-fx-background-color: white;
+	-fx-border-color: black;
+	-fx-cursor: hand;
+}
+.date-picker > .arrow-button > .arrow {
+	-fx-background-color: white
+}
+.date-picker > .arrow-button:hover > .arrow {
+	-fx-background-color: black
+}
+.date-picker > .date-picker-display-node {
+	-fx-border-radius: 5 0 0 5;
+}
