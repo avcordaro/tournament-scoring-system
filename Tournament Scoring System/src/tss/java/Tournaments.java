@@ -27,11 +27,11 @@ public class Tournaments {
 		return rs;
 	}
 	
-	public void newRecord(String title, String date, String apt, String metric, String teams, String couples,
+	public int newRecord(String title, String date, String apt, String metric, String teams, String couples,
 			String bGold, String wWhite) throws SQLException {
 		String sql = "INSERT INTO Tournament (Title, Date, ArchersPerTarget, Metric, Teams, MarriedCouples, "
 				+ "BestGold, WorstWhite) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		PreparedStatement prepStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		prepStmt.setString(1, title);
 		prepStmt.setString(2, date);
 		prepStmt.setString(3, apt);
@@ -41,6 +41,9 @@ public class Tournaments {
 		prepStmt.setString(7, bGold);
 		prepStmt.setString(8, wWhite);
 		prepStmt.execute();
+		
+		int newID = prepStmt.getGeneratedKeys().getInt(1);
+		return newID;
 	}
 	
 	public void deleteRecord(int recordID) throws SQLException {

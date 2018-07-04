@@ -203,7 +203,7 @@
                         <Insets left="80.0" top="365.0" />
                      </StackPane.margin>
                   </ImageView>
-                  <TitledPane text="Start New Tournament">
+                  <TitledPane expanded="false" text="Start New Tournament">
                     <content>
                         <HBox prefHeight="380.0" prefWidth="530.0">
                            <children>
@@ -331,7 +331,7 @@
                                           <Insets top="2.0" />
                                        </VBox.margin>
                                     </CheckBox>
-                                    <Button maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Start New">
+                                    <Button fx:id="btnNewTournament" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#newTournament" prefWidth="100.0" text="Start New">
                                        <VBox.margin>
                                           <Insets left="185.0" top="30.0" />
                                        </VBox.margin>

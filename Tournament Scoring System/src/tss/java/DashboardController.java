@@ -92,12 +92,7 @@ public class DashboardController extends Application {
     public void initialize() throws SQLException {
 		conn = SQLiteConnection.getConnection();
 		tournaments = new Tournaments(conn);
-    	ResultSet rs = tournaments.getAllRecords();
-    	
-    	while(rs.next()) {
-    		TournamentMap map = new TournamentMap(rs.getString("Title"), rs.getInt("TournamentID"));
-    		cmbTournament.getItems().add(map);
-    	}
+		fillTournamentComboBox(-1);
     }
     
 	public void start(Stage primaryStage) {
@@ -117,6 +112,19 @@ public class DashboardController extends Application {
 		launch(args);
 	}
 	
+	public TournamentMap fillTournamentComboBox(int selectionID) throws SQLException {
+    	ResultSet rs = tournaments.getAllRecords();
+    	TournamentMap selection = null;
+    	cmbTournament.getItems().clear();
+    	while(rs.next()) {
+    		TournamentMap map = new TournamentMap(rs.getString("Title"), rs.getInt("TournamentID"));
+    		cmbTournament.getItems().add(map);
+    		if(map.getID() == selectionID) {
+    			selection = map;
+    		}
+    	}
+    	return selection;
+	}
 	@FXML
 	public void loadTournament(ActionEvent event) throws SQLException {
 		int id = cmbTournament.getSelectionModel().getSelectedItem().getID();
@@ -136,6 +144,29 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
+	public void newTournament(ActionEvent event) throws SQLException {
+		String title = txtNewTitle.getText();
+		String date = newDatePicker.getValue().format(formatter);
+		String apt = txtNewArchersPerTarget.getText();
+		String metric = Boolean.toString(chkNewMetric.isSelected());
+		String teams = Boolean.toString(chkNewTeams.isSelected());
+		String couples = Boolean.toString(chkNewMarriedCouples.isSelected());
+		String bGold = Boolean.toString(chkNewBestGold.isSelected());
+		String wWhite = Boolean.toString(chkNewWorstWhite.isSelected());
+		int newID = tournaments.newRecord(title, date, apt, metric, teams, couples, bGold, wWhite);
+		TournamentMap newSelection = fillTournamentComboBox(newID);
+		cmbTournament.getSelectionModel().select(newSelection);
+		txtNewTitle.clear();
+		newDatePicker.getEditor().clear();
+		txtNewArchersPerTarget.clear();
+		chkNewMetric.setSelected(false);
+		chkNewTeams.setSelected(false);
+		chkNewMarriedCouples.setSelected(false);
+		chkNewBestGold.setSelected(false);
+		chkNewWorstWhite.setSelected(false);
+	}
+	
+	@FXML
 	public void deleteTournament(ActionEvent event) throws SQLException {
 		int id = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		cmbTournament.getItems().remove(cmbTournament.getSelectionModel().getSelectedItem());
@@ -152,6 +183,7 @@ public class DashboardController extends Application {
 		chkMarriedCouples.setSelected(false);
 		chkWorstWhite.setSelected(false);
 		chkBestGold.setSelected(false);
+		loadTournament(event);
 	}
 	
 	@FXML
@@ -197,19 +229,8 @@ public class DashboardController extends Application {
 		String bGold = Boolean.toString(chkBestGold.isSelected());
 		String wWhite = Boolean.toString(chkWorstWhite.isSelected());
 		tournaments.updateRecord(id, title, date, apt, metric, teams, couples, bGold, wWhite);
+		TournamentMap newSelection = fillTournamentComboBox(id);
+		cmbTournament.getSelectionModel().select(newSelection);
 		loadTournament(event);
 	}
-	
-	@FXML
-	public void newTournament(ActionEvent event) throws SQLException {
-		String title = txtNewTitle.getText();
-		String date = newDatePicker.getValue().format(formatter);
-		String apt = txtNewArchersPerTarget.getText();
-		String metric = Boolean.toString(chkNewMetric.isSelected());
-		String teams = Boolean.toString(chkNewTeams.isSelected());
-		String couples = Boolean.toString(chkNewMarriedCouples.isSelected());
-		String bGold = Boolean.toString(chkNewBestGold.isSelected());
-		String wWhite = Boolean.toString(chkNewWorstWhite.isSelected());
-	}
-	
 }
