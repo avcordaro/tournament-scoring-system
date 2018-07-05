@@ -92,7 +92,7 @@ public class DashboardController extends Application {
     public void initialize() throws SQLException {
 		conn = SQLiteConnection.getConnection();
 		tournaments = new Tournaments(conn);
-		fillTournamentComboBox(-1);
+		fillTournamentComboBox();
     }
     
 	public void start(Stage primaryStage) {
@@ -112,35 +112,31 @@ public class DashboardController extends Application {
 		launch(args);
 	}
 	
-	public TournamentMap fillTournamentComboBox(int selectionID) throws SQLException {
+	public void fillTournamentComboBox() throws SQLException {
     	ResultSet rs = tournaments.getAllRecords();
-    	TournamentMap selection = null;
-    	cmbTournament.getItems().clear();
     	while(rs.next()) {
     		TournamentMap map = new TournamentMap(rs.getString("Title"), rs.getInt("TournamentID"));
     		cmbTournament.getItems().add(map);
-    		if(map.getID() == selectionID) {
-    			selection = map;
-    		}
     	}
-    	return selection;
 	}
 	@FXML
 	public void loadTournament(ActionEvent event) throws SQLException {
-		int id = cmbTournament.getSelectionModel().getSelectedItem().getID();
-		ResultSet rs = tournaments.getRecord(id);
-		txtTitle.setText(rs.getString("Title"));
-		txtDate.setText(rs.getString("Date"));
-		LocalDate localDate = LocalDate.parse(rs.getString("Date"), formatter);
-		datePicker.setValue(localDate);
-		txtArchersPerTarget.setText(Integer.toString(rs.getInt("ArchersPerTarget")));
-		chkMetric.setSelected(Boolean.valueOf(rs.getString("Metric")));
-		chkTeams.setSelected(Boolean.valueOf(rs.getString("Teams")));
-		chkMarriedCouples.setSelected(Boolean.valueOf(rs.getString("MarriedCouples")));
-		chkBestGold.setSelected(Boolean.valueOf(rs.getString("BestGold")));
-		chkWorstWhite.setSelected(Boolean.valueOf(rs.getString("WorstWhite")));
-		btnEditTournament.setDisable(false);
-		btnDeleteTournament.setDisable(false);
+		if(!cmbTournament.getItems().isEmpty()) {
+			int id = cmbTournament.getSelectionModel().getSelectedItem().getID();
+			ResultSet rs = tournaments.getRecord(id);
+			txtTitle.setText(rs.getString("Title"));
+			txtDate.setText(rs.getString("Date"));
+			LocalDate localDate = LocalDate.parse(rs.getString("Date"), formatter);
+			datePicker.setValue(localDate);
+			txtArchersPerTarget.setText(Integer.toString(rs.getInt("ArchersPerTarget")));
+			chkMetric.setSelected(Boolean.valueOf(rs.getString("Metric")));
+			chkTeams.setSelected(Boolean.valueOf(rs.getString("Teams")));
+			chkMarriedCouples.setSelected(Boolean.valueOf(rs.getString("MarriedCouples")));
+			chkBestGold.setSelected(Boolean.valueOf(rs.getString("BestGold")));
+			chkWorstWhite.setSelected(Boolean.valueOf(rs.getString("WorstWhite")));
+			btnEditTournament.setDisable(false);
+			btnDeleteTournament.setDisable(false);
+		}
 	}
 	
 	@FXML
@@ -154,8 +150,9 @@ public class DashboardController extends Application {
 		String bGold = Boolean.toString(chkNewBestGold.isSelected());
 		String wWhite = Boolean.toString(chkNewWorstWhite.isSelected());
 		int newID = tournaments.newRecord(title, date, apt, metric, teams, couples, bGold, wWhite);
-		TournamentMap newSelection = fillTournamentComboBox(newID);
-		cmbTournament.getSelectionModel().select(newSelection);
+		TournamentMap newMap = new TournamentMap(title, newID);
+		cmbTournament.getItems().add(newMap);
+		cmbTournament.getSelectionModel().select(newMap);
 		txtNewTitle.clear();
 		newDatePicker.getEditor().clear();
 		txtNewArchersPerTarget.clear();
@@ -222,15 +219,13 @@ public class DashboardController extends Application {
 		int id = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		String title = txtTitle.getText();
 		String date = datePicker.getValue().format(formatter);
-		String apt = txtArchersPerTarget.getText();
+		int apt = Integer.parseInt(txtArchersPerTarget.getText());
 		String metric = Boolean.toString(chkMetric.isSelected());
 		String teams = Boolean.toString(chkTeams.isSelected());
 		String couples = Boolean.toString(chkMarriedCouples.isSelected());
 		String bGold = Boolean.toString(chkBestGold.isSelected());
 		String wWhite = Boolean.toString(chkWorstWhite.isSelected());
 		tournaments.updateRecord(id, title, date, apt, metric, teams, couples, bGold, wWhite);
-		TournamentMap newSelection = fillTournamentComboBox(id);
-		cmbTournament.getSelectionModel().select(newSelection);
 		loadTournament(event);
 	}
 }

@@ -1,3 +1,4 @@
+
 package tss.java;
 
 import java.sql.Connection;
@@ -48,18 +49,17 @@ public class Tournaments {
 	
 	public void deleteRecord(int recordID) throws SQLException {
 		Statement stmt = conn.createStatement();
-		System.out.println(recordID);
 		stmt.executeUpdate("DELETE FROM Tournament WHERE TournamentID =" + recordID + ";");
 	}
 	
-	public void updateRecord(int recordID, String title, String date, String apt, String metric, String teams, 
+	public void updateRecord(int recordID, String title, String date, int apt, String metric, String teams, 
 			String couples, String bGold, String wWhite) throws SQLException {
 		String update = "UPDATE Tournament SET Title=?, Date=?, ArchersPerTarget=?, Metric=?, Teams=?, "
 				+ "MarriedCouples=?, BestGold=?, WorstWhite=? WHERE TournamentID = " + recordID + ";";
 		PreparedStatement prepStmt = conn.prepareStatement(update);
 		prepStmt.setString(1, title);
 		prepStmt.setString(2, date);
-		prepStmt.setString(3, apt);
+		prepStmt.setInt(3, apt);
 		prepStmt.setString(4, metric);
 		prepStmt.setString(5, teams);
 		prepStmt.setString(6, couples);
