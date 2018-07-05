@@ -10,7 +10,7 @@ public class SQLiteConnection {
 		
 		Connection conn = null;
 		try {
-			String url = "jdbc:sqlite:src/tss/resources/TSSDatabase.db";
+			String url = "jdbc:sqlite:TSSDatabase.db";
 			conn = DriverManager.getConnection(url);
 			System.out.println("Successfully connected to SQLite Database.");
 		} catch (SQLException e) {

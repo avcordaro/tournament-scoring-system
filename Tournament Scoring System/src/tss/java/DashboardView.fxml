@@ -14,7 +14,7 @@
          <children>
             <VBox minWidth="496.0" prefWidth="496.0">
                <children>
-                  <ComboBox fx:id="cmbTournament" onAction="#loadTournament" prefWidth="450.0" promptText="Select Tournament...">
+                  <ComboBox fx:id="cmbTournament" minWidth="450.0" onAction="#loadTournament" prefWidth="450.0" promptText="Select Tournament...">
                      <VBox.margin>
                         <Insets bottom="20.0" left="30.0" right="20.0" top="20.0" />
                      </VBox.margin>
@@ -469,16 +469,16 @@
                      <children>
                         <VBox>
                            <children>
-                              <TableView maxHeight="323.0" minHeight="323.0" prefHeight="323.0" prefWidth="750.0">
+                              <TableView fx:id="tbvArchers" maxHeight="315.0" minHeight="315.0" prefHeight="315.0" prefWidth="750.0">
                                 <columns>
                                   <TableColumn prefWidth="50.0" text="ID" />
                                   <TableColumn prefWidth="100.0" text="Firstname" />
-                                    <TableColumn prefWidth="100.0" text="Lastname" />
-                                    <TableColumn prefWidth="100.0" text="Club" />
-                                    <TableColumn prefWidth="90.0" text="Category" />
-                                    <TableColumn prefWidth="100.0" text="Bow Type" />
-                                    <TableColumn prefWidth="130.0" text="Round" />
-                                    <TableColumn prefWidth="78.0" text="Target" />
+                                  <TableColumn prefWidth="100.0" text="Lastname" />
+                                  <TableColumn prefWidth="100.0" text="Club" />
+                                  <TableColumn prefWidth="90.0" text="Category" />
+                                  <TableColumn prefWidth="100.0" text="Bow Type" />
+                                  <TableColumn prefWidth="130.0" text="Round" />
+                                  <TableColumn prefWidth="78.0" text="Target" />
                                 </columns>
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
@@ -489,22 +489,25 @@
                               </TableView>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Button minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Search">
+                                    <Button fx:id="btnSearchArcher" disable="true" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Search">
                                        <HBox.margin>
                                           <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Edit">
+                                    <Button fx:id="btnEditArcher" disable="true" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Edit">
                                        <HBox.margin>
                                           <Insets bottom="10.0" right="20.0" top="10.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Delete">
+                                    <Button fx:id="btnDeleteArcher" disable="true" minWidth="100.0" mnemonicParsing="false" onAction="#deleteArcher" prefWidth="100.0" text="Delete">
                                        <HBox.margin>
                                           <Insets bottom="10.0" right="20.0" top="10.0" />
                                        </HBox.margin>
                                     </Button>
                                  </children>
+                                 <VBox.margin>
+                                    <Insets top="8.0" />
+                                 </VBox.margin>
                               </HBox>
                            </children>
                         </VBox>
@@ -582,32 +585,32 @@
                                     </VBox>
                                     <VBox prefHeight="200.0" prefWidth="200.0">
                                        <children>
-                                          <TextField maxHeight="30.0" minHeight="30.0">
+                                          <TextField fx:id="txtFirstName" maxHeight="30.0" minHeight="30.0">
                                              <VBox.margin>
                                                 <Insets top="85.0" />
                                              </VBox.margin>
                                           </TextField>
-                                          <TextField maxHeight="30.0" minHeight="30.0">
+                                          <TextField fx:id="txtLastName" maxHeight="30.0" minHeight="30.0">
                                              <VBox.margin>
                                                 <Insets top="5.0" />
                                              </VBox.margin>
                                           </TextField>
-                                          <TextField maxHeight="30.0" minHeight="30.0">
+                                          <TextField fx:id="txtClub" maxHeight="30.0" minHeight="30.0">
                                              <VBox.margin>
                                                 <Insets top="5.0" />
                                              </VBox.margin>
                                           </TextField>
-                                          <ComboBox maxHeight="30.0" minHeight="30.0" prefWidth="200.0" promptText="Select...">
+                                          <ComboBox fx:id="cmbCategory" maxHeight="30.0" minHeight="30.0" prefWidth="200.0" promptText="Select...">
                                              <VBox.margin>
                                                 <Insets top="5.0" />
                                              </VBox.margin>
                                           </ComboBox>
-                                          <ComboBox maxHeight="30.0" minHeight="30.0" prefWidth="200.0" promptText="Select...">
+                                          <ComboBox fx:id="cmbBowType" maxHeight="30.0" minHeight="30.0" prefWidth="200.0" promptText="Select...">
                                              <VBox.margin>
                                                 <Insets top="5.0" />
                                              </VBox.margin>
                                           </ComboBox>
-                                          <ComboBox maxHeight="30.0" minHeight="30.0" prefWidth="200.0" promptText="Select...">
+                                          <ComboBox fx:id="cmbRound" maxHeight="30.0" minHeight="30.0" prefWidth="200.0" promptText="Select...">
                                              <VBox.margin>
                                                 <Insets top="5.0" />
                                              </VBox.margin>
@@ -617,10 +620,10 @@
                                                 <Insets top="5.0" />
                                              </VBox.margin>
                                           </TextField>
-                                          <StackPane alignment="CENTER_RIGHT">
+                                          <StackPane fx:id="stpSaveArcher" alignment="CENTER_RIGHT">
                                              <children>
-                                                <Button maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Save Edit" />
-                                                <Button maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Add New ">
+                                                <Button fx:id="btnSaveEditArcher" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Save Edit" visible="false" />
+                                                <Button fx:id="btnNewArcher" disable="true" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#newArcher" prefWidth="100.0" text="Add New ">
                                                    <VBox.margin>
                                                       <Insets left="100.0" top="30.0" />
                                                    </VBox.margin>

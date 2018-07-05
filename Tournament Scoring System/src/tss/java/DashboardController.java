@@ -16,7 +16,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -35,6 +37,14 @@ public class DashboardController extends Application {
     private Button btnDeleteTournament;
     @FXML
     private Button btnNewTournament;
+    @FXML
+    private Button btnEditArcher;
+    @FXML
+    private Button btnDeleteArcher;
+    @FXML
+    private Button btnSearchArcher;
+    @FXML 
+    private Button btnNewArcher;
     @FXML
     private StackPane stpEditSaveTournament;
     @FXML
@@ -57,6 +67,12 @@ public class DashboardController extends Application {
     private TextField txtNewArchersPerTarget;
     @FXML
     private TextField txtNewTotalArchers;
+    @FXML
+    private TextField txtFirstName;
+    @FXML
+    private TextField txtLastName;
+    @FXML
+    private TextField txtClub;
     @FXML
     private CheckBox chkMetric;
     @FXML
@@ -82,17 +98,40 @@ public class DashboardController extends Application {
     @FXML
     private ComboBox<TournamentMap> cmbTournament;
     @FXML
+    private ComboBox<String> cmbCategory;
+    @FXML
+    private ComboBox<String> cmbBowType;
+    @FXML
+    private ComboBox<String> cmbRound;
+    @FXML
     private VBox vboxTournament;
+    @FXML
+    private TableView<ArcherEntry> tbvArchers;
 
     
     private static Connection conn;
     private static Tournaments tournaments;
+    private static Archers archers;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
     @FXML
     public void initialize() throws SQLException {
 		conn = SQLiteConnection.getConnection();
 		tournaments = new Tournaments(conn);
+		archers = new Archers(conn);
+		tbvArchers.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("ID"));
+		tbvArchers.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("firstName"));
+		tbvArchers.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("lastName"));
+		tbvArchers.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("club"));
+		tbvArchers.getColumns().get(4).setCellValueFactory(new PropertyValueFactory<>("category"));
+		tbvArchers.getColumns().get(5).setCellValueFactory(new PropertyValueFactory<>("bowType"));
+		tbvArchers.getColumns().get(6).setCellValueFactory(new PropertyValueFactory<>("round"));
+		tbvArchers.getColumns().get(7).setCellValueFactory(new PropertyValueFactory<>("target"));
 		fillTournamentComboBox();
+    	fillArcherEditorComboBoxes();
+		tbvArchers.getSelectionModel().selectedItemProperty().addListener((o, oldS, newS) -> {
+	    	btnEditArcher.setDisable(false);
+	    	btnDeleteArcher.setDisable(false);
+		});
     }
     
 	public void start(Stage primaryStage) {
@@ -119,6 +158,7 @@ public class DashboardController extends Application {
     		cmbTournament.getItems().add(map);
     	}
 	}
+	
 	@FXML
 	public void loadTournament(ActionEvent event) throws SQLException {
 		if(!cmbTournament.getItems().isEmpty()) {
@@ -136,6 +176,7 @@ public class DashboardController extends Application {
 			chkWorstWhite.setSelected(Boolean.valueOf(rs.getString("WorstWhite")));
 			btnEditTournament.setDisable(false);
 			btnDeleteTournament.setDisable(false);
+			fillArcherTableView(id);
 		}
 	}
 	
@@ -161,6 +202,10 @@ public class DashboardController extends Application {
 		chkNewMarriedCouples.setSelected(false);
 		chkNewBestGold.setSelected(false);
 		chkNewWorstWhite.setSelected(false);
+		btnSearchArcher.setDisable(false);
+    	btnEditArcher.setDisable(true);
+    	btnDeleteArcher.setDisable(true);
+    	btnNewArcher.setDisable(false);
 	}
 	
 	@FXML
@@ -180,6 +225,10 @@ public class DashboardController extends Application {
 		chkMarriedCouples.setSelected(false);
 		chkWorstWhite.setSelected(false);
 		chkBestGold.setSelected(false);
+    	btnSearchArcher.setDisable(true);
+    	btnEditArcher.setDisable(true);
+    	btnDeleteArcher.setDisable(true);
+    	btnNewArcher.setDisable(true);
 		loadTournament(event);
 	}
 	
@@ -227,5 +276,64 @@ public class DashboardController extends Application {
 		String wWhite = Boolean.toString(chkWorstWhite.isSelected());
 		tournaments.updateRecord(id, title, date, apt, metric, teams, couples, bGold, wWhite);
 		loadTournament(event);
+	}
+	
+	public void fillArcherTableView(int tournamentID) throws SQLException {
+		tbvArchers.getItems().clear();
+		ResultSet rs = archers.getAllRecords(tournamentID);
+		int archerCount = 0;
+    	while(rs.next()) {
+    		tbvArchers.getItems().add(new ArcherEntry(rs.getInt("ArcherID"), rs.getString("FirstName"), 
+    				rs.getString("LastName"), rs.getString("Club"), rs.getString("Category"), 
+    				rs.getString("BowType"), rs.getString("Round"), rs.getString("Target")));
+    		archerCount++;
+    	}
+    	txtTotalArchers.setText(Integer.toString(archerCount));
+    	btnSearchArcher.setDisable(false);
+    	btnNewArcher.setDisable(false);
+	}
+	
+	public void fillArcherEditorComboBoxes() throws SQLException {
+		ResultSet rs = archers.getCategories();
+		while(rs.next()) {
+			cmbCategory.getItems().add(rs.getString("Name"));
+		}
+		rs = archers.getBowTypes();
+		while(rs.next()) {
+			cmbBowType.getItems().add(rs.getString("Name"));
+		}
+		rs = archers.getRounds();
+		while(rs.next()) {
+			cmbRound.getItems().add(rs.getString("Name"));
+		}
+	}
+	
+	@FXML
+	public void newArcher(ActionEvent event) throws SQLException {
+		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
+		String fname = txtFirstName.getText();
+		String lname = txtLastName.getText();
+		String club = txtClub.getText();
+		String cat = cmbCategory.getSelectionModel().getSelectedItem();
+		String bow = cmbBowType.getSelectionModel().getSelectedItem();
+		String round = cmbRound.getSelectionModel().getSelectedItem();
+		archers.newRecord(tID, fname, lname, club, cat, bow, round);
+		txtFirstName.clear();
+		txtLastName.clear();
+		txtClub.clear();
+		cmbCategory.getSelectionModel().clearSelection();
+		cmbBowType.getSelectionModel().clearSelection();
+		cmbRound.getSelectionModel().clearSelection();
+		fillArcherTableView(tID);
+		tbvArchers.getSelectionModel().selectLast();
+		tbvArchers.scrollTo(tbvArchers.getSelectionModel().getSelectedItem());
+	}
+	@FXML
+	public void deleteArcher(ActionEvent event) throws SQLException {
+		ArcherEntry selectedArcher = tbvArchers.getSelectionModel().getSelectedItem();
+		tbvArchers.getItems().remove(selectedArcher);
+		archers.deleteRecord(selectedArcher.getID());
+		String newTotalArchers = Integer.toString(Integer.parseInt(txtTotalArchers.getText()) - 1);
+		txtTotalArchers.setText(newTotalArchers);
 	}
 }

@@ -25,12 +25,21 @@
 	-fx-border-radius: 5;
 	-fx-border-width: 1;
 }
+.text-field:readonly:hover {
+	-fx-background-color: white;
+}
+.text-field:hover {
+	-fx-background-color: #ECEFF8;
+}
 .combo-box {
 	-fx-background-color: white;
 	-fx-border-color: grey;
 	-fx-border-radius: 5;
 	-fx-border-width: 1;
 	-fx-cursor: hand;
+}
+.combo-box:hover {
+	-fx-background-color: #ECEFF8
 }
 .combo-box > .arrow-button > .arrow {
 	-fx-background-color: #3A539B;
@@ -112,4 +121,5 @@
 }
 .date-picker > .date-picker-display-node {
 	-fx-border-radius: 5 0 0 5;
+	-fx-border-color: grey
 }
