@@ -20,11 +20,11 @@ public class Archers {
 		return rs;
 	}
 	
-	public void newRecord(int tID, String fname, String lname, String club, String cat, String bow,
+	public int newRecord(int tID, String fname, String lname, String club, String cat, String bow,
 			String round) throws SQLException {
 		String sql = "INSERT INTO Archer (TournamentID, FirstName, LastName, Club, Category, BowType, "
 				+ "Round, Target) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		PreparedStatement prepStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		prepStmt.setInt(1, tID);
 		prepStmt.setString(2, fname);
 		prepStmt.setString(3, lname);
@@ -34,6 +34,9 @@ public class Archers {
 		prepStmt.setString(7, round);
 		prepStmt.setString(8, "1A");
 		prepStmt.execute();
+		
+		int newID = prepStmt.getGeneratedKeys().getInt(1);
+		return newID;
 	}
 	
 	public void deleteRecord(int recordID) throws SQLException {

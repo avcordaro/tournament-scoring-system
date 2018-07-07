@@ -28,10 +28,10 @@ public class Tournaments {
 		return rs;
 	}
 	
-	public int newRecord(String title, String date, String apt, String metric, String teams, String couples,
-			String bGold, String wWhite) throws SQLException {
-		String sql = "INSERT INTO Tournament (Title, Date, ArchersPerTarget, Metric, Teams, MarriedCouples, "
-				+ "BestGold, WorstWhite) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+	public int newRecord(String title, String date, String apt, String metric, String teams, String couples)
+			throws SQLException {
+		String sql = "INSERT INTO Tournament (Title, Date, ArchersPerTarget, Metric, Teams, MarriedCouples)"
+				+ " VALUES (?, ?, ?, ?, ?, ?);";
 		PreparedStatement prepStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		prepStmt.setString(1, title);
 		prepStmt.setString(2, date);
@@ -39,8 +39,6 @@ public class Tournaments {
 		prepStmt.setString(4, metric);
 		prepStmt.setString(5, teams);
 		prepStmt.setString(6, couples);
-		prepStmt.setString(7, bGold);
-		prepStmt.setString(8, wWhite);
 		prepStmt.execute();
 		
 		int newID = prepStmt.getGeneratedKeys().getInt(1);
@@ -53,9 +51,9 @@ public class Tournaments {
 	}
 	
 	public void updateRecord(int recordID, String title, String date, int apt, String metric, String teams, 
-			String couples, String bGold, String wWhite) throws SQLException {
+			String couples) throws SQLException {
 		String update = "UPDATE Tournament SET Title=?, Date=?, ArchersPerTarget=?, Metric=?, Teams=?, "
-				+ "MarriedCouples=?, BestGold=?, WorstWhite=? WHERE TournamentID = " + recordID + ";";
+				+ "MarriedCouples=?WHERE TournamentID = " + recordID + ";";
 		PreparedStatement prepStmt = conn.prepareStatement(update);
 		prepStmt.setString(1, title);
 		prepStmt.setString(2, date);
@@ -63,8 +61,6 @@ public class Tournaments {
 		prepStmt.setString(4, metric);
 		prepStmt.setString(5, teams);
 		prepStmt.setString(6, couples);
-		prepStmt.setString(7, bGold);
-		prepStmt.setString(8, wWhite);
 		prepStmt.executeUpdate();
 	}
 }

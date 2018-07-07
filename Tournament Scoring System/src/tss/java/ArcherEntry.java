@@ -9,9 +9,8 @@ public class ArcherEntry {
 	private String category;
 	private String bowType;
 	private String round;
-	private String target;
 	
-	public ArcherEntry(int id, String f, String l, String c, String a, String b, String r, String t) {
+	public ArcherEntry(int id, String f, String l, String c, String a, String b, String r) {
 		ID = id;
 		firstName = f;
 		lastName = l;
@@ -19,7 +18,6 @@ public class ArcherEntry {
 		category = a;
 		bowType = b;
 		round = r;
-		target = t;
 	}
 	
 	public int getID() {
@@ -42,8 +40,5 @@ public class ArcherEntry {
 	}
 	public String getRound() {
 		return round;
-	}
-	public String getTarget() {
-		return target;
 	}
 }

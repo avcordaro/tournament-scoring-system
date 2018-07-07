@@ -8,7 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="890.0" maxWidth="1200.0" minHeight="890.0" minWidth="1200.0" prefHeight="890.0" prefWidth="1200.0" stylesheets="@../resources/DashboardStylesheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tss.java.DashboardController">
+<VBox maxHeight="850.0" maxWidth="1200.0" minHeight="850.0" minWidth="1200.0" prefHeight="850.0" prefWidth="1200.0" stylesheets="@../resources/DashboardStylesheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tss.java.DashboardController">
    <children>
       <HBox>
          <children>
@@ -169,46 +169,6 @@
                               <Insets left="30.0" />
                            </VBox.margin>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT">
-                           <children>
-                              <Label minHeight="20.0" prefWidth="200.0" text="Best Gold:">
-                                 <VBox.margin>
-                                    <Insets left="10.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                              <CheckBox fx:id="chkBestGold" disable="true" mnemonicParsing="false" style="-fx-opacity: 1;">
-                                 <VBox.margin>
-                                    <Insets top="2.0" />
-                                 </VBox.margin>
-                              </CheckBox>
-                           </children>
-                           <VBox.margin>
-                              <Insets left="30.0" />
-                           </VBox.margin>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT">
-                           <children>
-                              <Label minHeight="20.0" prefWidth="200.0" text="Worst White:">
-                                 <VBox.margin>
-                                    <Insets left="10.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                              <CheckBox fx:id="chkWorstWhite" disable="true" mnemonicParsing="false" style="-fx-opacity: 1;">
-                                 <VBox.margin>
-                                    <Insets top="2.0" />
-                                 </VBox.margin>
-                              </CheckBox>
-                           </children>
-                           <VBox.margin>
-                              <Insets left="30.0" />
-                           </VBox.margin>
-                        </HBox>
                      </children>
                   </VBox>
                   <HBox alignment="CENTER_LEFT">
@@ -245,9 +205,9 @@
                   <Insets right="145.0" />
                </HBox.margin>
             </VBox>
-            <StackPane alignment="TOP_LEFT" minWidth="559.0" prefWidth="559.0">
+            <StackPane alignment="TOP_LEFT" minWidth="559.0" prefHeight="350.0" prefWidth="559.0">
                <children>
-                  <ImageView fitHeight="150.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="150.0" fitWidth="540.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../resources/titlelogo.png" />
                      </image>
@@ -255,12 +215,12 @@
                         <Rectangle2D width="100.0" />
                      </viewport>
                      <StackPane.margin>
-                        <Insets left="80.0" top="365.0" />
+                        <Insets top="295.0" />
                      </StackPane.margin>
                   </ImageView>
                   <TitledPane expanded="false" text="Start New Tournament">
                     <content>
-                        <VBox prefHeight="380.0" prefWidth="530.0">
+                        <VBox prefWidth="530.0">
                            <children>
                               <Label minHeight="30.0" minWidth="200.0" prefWidth="200.0" text="New Tournament">
                                  <font>
@@ -399,46 +359,6 @@
                                     <Insets left="30.0" />
                                  </VBox.margin>
                               </HBox>
-                              <HBox alignment="CENTER_LEFT">
-                                 <children>
-                                    <Label minHeight="20.0" prefWidth="200.0" text="Best Gold:">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets left="30.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <CheckBox fx:id="chkNewBestGold" mnemonicParsing="false">
-                                       <VBox.margin>
-                                          <Insets top="2.0" />
-                                       </VBox.margin>
-                                    </CheckBox>
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets left="30.0" />
-                                 </VBox.margin>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT">
-                                 <children>
-                                    <Label minHeight="20.0" prefWidth="200.0" text="Worst White:">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets left="30.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <CheckBox fx:id="chkNewWorstWhite" mnemonicParsing="false">
-                                       <VBox.margin>
-                                          <Insets top="2.0" />
-                                       </VBox.margin>
-                                    </CheckBox>
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets left="30.0" />
-                                 </VBox.margin>
-                              </HBox>
                               <Button fx:id="btnNewTournament" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#newTournament" prefWidth="100.0" text="Start New">
                                  <VBox.margin>
                                     <Insets left="420.0" top="20.0" />
@@ -472,13 +392,12 @@
                               <TableView fx:id="tbvArchers" maxHeight="315.0" minHeight="315.0" prefHeight="315.0" prefWidth="750.0">
                                 <columns>
                                   <TableColumn prefWidth="50.0" text="ID" />
-                                  <TableColumn prefWidth="100.0" text="Firstname" />
-                                  <TableColumn prefWidth="100.0" text="Lastname" />
-                                  <TableColumn prefWidth="100.0" text="Club" />
+                                  <TableColumn prefWidth="130.0" text="Firstname" />
+                                  <TableColumn prefWidth="130.0" text="Lastname" />
+                                  <TableColumn prefWidth="120.0" text="Club" />
                                   <TableColumn prefWidth="90.0" text="Category" />
                                   <TableColumn prefWidth="100.0" text="Bow Type" />
                                   <TableColumn prefWidth="130.0" text="Round" />
-                                  <TableColumn prefWidth="78.0" text="Target" />
                                 </columns>
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
@@ -489,7 +408,7 @@
                               </TableView>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Button fx:id="btnSearchArcher" disable="true" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Search">
+                                    <Button fx:id="btnSearchArcher" disable="true" minWidth="100.0" mnemonicParsing="false" onAction="#searchArcher" prefWidth="100.0" text="Search">
                                        <HBox.margin>
                                           <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
                                        </HBox.margin>
@@ -522,7 +441,7 @@
                                                 <Font name="System Bold" size="20.0" />
                                              </font>
                                              <VBox.margin>
-                                                <Insets bottom="20.0" left="20.0" top="35.0" />
+                                                <Insets bottom="10.0" left="20.0" top="45.0" />
                                              </VBox.margin>
                                           </Label>
                                           <Label minHeight="30.0" prefWidth="150.0" text="Firstname:">
@@ -573,12 +492,20 @@
                                                 <Insets left="20.0" top="5.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label disable="true" minHeight="30.0" prefWidth="150.0" text="Target">
+                                          <Label minHeight="30.0" prefWidth="150.0" text="Married Couple:">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
                                              <VBox.margin>
                                                 <Insets left="20.0" top="5.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <Label minHeight="20.0" opacity="0.5" prefWidth="150.0" text="(optional)">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets left="20.0" />
                                              </VBox.margin>
                                           </Label>
                                        </children>
@@ -615,11 +542,11 @@
                                                 <Insets top="5.0" />
                                              </VBox.margin>
                                           </ComboBox>
-                                          <TextField disable="true" maxHeight="30.0" minHeight="30.0">
+                                          <ComboBox fx:id="cmbMarriedCouple" maxHeight="30.0" minHeight="30.0" prefWidth="200.0" promptText="Select...">
                                              <VBox.margin>
                                                 <Insets top="5.0" />
                                              </VBox.margin>
-                                          </TextField>
+                                          </ComboBox>
                                           <StackPane fx:id="stpSaveArcher" alignment="CENTER_RIGHT">
                                              <children>
                                                 <Button fx:id="btnSaveEditArcher" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Save Edit" visible="false" />
@@ -630,7 +557,7 @@
                                                 </Button>
                                              </children>
                                              <VBox.margin>
-                                                <Insets top="28.0" />
+                                                <Insets top="30.0" />
                                              </VBox.margin>
                                           </StackPane>
                                        </children>
