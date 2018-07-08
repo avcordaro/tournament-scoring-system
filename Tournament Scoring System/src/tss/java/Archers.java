@@ -23,7 +23,7 @@ public class Archers {
 	public int newRecord(int tID, String fname, String lname, String club, String cat, String bow,
 			String round) throws SQLException {
 		String sql = "INSERT INTO Archer (TournamentID, FirstName, LastName, Club, Category, BowType, "
-				+ "Round, Target) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+				+ "Round) VALUES (?, ?, ?, ?, ?, ?, ?);";
 		PreparedStatement prepStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		prepStmt.setInt(1, tID);
 		prepStmt.setString(2, fname);
@@ -32,7 +32,6 @@ public class Archers {
 		prepStmt.setString(5, cat);
 		prepStmt.setString(6, bow);
 		prepStmt.setString(7, round);
-		prepStmt.setString(8, "1A");
 		prepStmt.execute();
 		
 		int newID = prepStmt.getGeneratedKeys().getInt(1);
@@ -42,6 +41,20 @@ public class Archers {
 	public void deleteRecord(int recordID) throws SQLException {
 		Statement stmt = conn.createStatement();
 		stmt.executeUpdate("DELETE FROM Archer WHERE ArcherID =" + recordID + ";");
+	}
+	
+	public void updateRecord(int recordID, String fname, String lname, String club, String cat, String bow,
+			String round) throws SQLException {
+		String sql = "UPDATE Archer SET FirstName=?, LastName=?, Club=?, Category=?, BowType=?, Round=? "
+				+ "WHERE ArcherID = " + recordID + ";";
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		prepStmt.setString(1, fname);
+		prepStmt.setString(2, lname);
+		prepStmt.setString(3, club);
+		prepStmt.setString(4, cat);
+		prepStmt.setString(5, bow);
+		prepStmt.setString(6, round);
+		prepStmt.execute();
 	}
 	
 	public ResultSet getCategories() throws SQLException {

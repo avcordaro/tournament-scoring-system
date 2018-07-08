@@ -53,7 +53,7 @@ public class Tournaments {
 	public void updateRecord(int recordID, String title, String date, int apt, String metric, String teams, 
 			String couples) throws SQLException {
 		String update = "UPDATE Tournament SET Title=?, Date=?, ArchersPerTarget=?, Metric=?, Teams=?, "
-				+ "MarriedCouples=?WHERE TournamentID = " + recordID + ";";
+				+ "MarriedCouples=? WHERE TournamentID = " + recordID + ";";
 		PreparedStatement prepStmt = conn.prepareStatement(update);
 		prepStmt.setString(1, title);
 		prepStmt.setString(2, date);

@@ -55,7 +55,7 @@
 	-fx-background-color: white;
 	-fx-border-width: 0;
 }
-.titled-pane:expanded > .title > .arrow-button > .arrow {
+.titled-pane > .title > .arrow-button > .arrow {
 	-fx-background-color: #3A539B;
 }
 .check-box > .box {

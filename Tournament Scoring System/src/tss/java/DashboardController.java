@@ -45,6 +45,8 @@ public class DashboardController extends Application {
     @FXML
     private Button btnEditArcher;
     @FXML
+    private Button btnSaveEditArcher;
+    @FXML
     private Button btnDeleteArcher;
     @FXML
     private Button btnSearchArcher;
@@ -54,6 +56,8 @@ public class DashboardController extends Application {
     private StackPane stpEditSaveTournament;
     @FXML
     private StackPane stpTournamentDate;
+    @FXML 
+    private StackPane stpSaveArcher;
     @FXML
     private DatePicker datePicker;
     @FXML
@@ -269,6 +273,7 @@ public class DashboardController extends Application {
 	public void fillArcherTableView(int tournamentID) throws SQLException {
 		tbvArchers.getItems().clear();
 		cmbMarriedCouple.getItems().clear();
+		cmbMarriedCouple.getItems().add("None");
 		ResultSet rs = archers.getAllRecords(tournamentID);
 		int archerCount = 0;
     	while(rs.next()) {
@@ -310,7 +315,8 @@ public class DashboardController extends Application {
 		String bow = cmbBowType.getSelectionModel().getSelectedItem();
 		String round = cmbRound.getSelectionModel().getSelectedItem();
 		int newArcherID = archers.newRecord(tID, fname, lname, club, cat, bow, round);
-		if(!cmbMarriedCouple.getSelectionModel().isEmpty()) {
+		if(!cmbMarriedCouple.getSelectionModel().isEmpty() || cmbMarriedCouple.getSelectionModel()
+				.getSelectedItem().equals("None")) {
 			String selection = cmbMarriedCouple.getSelectionModel().getSelectedItem();
 			int spouseID = Integer.parseInt(selection.substring(0, selection.indexOf(" ")));
 			marriedCouples.newRecord(newArcherID, spouseID);
@@ -325,6 +331,66 @@ public class DashboardController extends Application {
 		fillArcherTableView(tID);
 		tbvArchers.getSelectionModel().selectLast();
 		tbvArchers.scrollTo(tbvArchers.getSelectionModel().getSelectedItem());
+	}
+	
+	@FXML
+	public void beginEditArcher(ActionEvent event) throws SQLException {
+		btnEditArcher.setDisable(true);
+		btnDeleteArcher.setDisable(true);
+		tbvArchers.setDisable(true);
+		tbvArchers.setOpacity(1.00);
+		ArcherEntry archer = tbvArchers.getSelectionModel().getSelectedItem();
+		txtFirstName.setText(archer.getFirstName());
+		txtLastName.setText(archer.getLastName());
+		txtClub.setText(archer.getClub());
+		cmbCategory.getSelectionModel().select(archer.getCategory());
+		cmbBowType.getSelectionModel().select(archer.getBowType());
+		cmbRound.getSelectionModel().select(archer.getRound());
+		ResultSet rs = marriedCouples.getRecord(archer.getID());
+		if(rs.isBeforeFirst()) {
+			if(rs.getInt(1) == archer.getID()) {
+				cmbMarriedCouple.getSelectionModel().select(rs.getString(2) + " - " + rs.getString(3)
+				+ " " + rs.getString(4));
+			} else {
+				cmbMarriedCouple.getSelectionModel().select(rs.getString(1) + " - " + rs.getString(3)
+						+ " " + rs.getString(4));
+				cmbMarriedCouple.setDisable(true);
+				cmbMarriedCouple.setOpacity(1.00);
+			}
+		}
+		btnSaveEditArcher.setVisible(true);
+		btnNewArcher.setVisible(false);
+		stpSaveArcher.getChildren().get(0).toFront();
+	}
+	
+	@FXML
+	public void saveEditArcher(ActionEvent event) throws SQLException {
+		btnSaveEditArcher.setVisible(false);
+		btnNewArcher.setVisible(true);
+		tbvArchers.setDisable(false);
+		stpSaveArcher.getChildren().get(0).toFront();
+		int id = tbvArchers.getSelectionModel().getSelectedItem().getID();
+		String fname = txtFirstName.getText();
+		String lname = txtLastName.getText();
+		String club = txtClub.getText();
+		String cat = cmbCategory.getSelectionModel().getSelectedItem();
+		String bow = cmbBowType.getSelectionModel().getSelectedItem();
+		String round = cmbRound.getSelectionModel().getSelectedItem();
+		archers.updateRecord(id, fname, lname, club, cat, bow, round);
+		if(!cmbMarriedCouple.getSelectionModel().isEmpty()) {
+			String selection = cmbMarriedCouple.getSelectionModel().getSelectedItem();
+			marriedCouples.updateRecord(id, selection);
+		}
+		int index = tbvArchers.getSelectionModel().getSelectedIndex();
+		fillArcherTableView(cmbTournament.getSelectionModel().getSelectedItem().getID());
+		tbvArchers.getSelectionModel().select(index);
+		txtFirstName.clear();
+		txtLastName.clear();
+		txtClub.clear();
+		cmbCategory.getSelectionModel().clearSelection();
+		cmbBowType.getSelectionModel().clearSelection();
+		cmbRound.getSelectionModel().clearSelection();
+		cmbMarriedCouple.getSelectionModel().clearSelection();
 	}
 	
 	@FXML

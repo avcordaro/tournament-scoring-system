@@ -1,4 +1,3 @@
 Catch SQLExceptions
 Tournament field validation
 Archer Editor validation
-Filter?
