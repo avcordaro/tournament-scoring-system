@@ -52,6 +52,18 @@ public class DashboardController extends Application {
     private Button btnSearchArcher;
     @FXML 
     private Button btnNewArcher;
+    @FXML 
+    private Button btnSearchTarget;
+    @FXML 
+    private Button btnEditTarget;
+    @FXML 
+    private Button btnAutoTargets;
+    @FXML 
+    private Button btnCustomTargets;
+    @FXML 
+    private Button btnExportTargetList;
+    @FXML 
+    private Button btnPreviewTargetList;
     @FXML
     private StackPane stpEditSaveTournament;
     @FXML
@@ -83,6 +95,8 @@ public class DashboardController extends Application {
     @FXML
     private TextField txtClub;
     @FXML
+    private TextField txtTargetDetail;
+    @FXML
     private CheckBox chkMetric;
     @FXML
     private CheckBox chkTeams;
@@ -110,6 +124,8 @@ public class DashboardController extends Application {
     private VBox vboxTournament;
     @FXML
     private TableView<ArcherEntry> tbvArchers;
+    @FXML
+    private TableView<?> tbvTargetList;
     
     private static Connection conn;
     private static Tournaments tournaments;
