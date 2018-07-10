@@ -620,11 +620,11 @@
                                           </Button>
                                        </children>
                                     </StackPane>
-                                    <TextField fx:id="txtTargetDetail" disable="true" prefWidth="150.0">
+                                    <ComboBox fx:id="cmbEditTarget" disable="true" maxHeight="35.0" minHeight="35.0" prefWidth="200.0" promptText="Swap target with...">
                                        <HBox.margin>
                                           <Insets bottom="10.0" left="10.0" top="20.0" />
                                        </HBox.margin>
-                                    </TextField>
+                                    </ComboBox>
                                  </children>
                               </HBox>
                            </children>
@@ -639,25 +639,17 @@
                                     <Insets left="20.0" right="20.0" top="15.0" />
                                  </VBox.margin>
                               </Label>
-                              <Label text="The target details can allocated automatically by the system. Alternatively you can enter your own custom details." wrapText="true">
+                              <Label text="The target details are allocated automatically by the system. Reallocation will be needed upon any changes to the archers." wrapText="true">
                                  <VBox.margin>
                                     <Insets left="20.0" right="20.0" top="10.0" />
                                  </VBox.margin>
                               </Label>
                               <HBox>
                                  <children>
-                                    <Button fx:id="btnAutoTargets" disable="true" mnemonicParsing="false" prefWidth="100.0" text="Auto">
+                                    <Button fx:id="btnAllocateTargets" disable="true" mnemonicParsing="false" onAction="#allocateTargetDetails" prefWidth="100.0" text="Allocate">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
-                                    </Button>
-                                    <Button fx:id="btnCustomTargets" disable="true" mnemonicParsing="false" prefWidth="100.0" text="Custom">
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                       <HBox.margin>
-                                          <Insets left="20.0" />
-                                       </HBox.margin>
                                     </Button>
                                  </children>
                                  <VBox.margin>
@@ -669,7 +661,7 @@
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets left="20.0" right="20.0" top="30.0" />
+                                    <Insets left="20.0" right="20.0" top="35.0" />
                                  </VBox.margin>
                               </Label>
                               <Label layoutX="30.0" layoutY="61.0" text="The report file can be previewed, as well as exported to PDF for distribution." wrapText="true">

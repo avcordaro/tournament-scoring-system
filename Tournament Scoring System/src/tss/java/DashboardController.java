@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import javafx.application.Application;
@@ -57,9 +58,7 @@ public class DashboardController extends Application {
     @FXML 
     private Button btnEditTarget;
     @FXML 
-    private Button btnAutoTargets;
-    @FXML 
-    private Button btnCustomTargets;
+    private Button btnAllocateTargets;
     @FXML 
     private Button btnExportTargetList;
     @FXML 
@@ -95,8 +94,6 @@ public class DashboardController extends Application {
     @FXML
     private TextField txtClub;
     @FXML
-    private TextField txtTargetDetail;
-    @FXML
     private CheckBox chkMetric;
     @FXML
     private CheckBox chkTeams;
@@ -121,6 +118,8 @@ public class DashboardController extends Application {
     @FXML
     private ComboBox<String> cmbMarriedCouple;
     @FXML
+    private ComboBox<String> cmbEditTarget;
+    @FXML
     private VBox vboxTournament;
     @FXML
     private TableView<ArcherEntry> tbvArchers;
@@ -131,6 +130,7 @@ public class DashboardController extends Application {
     private static Tournaments tournaments;
     private static Archers archers;
     private static MarriedCouples marriedCouples;
+    private static Targets targets;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
     
     @FXML
@@ -139,6 +139,7 @@ public class DashboardController extends Application {
 		tournaments = new Tournaments(conn);
 		archers = new Archers(conn);
 		marriedCouples = new MarriedCouples(conn);
+		targets = new Targets(conn);
 		tbvArchers.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("ID"));
 		tbvArchers.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("firstName"));
 		tbvArchers.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("lastName"));
@@ -157,6 +158,9 @@ public class DashboardController extends Application {
 		tbvArchers.getSelectionModel().selectedItemProperty().addListener((o, oldS, newS) -> {
 	    	btnEditArcher.setDisable(false);
 	    	btnDeleteArcher.setDisable(false);
+		});
+		tbvTargetList.getSelectionModel().selectedItemProperty().addListener((o, oldS, newS) -> {
+	    	btnEditTarget.setDisable(false);
 		});
     }
     
@@ -202,8 +206,7 @@ public class DashboardController extends Application {
 			btnDeleteTournament.setDisable(false);
 			btnSearchTarget.setDisable(true);
 			btnEditTarget.setDisable(true);
-			btnAutoTargets.setDisable(true);
-			btnCustomTargets.setDisable(true);
+			btnAllocateTargets.setDisable(true);
 			btnPreviewTargetList.setDisable(true);
 			btnExportTargetList.setDisable(true);
 			fillArcherTableView(id);
@@ -239,8 +242,7 @@ public class DashboardController extends Application {
     	cmbMarriedCouple.setDisable(!chkMarriedCouples.isSelected());
 		btnSearchTarget.setDisable(true);
 		btnEditTarget.setDisable(true);
-		btnAutoTargets.setDisable(true);
-		btnCustomTargets.setDisable(true);
+		btnAllocateTargets.setDisable(true);
 		btnPreviewTargetList.setDisable(true);
 		btnExportTargetList.setDisable(true);
 	}
@@ -266,8 +268,7 @@ public class DashboardController extends Application {
     	btnNewArcher.setDisable(true);
 		btnSearchTarget.setDisable(true);
 		btnEditTarget.setDisable(true);
-		btnAutoTargets.setDisable(true);
-		btnCustomTargets.setDisable(true);
+		btnAllocateTargets.setDisable(true);
 		btnPreviewTargetList.setDisable(true);
 		btnExportTargetList.setDisable(true);
 		loadTournament(event);
@@ -485,22 +486,22 @@ public class DashboardController extends Application {
 
 	public void fillTargetListTableView(int tournamentID) throws SQLException {
 		tbvTargetList.getItems().clear();
-		ResultSet rs = archers.getAllRecords(tournamentID);
-		btnSearchTarget.setDisable(rs.isBeforeFirst() ? false : true);
-		btnAutoTargets.setDisable(rs.isBeforeFirst() ? false : true);
-		btnCustomTargets.setDisable(rs.isBeforeFirst() ? false : true);
-		btnPreviewTargetList.setDisable(rs.isBeforeFirst() ? false : true);
-		btnExportTargetList.setDisable(rs.isBeforeFirst() ? false : true);
-    	while(rs.next()) {
-    		String archer = rs.getString("FirstName") + " " + rs.getString("LastName");
-    		String category = rs.getString("Category");
-    		switch(category.substring(0, 2)) {
-	    		case "Ge": 	archer = "Mr " + archer; break;
-	    		case "La": 	archer = "Mrs " + archer; break;
-	    		case "JG": 	archer = "Ms " + archer; break;
-	    		case "JL": 	archer = "Miss " + archer; break;
+		ArrayList<TargetEntry> data = targets.getDataForTable(tournamentID);
+		btnSearchTarget.setDisable(data.isEmpty() ? true : false);
+		btnAllocateTargets.setDisable(data.isEmpty() ? true : false);
+		btnPreviewTargetList.setDisable(data.isEmpty() ? true : false);
+		btnExportTargetList.setDisable(data.isEmpty() ? true : false);
+    	if(!data.isEmpty()) {
+    		for(TargetEntry entry : data) {
+    			tbvTargetList.getItems().add(entry);
     		}
-    		tbvTargetList.getItems().add(new TargetEntry(rs.getInt("ArcherID"), archer, rs.getString("Club"), rs.getString("Round"), rs.getString("BowType"), rs.getString("Target")));
     	}
+	}
+	
+	@FXML
+	public void allocateTargetDetails(ActionEvent event) throws SQLException {
+		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
+		targets.assignAllDetails(tID, Integer.parseInt(txtArchersPerTarget.getText()));
+		fillTargetListTableView(tID);
 	}
 }
