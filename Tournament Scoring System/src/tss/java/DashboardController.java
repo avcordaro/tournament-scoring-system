@@ -452,7 +452,7 @@ public class DashboardController extends Application {
 		Stage dialogStage = (Stage)dialog.getDialogPane().getScene().getWindow();
 		dialogStage.getIcons().add(new Image("file:src/tss/resources/logo.png"));
 		Optional<String> input = dialog.showAndWait();
-		if(input.get().matches("\\d+")) {
+		if(input.isPresent() && input.get().matches("\\d+")) {
 			int id = Integer.parseInt(input.get());
 			for(ArcherEntry archer: tbvArchers.getItems()) {
 				if(id == archer.getID()) {
@@ -462,16 +462,19 @@ public class DashboardController extends Application {
 				}
 			}
 		}
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Archer not found");
-		alert.setHeaderText(null);
-		alert.setContentText("Archer for ID " + input.get() + " does not exist.");
-		dialogPane = alert.getDialogPane();
-		dialogPane.getStylesheets().add(getClass().getResource("../resources/DashboardStylesheet.css").toExternalForm());
-		Stage alertStage = (Stage)alert.getDialogPane().getScene().getWindow();
-		alertStage.getIcons().add(new Image("file:src/tss/resources/logo.png"));
-		alert.showAndWait();
+		if(input.isPresent()) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Archer not found");
+			alert.setHeaderText(null);
+			alert.setContentText("Archer for ID " + input.get() + " does not exist.");
+			dialogPane = alert.getDialogPane();
+			dialogPane.getStylesheets().add(getClass().getResource("../resources/DashboardStylesheet.css").toExternalForm());
+			Stage alertStage = (Stage)alert.getDialogPane().getScene().getWindow();
+			alertStage.getIcons().add(new Image("file:src/tss/resources/logo.png"));
+			alert.showAndWait();
+		}
 	}
+	
 	@FXML
 	public void deleteArcher(ActionEvent event) throws SQLException {
 		ArcherEntry selectedArcher = tbvArchers.getSelectionModel().getSelectedItem();
@@ -503,5 +506,39 @@ public class DashboardController extends Application {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		targets.assignAllDetails(tID, Integer.parseInt(txtArchersPerTarget.getText()));
 		fillTargetListTableView(tID);
+	}
+	
+	@FXML
+	public void searchArcherTarget(ActionEvent event) {
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle("Search Archer's Target");
+		dialog.setHeaderText(null);
+		dialog.setContentText("Archer ID: ");
+		DialogPane dialogPane = dialog.getDialogPane();
+		dialogPane.getStylesheets().add(getClass().getResource("../resources/DashboardStylesheet.css").toExternalForm());
+		Stage dialogStage = (Stage)dialog.getDialogPane().getScene().getWindow();
+		dialogStage.getIcons().add(new Image("file:src/tss/resources/logo.png"));
+		Optional<String> input = dialog.showAndWait();
+		if(input.isPresent() && input.get().matches("^\\d+$")) {
+			int id = Integer.parseInt(input.get());
+			for(TargetEntry entry: tbvTargetList.getItems()) {
+				if(id == entry.getID()) {
+					tbvTargetList.getSelectionModel().select(entry);
+					tbvTargetList.scrollTo(entry);
+					return;
+				}
+			}
+		} 
+		if(input.isPresent()) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Archer not found");
+			alert.setHeaderText(null);
+			alert.setContentText("Archer for ID " + input.get() + " does not exist.");
+			dialogPane = alert.getDialogPane();
+			dialogPane.getStylesheets().add(getClass().getResource("../resources/DashboardStylesheet.css").toExternalForm());
+			Stage alertStage = (Stage)alert.getDialogPane().getScene().getWindow();
+			alertStage.getIcons().add(new Image("file:src/tss/resources/logo.png"));
+			alert.showAndWait();
+		}
 	}
 }

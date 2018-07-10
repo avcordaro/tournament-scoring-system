@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+
 public class Targets {
 	
 	Connection conn;
@@ -58,12 +59,16 @@ public class Targets {
 		double detailIncrement = 1.0 / apt;
 		char detailLetter = 'A';
 		char resetLetter = (char)(detailLetter + apt);
+		String sql = "UPDATE Archer SET Target=? WHERE ArcherID=?;";
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		rs.next();
 		while(!rs.isAfterLast()) {
 			String round = rs.getString("Round");
 			while(!rs.isAfterLast() && rs.getString("Round").equals(round)) {
 				String detail = Integer.toString((int)detailNumber) + detailLetter;
-				updateDetail(rs.getInt("ID"), detail);
+				prepStmt.setString(1, detail);
+				prepStmt.setInt(2, rs.getInt("ID"));
+				prepStmt.addBatch();
 				detailNumber += detailIncrement;
 				detailLetter++;
 				if(detailLetter == resetLetter) { 
@@ -74,6 +79,7 @@ public class Targets {
 			detailNumber = Math.ceil(detailNumber);
 			detailLetter = 'A';
 		}
+		prepStmt.executeBatch();
 	}
 }
 
