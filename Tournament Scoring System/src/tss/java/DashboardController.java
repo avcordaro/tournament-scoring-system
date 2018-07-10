@@ -125,7 +125,7 @@ public class DashboardController extends Application {
     @FXML
     private TableView<ArcherEntry> tbvArchers;
     @FXML
-    private TableView<?> tbvTargetList;
+    private TableView<TargetEntry> tbvTargetList;
     
     private static Connection conn;
     private static Tournaments tournaments;
@@ -146,6 +146,12 @@ public class DashboardController extends Application {
 		tbvArchers.getColumns().get(4).setCellValueFactory(new PropertyValueFactory<>("category"));
 		tbvArchers.getColumns().get(5).setCellValueFactory(new PropertyValueFactory<>("bowType"));
 		tbvArchers.getColumns().get(6).setCellValueFactory(new PropertyValueFactory<>("round"));
+		tbvTargetList.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("ID"));
+		tbvTargetList.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("archer"));
+		tbvTargetList.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("club"));
+		tbvTargetList.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("round"));
+		tbvTargetList.getColumns().get(4).setCellValueFactory(new PropertyValueFactory<>("bowType"));
+		tbvTargetList.getColumns().get(5).setCellValueFactory(new PropertyValueFactory<>("target"));
 		fillTournamentComboBox();
     	fillArcherEditorComboBoxes();
 		tbvArchers.getSelectionModel().selectedItemProperty().addListener((o, oldS, newS) -> {
@@ -181,7 +187,7 @@ public class DashboardController extends Application {
 	
 	@FXML
 	public void loadTournament(ActionEvent event) throws SQLException {
-		if(!cmbTournament.getItems().isEmpty()) {
+		if(!cmbTournament.getSelectionModel().isEmpty()) {
 			int id = cmbTournament.getSelectionModel().getSelectedItem().getID();
 			ResultSet rs = tournaments.getRecord(id);
 			txtTitle.setText(rs.getString("Title"));
@@ -194,7 +200,17 @@ public class DashboardController extends Application {
 			chkMarriedCouples.setSelected(Boolean.valueOf(rs.getString("MarriedCouples")));
 			btnEditTournament.setDisable(false);
 			btnDeleteTournament.setDisable(false);
+			btnSearchTarget.setDisable(true);
+			btnEditTarget.setDisable(true);
+			btnAutoTargets.setDisable(true);
+			btnCustomTargets.setDisable(true);
+			btnPreviewTargetList.setDisable(true);
+			btnExportTargetList.setDisable(true);
 			fillArcherTableView(id);
+			fillTargetListTableView(id);
+		} else {
+			tbvArchers.getItems().clear();
+			tbvTargetList.getItems().clear();
 		}
 	}
 	
@@ -216,11 +232,17 @@ public class DashboardController extends Application {
 		chkNewMetric.setSelected(false);
 		chkNewTeams.setSelected(false);
 		chkNewMarriedCouples.setSelected(false);
-		btnSearchArcher.setDisable(false);
+		btnSearchArcher.setDisable(true);
     	btnEditArcher.setDisable(true);
     	btnDeleteArcher.setDisable(true);
     	btnNewArcher.setDisable(false);
     	cmbMarriedCouple.setDisable(!chkMarriedCouples.isSelected());
+		btnSearchTarget.setDisable(true);
+		btnEditTarget.setDisable(true);
+		btnAutoTargets.setDisable(true);
+		btnCustomTargets.setDisable(true);
+		btnPreviewTargetList.setDisable(true);
+		btnExportTargetList.setDisable(true);
 	}
 	
 	@FXML
@@ -242,6 +264,12 @@ public class DashboardController extends Application {
     	btnEditArcher.setDisable(true);
     	btnDeleteArcher.setDisable(true);
     	btnNewArcher.setDisable(true);
+		btnSearchTarget.setDisable(true);
+		btnEditTarget.setDisable(true);
+		btnAutoTargets.setDisable(true);
+		btnCustomTargets.setDisable(true);
+		btnPreviewTargetList.setDisable(true);
+		btnExportTargetList.setDisable(true);
 		loadTournament(event);
 	}
 	
@@ -292,6 +320,7 @@ public class DashboardController extends Application {
 		cmbMarriedCouple.getItems().add("None");
 		ResultSet rs = archers.getAllRecords(tournamentID);
 		int archerCount = 0;
+		btnSearchArcher.setDisable(rs.isBeforeFirst() ? false : true);
     	while(rs.next()) {
     		tbvArchers.getItems().add(new ArcherEntry(rs.getInt("ArcherID"), rs.getString("FirstName"), 
     				rs.getString("LastName"), rs.getString("Club"), rs.getString("Category"), 
@@ -302,7 +331,6 @@ public class DashboardController extends Application {
     	}
     	txtTotalArchers.setText(Integer.toString(archerCount));
     	cmbMarriedCouple.setDisable(!chkMarriedCouples.isSelected());
-    	btnSearchArcher.setDisable(false);
     	btnNewArcher.setDisable(false);
 	}
 	
@@ -331,11 +359,12 @@ public class DashboardController extends Application {
 		String bow = cmbBowType.getSelectionModel().getSelectedItem();
 		String round = cmbRound.getSelectionModel().getSelectedItem();
 		int newArcherID = archers.newRecord(tID, fname, lname, club, cat, bow, round);
-		if(!cmbMarriedCouple.getSelectionModel().isEmpty() || cmbMarriedCouple.getSelectionModel()
-				.getSelectedItem().equals("None")) {
-			String selection = cmbMarriedCouple.getSelectionModel().getSelectedItem();
-			int spouseID = Integer.parseInt(selection.substring(0, selection.indexOf(" ")));
-			marriedCouples.newRecord(newArcherID, spouseID);
+		if(!cmbMarriedCouple.getSelectionModel().isEmpty()) {
+			if(!cmbMarriedCouple.getSelectionModel().getSelectedItem().equals("None")) {
+				String selection = cmbMarriedCouple.getSelectionModel().getSelectedItem();
+				int spouseID = Integer.parseInt(selection.substring(0, selection.indexOf(" ")));
+				marriedCouples.newRecord(newArcherID, spouseID);
+			}
 		}
 		txtFirstName.clear();
 		txtLastName.clear();
@@ -345,6 +374,7 @@ public class DashboardController extends Application {
 		cmbRound.getSelectionModel().clearSelection();
 		cmbMarriedCouple.getSelectionModel().clearSelection();
 		fillArcherTableView(tID);
+		fillTargetListTableView(tID);
 		tbvArchers.getSelectionModel().selectLast();
 		tbvArchers.scrollTo(tbvArchers.getSelectionModel().getSelectedItem());
 	}
@@ -399,6 +429,7 @@ public class DashboardController extends Application {
 		}
 		int index = tbvArchers.getSelectionModel().getSelectedIndex();
 		fillArcherTableView(cmbTournament.getSelectionModel().getSelectedItem().getID());
+		fillTargetListTableView(cmbTournament.getSelectionModel().getSelectedItem().getID());
 		tbvArchers.getSelectionModel().select(index);
 		txtFirstName.clear();
 		txtLastName.clear();
@@ -445,9 +476,31 @@ public class DashboardController extends Application {
 		ArcherEntry selectedArcher = tbvArchers.getSelectionModel().getSelectedItem();
 		archers.deleteRecord(selectedArcher.getID());
 		fillArcherTableView(cmbTournament.getSelectionModel().getSelectedItem().getID());
+		fillTargetListTableView(cmbTournament.getSelectionModel().getSelectedItem().getID());
 		String newTotalArchers = Integer.toString(Integer.parseInt(txtTotalArchers.getText()) - 1);
 		txtTotalArchers.setText(newTotalArchers);
 		btnEditArcher.setDisable(true);
 		btnDeleteArcher.setDisable(true);
+	}
+
+	public void fillTargetListTableView(int tournamentID) throws SQLException {
+		tbvTargetList.getItems().clear();
+		ResultSet rs = archers.getAllRecords(tournamentID);
+		btnSearchTarget.setDisable(rs.isBeforeFirst() ? false : true);
+		btnAutoTargets.setDisable(rs.isBeforeFirst() ? false : true);
+		btnCustomTargets.setDisable(rs.isBeforeFirst() ? false : true);
+		btnPreviewTargetList.setDisable(rs.isBeforeFirst() ? false : true);
+		btnExportTargetList.setDisable(rs.isBeforeFirst() ? false : true);
+    	while(rs.next()) {
+    		String archer = rs.getString("FirstName") + " " + rs.getString("LastName");
+    		String category = rs.getString("Category");
+    		switch(category.substring(0, 2)) {
+	    		case "Ge": 	archer = "Mr " + archer; break;
+	    		case "La": 	archer = "Mrs " + archer; break;
+	    		case "JG": 	archer = "Ms " + archer; break;
+	    		case "JL": 	archer = "Miss " + archer; break;
+    		}
+    		tbvTargetList.getItems().add(new TargetEntry(rs.getInt("ArcherID"), archer, rs.getString("Club"), rs.getString("Round"), rs.getString("BowType"), rs.getString("Target")));
+    	}
 	}
 }
