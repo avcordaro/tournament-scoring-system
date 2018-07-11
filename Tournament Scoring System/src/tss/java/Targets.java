@@ -10,11 +10,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -108,6 +110,25 @@ public class Targets {
 		ImageIcon img = new ImageIcon("src/tss/resources/list.png");
 		jViewer.setIconImage(img.getImage());
 		jViewer.setVisible(true);
+	}
+	
+	public void exportTargetListPDF(int tournamentID, String title, String date) throws SQLException, JRException {
+		JasperReport jr = JasperCompileManager.compileReport("src/tss/resources/TargetList.jrxml");
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("TITLE", title);
+		params.put("DATE", date);
+		ResultSet rs = getOrderedArcherRecords(tournamentID);
+		JRDataSource jrDataSource = new JRResultSetDataSource(rs);
+		JasperPrint jPrint = JasperFillManager.fillReport(jr, params, jrDataSource);
+	    JFileChooser directoryDialog = new JFileChooser();
+	    directoryDialog.setDialogTitle("Export Location");
+	    directoryDialog.setAcceptAllFileFilterUsed(false);
+	    directoryDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+	    if(directoryDialog.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			String exportPath = directoryDialog.getSelectedFile().toString() + "/" + title + " - Target List.pdf";
+			System.out.println(exportPath);
+			JasperExportManager.exportReportToPdfFile(jPrint, exportPath);
+	    }
 	}
 }
 

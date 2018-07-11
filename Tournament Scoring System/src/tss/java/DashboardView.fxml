@@ -676,7 +676,7 @@
                                           <Insets />
                                        </HBox.margin>
                                     </Button>
-                                    <Button fx:id="btnExportTargetList" disable="true" mnemonicParsing="false" prefWidth="100.0" text="Export">
+                                    <Button fx:id="btnExportTargetList" disable="true" mnemonicParsing="false" onAction="#exportTargetList" prefWidth="100.0" text="Export">
                                        <HBox.margin>
                                           <Insets left="20.0" />
                                        </HBox.margin>

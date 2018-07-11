@@ -557,4 +557,15 @@ public class DashboardController extends Application {
 		String date = formatter.format(dateUnformatted);
 		targets.previewTargetList(tID, title, date);
 	}
+	
+	@FXML
+	public void exportTargetList(ActionEvent event) throws SQLException, JRException, ParseException {
+		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
+		String title = txtTitle.getText();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy");
+		Date dateUnformatted = dateFormat.parse(txtDate.getText());
+		DateFormat formatter = DateFormat.getDateInstance(DateFormat.FULL);
+		String date = formatter.format(dateUnformatted);
+		targets.exportTargetListPDF(tID, title, date);
+	}
 }
