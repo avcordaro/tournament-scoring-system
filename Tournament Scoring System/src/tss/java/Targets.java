@@ -1,11 +1,24 @@
 package tss.java;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.ImageIcon;
+
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 
 public class Targets {
@@ -80,6 +93,21 @@ public class Targets {
 			detailLetter = 'A';
 		}
 		prepStmt.executeBatch();
+	}
+	
+	public void previewTargetList(int tournamentID, String title, String date) throws SQLException, JRException {
+		JasperReport jr = JasperCompileManager.compileReport("src/tss/resources/TargetList.jrxml");
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("TITLE", title);
+		params.put("DATE", date);
+		ResultSet rs = getOrderedArcherRecords(tournamentID);
+		JRDataSource jrDataSource = new JRResultSetDataSource(rs);
+		JasperPrint jPrint = JasperFillManager.fillReport(jr, params, jrDataSource);
+		JasperViewer jViewer = new JasperViewer(jPrint, false);
+		jViewer.setTitle("Target List Preview");
+		ImageIcon img = new ImageIcon("src/tss/resources/list.png");
+		jViewer.setIconImage(img.getImage());
+		jViewer.setVisible(true);
 	}
 }
 

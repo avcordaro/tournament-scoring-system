@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TargetList" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8bb4791a-2920-4280-b550-bcbee13c4f5d">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="TITLE" class="java.lang.String"/>
+	<parameter name="DATE" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="Target" class="java.lang.String"/>
+	<field name="FirstName" class="java.lang.String"/>
+	<field name="LastName" class="java.lang.String"/>
+	<field name="Club" class="java.lang.String"/>
+	<field name="Round" class="java.lang.String"/>
+	<field name="Category" class="java.lang.String"/>
+	<field name="BowType" class="java.lang.String"/>
+	<group name="Round">
+		<groupExpression><![CDATA[$F{Round}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<textField>
+					<reportElement x="20" y="21" width="100" height="20" uuid="59f56ebb-3a69-41c2-a5ed-89a7b4e1ff5c"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Round}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="10" y="41" width="533" height="1" forecolor="#7D7D7D" uuid="47bfa7a3-48fb-4dec-ad3d-847eefa27b42"/>
+				</line>
+			</band>
+		</groupHeader>
+	</group>
+	<title>
+		<band height="165" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement positionType="Float" x="30" y="0" width="500" height="30" uuid="fa86f2e6-4c05-41f5-85d7-8a7e0da02e77"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TITLE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="155" y="30" width="250" height="25" uuid="f65987a7-9af0-4ae6-b31d-9ec2e1c3718a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DATE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="205" y="80" width="150" height="30" uuid="14499434-1915-426e-bcfe-ce7fc0ee5c33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Target List]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="5" y="140" width="545" height="20" forecolor="#000000" backcolor="#3A539B" uuid="4fe6806b-5dea-448e-805b-0b5cc8ebfa37"/>
+				<graphicElement>
+					<pen lineColor="#3A539B"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="70" y="140" width="100" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="e30fd0b1-5c12-44cc-a011-1bffffb3e6c4"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[FirstName]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="140" width="70" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="f1776a9e-b470-49d2-bb1a-03befbf60b0e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Category]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="140" width="100" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="b6b59df4-618f-47cf-8b63-4c03dbc0abd2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[LastName]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="140" width="120" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="11ea0324-7570-4656-8481-ef6c3f8af71b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Club]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="140" width="50" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="cf9eb4a3-5cb5-4e2f-a494-d80adfc550e0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Target]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="140" width="80" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="b9d97115-f78a-4042-b13a-6e4a7ecfa38a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[BowType]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="20">
+			<textField>
+				<reportElement x="70" y="0" width="100" height="20" uuid="6460f0ae-decd-407f-a959-44b18ef3e720"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FirstName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="0" width="100" height="20" uuid="63b160f8-5e8b-4a8b-9998-f75ad2ca875b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LastName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="0" width="120" height="20" uuid="8b6beaf8-af89-4f8a-8d6d-c41df98fba90"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Club}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="390" y="0" width="80" height="20" uuid="754d4111-89c9-4d81-a3a2-4d8d6f37221e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{BowType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="0" width="50" height="20" uuid="20995419-bc03-440e-b597-e4a2519c0766"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Target}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="470" y="0" width="70" height="20" uuid="1de188f2-bba6-4b53-b608-ea384e55e09e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Category}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

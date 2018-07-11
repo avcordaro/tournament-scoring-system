@@ -4,14 +4,19 @@ package tss.java;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
+import net.sf.jasperreports.engine.JRException;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -540,5 +545,16 @@ public class DashboardController extends Application {
 			alertStage.getIcons().add(new Image("file:src/tss/resources/logo.png"));
 			alert.showAndWait();
 		}
+	}
+	
+	@FXML 
+	public void previewTargetList(ActionEvent event) throws SQLException, JRException, ParseException {
+		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
+		String title = txtTitle.getText();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy");
+		Date dateUnformatted = dateFormat.parse(txtDate.getText());
+		DateFormat formatter = DateFormat.getDateInstance(DateFormat.FULL);
+		String date = formatter.format(dateUnformatted);
+		targets.previewTargetList(tID, title, date);
 	}
 }

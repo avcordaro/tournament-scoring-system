@@ -671,7 +671,7 @@
                               </Label>
                               <HBox layoutX="30.0" layoutY="218.0">
                                  <children>
-                                    <Button fx:id="btnPreviewTargetList" disable="true" mnemonicParsing="false" prefWidth="100.0" text="Preview">
+                                    <Button fx:id="btnPreviewTargetList" disable="true" mnemonicParsing="false" onAction="#previewTargetList" prefWidth="100.0" text="Preview">
                                        <HBox.margin>
                                           <Insets />
                                        </HBox.margin>
