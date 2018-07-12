@@ -1,9 +1,9 @@
 package tss;
 
 
-import java.awt.FileDialog;
+import java.awt.Desktop;
 import java.io.File;
-import java.io.FilenameFilter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,8 +13,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
-//import javax.swing.JFileChooser;
+import javax.swing.JFileChooser;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
+import javafx.scene.control.ComboBox;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
@@ -54,7 +57,7 @@ public class Targets {
 	    		case "JL": 	archer = "Miss " + archer; break;
     		}
     		data.add(new TargetEntry(rs.getInt("ArcherID"), archer, rs.getString("Club"), 
-    				rs.getString("Round"), rs.getString("BowType"), rs.getString("Target")));
+    				rs.getString("BowType"),rs.getString("Round"), rs.getString("Target")));
     	}
 		return data;
 	}
@@ -100,6 +103,55 @@ public class Targets {
 		prepStmt.executeBatch();
 	}
 	
+	public void fillSwapDetailsComboBox(int tournamentID, TargetEntry entry, ComboBox<String> cmb) throws SQLException {
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Archer WHERE TournamentID = " + tournamentID 
+				+ " AND Round = \"" + entry.getRound() + "\" ORDER BY Target;");
+		if(rs.isAfterLast()) {
+			return;
+		}
+		int startingTarget = Integer.parseInt(rs.getString("Target").split("A|B|C|D")[0]);
+		HashMap<String, String> targetMap = new HashMap<String, String>();
+		String archerDetail;
+		while(rs.next()) {
+			archerDetail = rs.getString("Target") + " - " + rs.getString("FirstName") + " " + rs.getString("LastName");
+			targetMap.put(rs.getString("Target"), archerDetail);
+		}
+		int i = startingTarget;
+		String detail;
+		cmb.getItems().add("None");
+		while(!targetMap.isEmpty()) {
+			for(char c = 'A'; c < 'E'; c++) {
+				detail = Integer.toString(i) + c;
+				archerDetail = targetMap.get(detail);
+				if(archerDetail != null) {
+					if(!detail.equals(entry.getTarget())) {
+						cmb.getItems().add(archerDetail);
+					}
+					targetMap.remove(detail);
+				}
+				else {
+					cmb.getItems().add(detail + " - Empty");
+				}
+			}
+			i++;
+		}
+		
+	}
+	
+	public void swapTargetDetails(int tournamentID, String target1, String target2) throws SQLException {
+		Statement stmt1 = conn.createStatement();
+		ResultSet target1Archer = stmt1.executeQuery("SELECT * FROM Archer WHERE TournamentID = " + tournamentID
+				+ " AND Target = \"" + target1 + "\";");
+		Statement stmt2 = conn.createStatement();
+		ResultSet target2Archer = stmt2.executeQuery("SELECT * FROM Archer WHERE TournamentID = " + tournamentID
+				+ " AND Target = \"" + target2 + "\";");
+		if(!target1Archer.isAfterLast()) {
+			updateDetail(target1Archer.getInt("ArcherID"), target2);
+		}
+		updateDetail(target2Archer.getInt("ArcherID"), target1);
+	}
+	
 	public void previewTargetList(int tournamentID, String title, String date) throws SQLException, JRException {
 		JasperReport jr = JasperCompileManager.compileReport(getClass().getResourceAsStream("resources/TargetList.jrxml"));
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -115,7 +167,7 @@ public class Targets {
 		jViewer.setVisible(true);
 	}
 	
-	public void exportTargetListPDF(int tournamentID, String title, String date) throws SQLException, JRException {
+	public void exportTargetListPDF(int tournamentID, String title, String date) throws SQLException, JRException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		JasperReport jr = JasperCompileManager.compileReport(getClass().getResourceAsStream("resources/TargetList.jrxml"));
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("TITLE", title);
@@ -123,7 +175,8 @@ public class Targets {
 		ResultSet rs = getOrderedArcherRecords(tournamentID);
 		JRDataSource jrDataSource = new JRResultSetDataSource(rs);
 		JasperPrint jPrint = JasperFillManager.fillReport(jr, params, jrDataSource);
-	    /*JFileChooser directoryDialog = new JFileChooser();
+	    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+	    JFileChooser directoryDialog = new JFileChooser();
 	    directoryDialog.setDialogTitle("Export Location");
 	    directoryDialog.setAcceptAllFileFilterUsed(false);
 	    directoryDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -131,21 +184,15 @@ public class Targets {
 			String exportPath = directoryDialog.getSelectedFile().toString() + "/" + title + " - Target List.pdf";
 			System.out.println(exportPath);
 			JasperExportManager.exportReportToPdfFile(jPrint, exportPath);
-	    }*/
-		FileDialog fileDialog = new FileDialog((java.awt.Frame)null, "Export Location", FileDialog.SAVE);
-		fileDialog.setFilenameFilter(new FilenameFilter() {
-		    @Override
-		    public boolean accept(File dir, String name) {
-		        return name.matches(".pdf");
+			if (Desktop.isDesktopSupported()) {
+		    	File myFile = new File(exportPath);
+	            try {
+					Desktop.getDesktop().open(myFile);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 		    }
-		});
-		fileDialog.setFile(title + " - Target List.pdf");
-		fileDialog.setVisible(true);
-		String exportPath = fileDialog.getDirectory() + fileDialog.getFile();
-		if(exportPath != null) {
-			System.out.println(exportPath);
-			JasperExportManager.exportReportToPdfFile(jPrint, exportPath);
-		}
+	    }
 	}
 }
 

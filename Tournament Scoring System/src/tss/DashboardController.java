@@ -1,6 +1,7 @@
 package tss;
 
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +13,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
+
+import javax.swing.UnsupportedLookAndFeelException;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -64,6 +67,8 @@ public class DashboardController extends Application {
     private Button btnSearchTarget;
     @FXML 
     private Button btnEditTarget;
+    @FXML
+    private Button btnSaveEditTarget;
     @FXML 
     private Button btnAllocateTargets;
     @FXML 
@@ -76,6 +81,8 @@ public class DashboardController extends Application {
     private StackPane stpTournamentDate;
     @FXML 
     private StackPane stpSaveArcher;
+    @FXML
+    private StackPane stpEditSaveTarget;
     @FXML
     private DatePicker datePicker;
     @FXML
@@ -167,14 +174,17 @@ public class DashboardController extends Application {
 	    	btnDeleteArcher.setDisable(false);
 		});
 		tbvTargetList.getSelectionModel().selectedItemProperty().addListener((o, oldS, newS) -> {
-	    	btnEditTarget.setDisable(false);
+			if(!tbvTargetList.getSelectionModel().isEmpty() && tbvTargetList.getSelectionModel().getSelectedItem()
+					.getTarget() != null) {
+				btnEditTarget.setDisable(false);
+			}
 		});
     }
     
 	public void start(Stage primaryStage) {
 		try {
 			Pane root = (Pane)FXMLLoader.load(getClass().getResource("DashboardView.fxml"));
-			Scene scene = new Scene(root, 1200, 830);
+			Scene scene = new Scene(root, 1200, 850);
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Tournament Scoring System");
 			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/logo.png")));
@@ -478,7 +488,7 @@ public class DashboardController extends Application {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Archer not found");
 			alert.setHeaderText(null);
-			alert.setContentText("Archer for ID " + input.get() + " does not exist.");
+			alert.setContentText("Archer ID " + input.get() + " does not exist.");
 			dialogPane = alert.getDialogPane();
 			dialogPane.getStylesheets().add(getClass().getResource("resources/DashboardStylesheet.css").toExternalForm());
 			Stage alertStage = (Stage)alert.getDialogPane().getScene().getWindow();
@@ -545,13 +555,48 @@ public class DashboardController extends Application {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Archer not found");
 			alert.setHeaderText(null);
-			alert.setContentText("Archer for ID " + input.get() + " does not exist.");
+			alert.setContentText("Archer ID " + input.get() + " does not exist.");
 			dialogPane = alert.getDialogPane();
 			dialogPane.getStylesheets().add(getClass().getResource("resources/DashboardStylesheet.css").toExternalForm());
 			Stage alertStage = (Stage)alert.getDialogPane().getScene().getWindow();
 			alertStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/logo.png")));
 			alert.showAndWait();
 		}
+	}
+	
+	@FXML
+	public void beginEditTargetDetail(ActionEvent event) throws SQLException {
+		btnSaveEditTarget.setVisible(true);
+		btnEditTarget.setVisible(false);
+		tbvTargetList.setDisable(true);
+		stpEditSaveTarget.getChildren().get(0).toFront();
+		fillSwapTargetComboBox();
+		cmbEditTarget.setDisable(false);
+	}
+	
+	@FXML
+	public void saveEditTargetDetail(ActionEvent event) throws SQLException {
+		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
+		if(!cmbEditTarget.getSelectionModel().isEmpty() && !cmbEditTarget.getSelectionModel().getSelectedItem().equals("None")) {
+			String target1 = cmbEditTarget.getSelectionModel().getSelectedItem().split(" ")[0].trim();
+			String target2 = tbvTargetList.getSelectionModel().getSelectedItem().getTarget();
+			targets.swapTargetDetails(tID, target1, target2);
+		}
+		btnSaveEditTarget.setVisible(false);
+		btnEditTarget.setVisible(true);
+		tbvTargetList.setDisable(false);
+		stpEditSaveTarget.getChildren().get(0).toFront();
+		cmbEditTarget.getSelectionModel().clearSelection();
+		cmbEditTarget.getItems().clear();
+		fillTargetListTableView(tID);
+		btnEditTarget.setDisable(true);
+		cmbEditTarget.setDisable(true);
+	}
+	
+	public void fillSwapTargetComboBox() throws SQLException {
+		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
+		TargetEntry selectedEntry = tbvTargetList.getSelectionModel().getSelectedItem();
+		targets.fillSwapDetailsComboBox(tID, selectedEntry, cmbEditTarget);
 	}
 	
 	@FXML 
@@ -566,7 +611,7 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
-	public void exportTargetList(ActionEvent event) throws SQLException, JRException, ParseException {
+	public void exportTargetList(ActionEvent event) throws SQLException, JRException, ParseException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, IOException {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		String title = txtTitle.getText();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy");

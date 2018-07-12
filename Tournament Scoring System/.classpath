@@ -3,15 +3,15 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
-	<classpathentry kind="lib" path="D:/Programmes/Eclipse/tournament-scoring-system/Tournament Scoring System/lib/commons-beanutils-1.9.0.jar"/>
-	<classpathentry kind="lib" path="D:/Programmes/Eclipse/tournament-scoring-system/Tournament Scoring System/lib/commons-collections-3.2.1.jar"/>
-	<classpathentry kind="lib" path="D:/Programmes/Eclipse/tournament-scoring-system/Tournament Scoring System/lib/commons-digester-2.1.jar"/>
-	<classpathentry kind="lib" path="D:/Programmes/Eclipse/tournament-scoring-system/Tournament Scoring System/lib/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="D:/Programmes/Eclipse/tournament-scoring-system/Tournament Scoring System/lib/groovy-all-2.0.1.jar"/>
-	<classpathentry kind="lib" path="D:/Programmes/Eclipse/tournament-scoring-system/Tournament Scoring System/lib/itextpdf-5.5.0.jar"/>
-	<classpathentry kind="lib" path="D:/Programmes/Eclipse/tournament-scoring-system/Tournament Scoring System/lib/itext-pdfa-5.5.0.jar"/>
-	<classpathentry kind="lib" path="D:/Programmes/Eclipse/tournament-scoring-system/Tournament Scoring System/lib/jasperreports-6.0.0.jar"/>
-	<classpathentry kind="lib" path="D:/Programmes/Eclipse/tournament-scoring-system/Tournament Scoring System/lib/jasperreports-fonts-6.0.0.jar"/>
-	<classpathentry kind="lib" path="D:/Programmes/Eclipse/tournament-scoring-system/Tournament Scoring System/lib/sqlite-jdbc-3.23.1.jar"/>
+	<classpathentry kind="lib" path="D:/Summer Project/tournament-scoring-system/Tournament Scoring System/lib/commons-beanutils-1.9.0.jar"/>
+	<classpathentry kind="lib" path="D:/Summer Project/tournament-scoring-system/Tournament Scoring System/lib/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="D:/Summer Project/tournament-scoring-system/Tournament Scoring System/lib/commons-digester-2.1.jar"/>
+	<classpathentry kind="lib" path="D:/Summer Project/tournament-scoring-system/Tournament Scoring System/lib/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="D:/Summer Project/tournament-scoring-system/Tournament Scoring System/lib/groovy-all-2.0.1.jar"/>
+	<classpathentry kind="lib" path="D:/Summer Project/tournament-scoring-system/Tournament Scoring System/lib/itextpdf-5.5.0.jar"/>
+	<classpathentry kind="lib" path="D:/Summer Project/tournament-scoring-system/Tournament Scoring System/lib/itext-pdfa-5.5.0.jar"/>
+	<classpathentry kind="lib" path="D:/Summer Project/tournament-scoring-system/Tournament Scoring System/lib/jasperreports-6.0.0.jar"/>
+	<classpathentry kind="lib" path="D:/Summer Project/tournament-scoring-system/Tournament Scoring System/lib/jasperreports-fonts-6.0.0.jar"/>
+	<classpathentry kind="lib" path="D:/Summer Project/tournament-scoring-system/Tournament Scoring System/lib/sqlite-jdbc-3.23.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

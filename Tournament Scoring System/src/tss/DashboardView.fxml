@@ -10,7 +10,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="830.0" maxWidth="1200.0" minHeight="830.0" minWidth="1200.0" prefHeight="830.0" prefWidth="1200.0" stylesheets="@resources/DashboardStylesheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tss.DashboardController">
+<VBox maxHeight="850.0" maxWidth="1200.0" minHeight="850.0" minWidth="1200.0" prefHeight="850.0" prefWidth="1200.0" stylesheets="@resources/DashboardStylesheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tss.DashboardController">
    <children>
       <HBox>
          <children>
@@ -603,14 +603,14 @@
                                           <Insets bottom="10.0" left="10.0" top="20.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <StackPane>
+                                    <StackPane fx:id="stpEditSaveTarget">
                                        <children>
-                                          <Button layoutX="10.0" layoutY="25.0" mnemonicParsing="false" prefWidth="100.0" text="Save Edit" visible="false">
+                                          <Button fx:id="btnSaveEditTarget" layoutX="10.0" layoutY="25.0" mnemonicParsing="false" onAction="#saveEditTargetDetail" prefWidth="100.0" text="Save Edit" visible="false">
                                              <StackPane.margin>
                                                 <Insets left="20.0" top="10.0" />
                                              </StackPane.margin>
                                           </Button>
-                                          <Button fx:id="btnEditTarget" disable="true" mnemonicParsing="false" prefWidth="100.0" text="Edit">
+                                          <Button fx:id="btnEditTarget" disable="true" mnemonicParsing="false" onAction="#beginEditTargetDetail" prefWidth="100.0" text="Edit">
                                              <HBox.margin>
                                                 <Insets bottom="10.0" left="20.0" top="20.0" />
                                              </HBox.margin>
