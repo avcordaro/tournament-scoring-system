@@ -10,7 +10,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="850.0" maxWidth="1200.0" minHeight="850.0" minWidth="1200.0" prefHeight="850.0" prefWidth="1200.0" stylesheets="@../resources/DashboardStylesheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tss.java.DashboardController">
+<VBox maxHeight="830.0" maxWidth="1200.0" minHeight="830.0" minWidth="1200.0" prefHeight="830.0" prefWidth="1200.0" stylesheets="@resources/DashboardStylesheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tss.DashboardController">
    <children>
       <HBox>
          <children>
@@ -211,7 +211,7 @@
                <children>
                   <ImageView fitHeight="150.0" fitWidth="540.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../resources/titlelogo.png" />
+                        <Image url="@resources/titlelogo.png" />
                      </image>
                      <viewport>
                         <Rectangle2D width="100.0" />

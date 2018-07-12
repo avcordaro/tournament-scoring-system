@@ -1,4 +1,4 @@
-package tss.java;
+package tss;
 
 public class TargetEntry {
 	

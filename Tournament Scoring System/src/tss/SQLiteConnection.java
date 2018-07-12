@@ -1,4 +1,4 @@
-package tss.java;
+package tss;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,4 +1,4 @@
-package tss.java;
+package tss;
 
 
 import java.sql.Connection;
@@ -15,7 +15,9 @@ import java.util.Optional;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import net.sf.jasperreports.engine.JRException;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -172,10 +174,15 @@ public class DashboardController extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			Pane root = (Pane)FXMLLoader.load(getClass().getResource("DashboardView.fxml"));
-			Scene scene = new Scene(root, 1200, 850);
+			Scene scene = new Scene(root, 1200, 830);
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Tournament Scoring System");
-			primaryStage.getIcons().add(new Image("file:src/tss/resources/logo.png"));
+			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/logo.png")));
+			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			    public void handle(WindowEvent t) {
+			        System.exit(0);
+			    }
+			});
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -453,9 +460,9 @@ public class DashboardController extends Application {
 		dialog.setHeaderText(null);
 		dialog.setContentText("Archer ID: ");
 		DialogPane dialogPane = dialog.getDialogPane();
-		dialogPane.getStylesheets().add(getClass().getResource("../resources/DashboardStylesheet.css").toExternalForm());
+		dialogPane.getStylesheets().add(getClass().getResource("resources/DashboardStylesheet.css").toExternalForm());
 		Stage dialogStage = (Stage)dialog.getDialogPane().getScene().getWindow();
-		dialogStage.getIcons().add(new Image("file:src/tss/resources/logo.png"));
+		dialogStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/logo.png")));
 		Optional<String> input = dialog.showAndWait();
 		if(input.isPresent() && input.get().matches("\\d+")) {
 			int id = Integer.parseInt(input.get());
@@ -473,9 +480,9 @@ public class DashboardController extends Application {
 			alert.setHeaderText(null);
 			alert.setContentText("Archer for ID " + input.get() + " does not exist.");
 			dialogPane = alert.getDialogPane();
-			dialogPane.getStylesheets().add(getClass().getResource("../resources/DashboardStylesheet.css").toExternalForm());
+			dialogPane.getStylesheets().add(getClass().getResource("resources/DashboardStylesheet.css").toExternalForm());
 			Stage alertStage = (Stage)alert.getDialogPane().getScene().getWindow();
-			alertStage.getIcons().add(new Image("file:src/tss/resources/logo.png"));
+			alertStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/logo.png")));
 			alert.showAndWait();
 		}
 	}
@@ -520,9 +527,9 @@ public class DashboardController extends Application {
 		dialog.setHeaderText(null);
 		dialog.setContentText("Archer ID: ");
 		DialogPane dialogPane = dialog.getDialogPane();
-		dialogPane.getStylesheets().add(getClass().getResource("../resources/DashboardStylesheet.css").toExternalForm());
+		dialogPane.getStylesheets().add(getClass().getResource("resources/DashboardStylesheet.css").toExternalForm());
 		Stage dialogStage = (Stage)dialog.getDialogPane().getScene().getWindow();
-		dialogStage.getIcons().add(new Image("file:src/tss/resources/logo.png"));
+		dialogStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/logo.png")));
 		Optional<String> input = dialog.showAndWait();
 		if(input.isPresent() && input.get().matches("^\\d+$")) {
 			int id = Integer.parseInt(input.get());
@@ -540,9 +547,9 @@ public class DashboardController extends Application {
 			alert.setHeaderText(null);
 			alert.setContentText("Archer for ID " + input.get() + " does not exist.");
 			dialogPane = alert.getDialogPane();
-			dialogPane.getStylesheets().add(getClass().getResource("../resources/DashboardStylesheet.css").toExternalForm());
+			dialogPane.getStylesheets().add(getClass().getResource("resources/DashboardStylesheet.css").toExternalForm());
 			Stage alertStage = (Stage)alert.getDialogPane().getScene().getWindow();
-			alertStage.getIcons().add(new Image("file:src/tss/resources/logo.png"));
+			alertStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/logo.png")));
 			alert.showAndWait();
 		}
 	}
