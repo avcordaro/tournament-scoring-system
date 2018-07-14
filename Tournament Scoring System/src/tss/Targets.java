@@ -41,7 +41,9 @@ public class Targets {
 		ResultSet rs = getOrderedArcherRecords(tournamentID);
 		ArrayList<TargetEntry> data = new ArrayList<TargetEntry>();
 		while(rs.next()) {
-    		data.add(new TargetEntry(rs.getInt("ArcherID"), rs.getString("FirstName"), rs.getString("LastName"), rs.getString("Club"), rs.getString("Category"), rs.getString("BowType"),rs.getString("Round"), rs.getString("Target")));
+    		data.add(new TargetEntry(rs.getInt("ArcherID"), rs.getString("FirstName"), 
+    				rs.getString("LastName"), rs.getString("Club"), rs.getString("Category"), 
+    				rs.getString("BowType"),rs.getString("Round"), rs.getString("Target")));
     	}
 		return data;
 	}

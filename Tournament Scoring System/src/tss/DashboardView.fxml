@@ -783,7 +783,7 @@
                               </TableView>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Button fx:id="btnSearchScore" disable="true" minWidth="100.0" mnemonicParsing="false" onAction="#searchArcher" prefWidth="100.0" text="Search">
+                                    <Button fx:id="btnSearchScore" disable="true" minWidth="100.0" mnemonicParsing="false" onAction="#searchArcherScore" prefWidth="100.0" text="Search">
                                        <HBox.margin>
                                           <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
                                        </HBox.margin>
@@ -832,7 +832,7 @@
                               </HBox>
                               <HBox>
                                  <children>
-                                    <Label disable="true" maxWidth="110.0" minHeight="30.0" minWidth="100.0" prefWidth="110.0" text="Score:">
+                                    <Label fx:id="lblScore" disable="true" maxWidth="110.0" minHeight="30.0" minWidth="100.0" prefWidth="110.0" text="Score:">
                                        <font>
                                           <Font size="16.0" />
                                        </font>
@@ -855,7 +855,7 @@
                               </HBox>
                               <HBox>
                                  <children>
-                                    <Label disable="true" maxWidth="110.0" minHeight="30.0" minWidth="100.0" prefWidth="110.0" text="Hits:">
+                                    <Label fx:id="lblHits" disable="true" maxWidth="110.0" minHeight="30.0" minWidth="100.0" prefWidth="110.0" text="Hits:">
                                        <font>
                                           <Font size="16.0" />
                                        </font>
@@ -878,7 +878,7 @@
                               </HBox>
                               <HBox>
                                  <children>
-                                    <Label fx:id="lblTotalArchers11" disable="true" maxWidth="110.0" minHeight="30.0" minWidth="100.0" prefWidth="110.0" text="Golds:">
+                                    <Label fx:id="lblGolds" disable="true" maxWidth="110.0" minHeight="30.0" minWidth="100.0" prefWidth="110.0" text="Golds:">
                                        <font>
                                           <Font size="16.0" />
                                        </font>
@@ -901,7 +901,7 @@
                               </HBox>
                               <HBox layoutX="10.0" layoutY="202.0">
                                  <children>
-                                    <Label fx:id="lblTotalArchers111" disable="true" maxWidth="110.0" minHeight="30.0" minWidth="100.0" prefWidth="110.0" text="X's:">
+                                    <Label fx:id="lblXs" disable="true" maxWidth="110.0" minHeight="30.0" minWidth="100.0" prefWidth="110.0" text="X's:">
                                        <font>
                                           <Font size="16.0" />
                                        </font>

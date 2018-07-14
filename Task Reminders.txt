@@ -2,4 +2,4 @@ Catch SQLExceptions
 Catch other Exceptions
 Tournament field validation
 Archer Editor validation
-Possible assembley/sighters on target list
+Married Couple indicator on target list?
