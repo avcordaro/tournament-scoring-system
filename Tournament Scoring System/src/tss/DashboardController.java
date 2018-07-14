@@ -1,7 +1,6 @@
 package tss;
 
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,8 +12,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
-
-import javax.swing.UnsupportedLookAndFeelException;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -72,9 +69,7 @@ public class DashboardController extends Application {
     @FXML 
     private Button btnAllocateTargets;
     @FXML 
-    private Button btnExportTargetList;
-    @FXML 
-    private Button btnPreviewTargetList;
+    private Button btnGenerateTargetList;
     @FXML
     private StackPane stpEditSaveTournament;
     @FXML
@@ -108,6 +103,12 @@ public class DashboardController extends Application {
     @FXML
     private TextField txtClub;
     @FXML
+    private TextField txtVenue;
+    @FXML
+    private TextField txtAssembly;
+    @FXML
+    private TextField txtSighters;
+    @FXML
     private CheckBox chkMetric;
     @FXML
     private CheckBox chkTeams;
@@ -121,6 +122,12 @@ public class DashboardController extends Application {
     private CheckBox chkNewMarriedCouples;
     @FXML
     private Label lblTotalArchers;
+    @FXML
+    private Label lblVenue;
+    @FXML
+    private Label lblAssembly;
+    @FXML
+    private Label lblSighters;
     @FXML
     private ComboBox<TournamentMap> cmbTournament;
     @FXML
@@ -162,11 +169,13 @@ public class DashboardController extends Application {
 		tbvArchers.getColumns().get(5).setCellValueFactory(new PropertyValueFactory<>("bowType"));
 		tbvArchers.getColumns().get(6).setCellValueFactory(new PropertyValueFactory<>("round"));
 		tbvTargetList.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("ID"));
-		tbvTargetList.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("archer"));
-		tbvTargetList.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("club"));
-		tbvTargetList.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("round"));
-		tbvTargetList.getColumns().get(4).setCellValueFactory(new PropertyValueFactory<>("bowType"));
-		tbvTargetList.getColumns().get(5).setCellValueFactory(new PropertyValueFactory<>("target"));
+		tbvTargetList.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("firstName"));
+		tbvTargetList.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("lastName"));
+		tbvTargetList.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("club"));
+		tbvTargetList.getColumns().get(4).setCellValueFactory(new PropertyValueFactory<>("category"));
+		tbvTargetList.getColumns().get(5).setCellValueFactory(new PropertyValueFactory<>("round"));
+		tbvTargetList.getColumns().get(6).setCellValueFactory(new PropertyValueFactory<>("bowType"));
+		tbvTargetList.getColumns().get(7).setCellValueFactory(new PropertyValueFactory<>("target"));
 		fillTournamentComboBox();
     	fillArcherEditorComboBoxes();
 		tbvArchers.getSelectionModel().selectedItemProperty().addListener((o, oldS, newS) -> {
@@ -229,8 +238,13 @@ public class DashboardController extends Application {
 			btnSearchTarget.setDisable(true);
 			btnEditTarget.setDisable(true);
 			btnAllocateTargets.setDisable(true);
-			btnPreviewTargetList.setDisable(true);
-			btnExportTargetList.setDisable(true);
+			btnGenerateTargetList.setDisable(true);
+			lblVenue.setDisable(false);
+			lblAssembly.setDisable(false);
+			lblSighters.setDisable(false);
+			txtVenue.setDisable(false);
+			txtAssembly.setDisable(false);
+			txtSighters.setDisable(false);
 			fillArcherTableView(id);
 			fillTargetListTableView(id);
 		} else {
@@ -265,8 +279,13 @@ public class DashboardController extends Application {
 		btnSearchTarget.setDisable(true);
 		btnEditTarget.setDisable(true);
 		btnAllocateTargets.setDisable(true);
-		btnPreviewTargetList.setDisable(true);
-		btnExportTargetList.setDisable(true);
+		btnGenerateTargetList.setDisable(true);
+		lblVenue.setDisable(true);
+		lblAssembly.setDisable(true);
+		lblSighters.setDisable(true);
+		txtVenue.setDisable(true);
+		txtAssembly.setDisable(true);
+		txtSighters.setDisable(true);
 	}
 	
 	@FXML
@@ -291,8 +310,13 @@ public class DashboardController extends Application {
 		btnSearchTarget.setDisable(true);
 		btnEditTarget.setDisable(true);
 		btnAllocateTargets.setDisable(true);
-		btnPreviewTargetList.setDisable(true);
-		btnExportTargetList.setDisable(true);
+		btnGenerateTargetList.setDisable(true);
+		lblVenue.setDisable(true);
+		lblAssembly.setDisable(true);
+		lblSighters.setDisable(true);
+		txtVenue.setDisable(true);
+		txtAssembly.setDisable(true);
+		txtSighters.setDisable(true);
 		loadTournament(event);
 	}
 	
@@ -503,8 +527,6 @@ public class DashboardController extends Application {
 		archers.deleteRecord(selectedArcher.getID());
 		fillArcherTableView(cmbTournament.getSelectionModel().getSelectedItem().getID());
 		fillTargetListTableView(cmbTournament.getSelectionModel().getSelectedItem().getID());
-		String newTotalArchers = Integer.toString(Integer.parseInt(txtTotalArchers.getText()) - 1);
-		txtTotalArchers.setText(newTotalArchers);
 		btnEditArcher.setDisable(true);
 		btnDeleteArcher.setDisable(true);
 	}
@@ -514,8 +536,13 @@ public class DashboardController extends Application {
 		ArrayList<TargetEntry> data = targets.getDataForTable(tournamentID);
 		btnSearchTarget.setDisable(data.isEmpty() ? true : false);
 		btnAllocateTargets.setDisable(data.isEmpty() ? true : false);
-		btnPreviewTargetList.setDisable(data.isEmpty() ? true : false);
-		btnExportTargetList.setDisable(data.isEmpty() ? true : false);
+		btnGenerateTargetList.setDisable(data.isEmpty() ? true : false);
+		lblVenue.setDisable(data.isEmpty() ? true : false);
+		lblAssembly.setDisable(data.isEmpty() ? true : false);
+		lblSighters.setDisable(data.isEmpty() ? true : false);
+		txtVenue.setDisable(data.isEmpty() ? true : false);
+		txtAssembly.setDisable(data.isEmpty() ? true : false);
+		txtSighters.setDisable(data.isEmpty() ? true : false);
     	if(!data.isEmpty()) {
     		for(TargetEntry entry : data) {
     			tbvTargetList.getItems().add(entry);
@@ -607,17 +634,10 @@ public class DashboardController extends Application {
 		Date dateUnformatted = dateFormat.parse(txtDate.getText());
 		DateFormat formatter = DateFormat.getDateInstance(DateFormat.FULL);
 		String date = formatter.format(dateUnformatted);
-		targets.previewTargetList(tID, title, date);
+		String venue = txtVenue.getText();
+		String assembly = txtAssembly.getText();
+		String sighters = txtSighters.getText();
+		targets.previewTargetList(tID, title, date, venue, assembly, sighters);
 	}
 	
-	@FXML
-	public void exportTargetList(ActionEvent event) throws SQLException, JRException, ParseException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, IOException {
-		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
-		String title = txtTitle.getText();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy");
-		Date dateUnformatted = dateFormat.parse(txtDate.getText());
-		DateFormat formatter = DateFormat.getDateInstance(DateFormat.FULL);
-		String date = formatter.format(dateUnformatted);
-		targets.exportTargetListPDF(tID, title, date);
-	}
 }

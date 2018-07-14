@@ -1,9 +1,6 @@
 package tss;
 
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,16 +10,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import javafx.scene.control.ComboBox;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -48,16 +41,7 @@ public class Targets {
 		ResultSet rs = getOrderedArcherRecords(tournamentID);
 		ArrayList<TargetEntry> data = new ArrayList<TargetEntry>();
 		while(rs.next()) {
-    		String archer = rs.getString("FirstName") + " " + rs.getString("LastName");
-    		String category = rs.getString("Category");
-    		switch(category.substring(0, 2)) {
-	    		case "Ge": 	archer = "Mr " + archer; break;
-	    		case "La": 	archer = "Mrs " + archer; break;
-	    		case "JG": 	archer = "Ms " + archer; break;
-	    		case "JL": 	archer = "Miss " + archer; break;
-    		}
-    		data.add(new TargetEntry(rs.getInt("ArcherID"), archer, rs.getString("Club"), 
-    				rs.getString("BowType"),rs.getString("Round"), rs.getString("Target")));
+    		data.add(new TargetEntry(rs.getInt("ArcherID"), rs.getString("FirstName"), rs.getString("LastName"), rs.getString("Club"), rs.getString("Category"), rs.getString("BowType"),rs.getString("Round"), rs.getString("Target")));
     	}
 		return data;
 	}
@@ -152,11 +136,15 @@ public class Targets {
 		updateDetail(target2Archer.getInt("ArcherID"), target1);
 	}
 	
-	public void previewTargetList(int tournamentID, String title, String date) throws SQLException, JRException {
+	public void previewTargetList(int tournamentID, String title, String date, String venue, String assembly, String sighters)
+			throws SQLException, JRException {
 		JasperReport jr = JasperCompileManager.compileReport(getClass().getResourceAsStream("resources/TargetList.jrxml"));
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("TITLE", title);
 		params.put("DATE", date);
+		params.put("VENUE", venue); 
+		params.put("ASSEMBLY", assembly); 
+		params.put("SIGHTERS", sighters); 
 		ResultSet rs = getOrderedArcherRecords(tournamentID);
 		JRDataSource jrDataSource = new JRResultSetDataSource(rs);
 		JasperPrint jPrint = JasperFillManager.fillReport(jr, params, jrDataSource);
@@ -165,34 +153,6 @@ public class Targets {
 		ImageIcon img = new ImageIcon(getClass().getResource("resources/list.png"));
 		jViewer.setIconImage(img.getImage());
 		jViewer.setVisible(true);
-	}
-	
-	public void exportTargetListPDF(int tournamentID, String title, String date) throws SQLException, JRException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-		JasperReport jr = JasperCompileManager.compileReport(getClass().getResourceAsStream("resources/TargetList.jrxml"));
-		HashMap<String, Object> params = new HashMap<String, Object>();
-		params.put("TITLE", title);
-		params.put("DATE", date);
-		ResultSet rs = getOrderedArcherRecords(tournamentID);
-		JRDataSource jrDataSource = new JRResultSetDataSource(rs);
-		JasperPrint jPrint = JasperFillManager.fillReport(jr, params, jrDataSource);
-	    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-	    JFileChooser directoryDialog = new JFileChooser();
-	    directoryDialog.setDialogTitle("Export Location");
-	    directoryDialog.setAcceptAllFileFilterUsed(false);
-	    directoryDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-	    if(directoryDialog.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			String exportPath = directoryDialog.getSelectedFile().toString() + "/" + title + " - Target List.pdf";
-			System.out.println(exportPath);
-			JasperExportManager.exportReportToPdfFile(jPrint, exportPath);
-			if (Desktop.isDesktopSupported()) {
-		    	File myFile = new File(exportPath);
-	            try {
-					Desktop.getDesktop().open(myFile);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-		    }
-	    }
 	}
 }
 

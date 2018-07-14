@@ -394,8 +394,8 @@
                               <TableView fx:id="tbvArchers" maxHeight="315.0" minHeight="315.0" prefHeight="315.0" prefWidth="750.0">
                                 <columns>
                                   <TableColumn prefWidth="50.0" text="ID" />
-                                  <TableColumn prefWidth="130.0" text="Firstname" />
-                                  <TableColumn prefWidth="130.0" text="Lastname" />
+                                  <TableColumn prefWidth="130.0" text="First Name" />
+                                  <TableColumn prefWidth="130.0" text="Last Name" />
                                   <TableColumn prefWidth="120.0" text="Club" />
                                   <TableColumn prefWidth="90.0" text="Category" />
                                   <TableColumn prefWidth="100.0" text="Bow Type" />
@@ -512,7 +512,7 @@
                                           </Label>
                                        </children>
                                     </VBox>
-                                    <VBox prefHeight="200.0" prefWidth="200.0">
+                                    <VBox prefHeight="200.0" prefWidth="190.0">
                                        <children>
                                           <TextField fx:id="txtFirstName" maxHeight="30.0" minHeight="30.0">
                                              <VBox.margin>
@@ -566,6 +566,9 @@
                                              </VBox.margin>
                                           </StackPane>
                                        </children>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
                                     </VBox>
                                  </children>
                               </HBox>
@@ -580,14 +583,16 @@
                      <children>
                         <VBox>
                            <children>
-                              <TableView fx:id="tbvTargetList" maxHeight="315.0" maxWidth="800.0" minHeight="315.0" minWidth="800.0" prefHeight="315.0" prefWidth="800.0">
+                              <TableView fx:id="tbvTargetList" maxHeight="315.0" maxWidth="820.0" minHeight="315.0" minWidth="820.0" prefHeight="315.0" prefWidth="820.0">
                                  <columns>
                                     <TableColumn prefWidth="50.0" text="ID" />
-                                    <TableColumn prefWidth="280.0" text="Archer" />
+                                    <TableColumn prefWidth="130.0" text="First Name" />
+                                    <TableColumn prefWidth="130.0" text="Last Name" />
                                     <TableColumn prefWidth="120.0" text="Club" />
+                                    <TableColumn prefWidth="90.0" text="Category" />
                                     <TableColumn prefWidth="100.0" text="Bow Type" />
                                     <TableColumn prefWidth="130.0" text="Round" />
-                                    <TableColumn prefWidth="120.0" text="Target Detail" />
+                                    <TableColumn prefWidth="70.0" text="Target" />
                                  </columns>
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -622,7 +627,7 @@
                                     </StackPane>
                                     <ComboBox fx:id="cmbEditTarget" disable="true" maxHeight="35.0" minHeight="35.0" prefWidth="200.0" promptText="Swap target with...">
                                        <HBox.margin>
-                                          <Insets bottom="10.0" left="10.0" top="20.0" />
+                                          <Insets left="10.0" top="19.0" />
                                        </HBox.margin>
                                     </ComboBox>
                                  </children>
@@ -639,12 +644,15 @@
                                     <Insets left="20.0" right="20.0" top="15.0" />
                                  </VBox.margin>
                               </Label>
-                              <Label text="The target details are allocated automatically by the system. Reallocation will be needed upon any changes to the archers." wrapText="true">
+                              <Label text="Automatic detail allocation by the system. Reallocation is needed upon archer changes." textAlignment="JUSTIFY" wrapText="true">
                                  <VBox.margin>
-                                    <Insets left="20.0" right="20.0" top="10.0" />
+                                    <Insets left="20.0" right="20.0" top="5.0" />
                                  </VBox.margin>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
                               </Label>
-                              <HBox>
+                              <HBox alignment="TOP_RIGHT">
                                  <children>
                                     <Button fx:id="btnAllocateTargets" disable="true" mnemonicParsing="false" onAction="#allocateTargetDetails" prefWidth="100.0" text="Allocate">
                                        <VBox.margin>
@@ -661,29 +669,87 @@
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets left="20.0" right="20.0" top="35.0" />
+                                    <Insets left="20.0" top="25.0" />
                                  </VBox.margin>
                               </Label>
-                              <Label layoutX="30.0" layoutY="61.0" text="The report file can be previewed, as well as exported to PDF for distribution." wrapText="true">
+                              <Label layoutX="30.0" layoutY="61.0" text="Report can be previewed. before saving to various formats for distribution." textAlignment="JUSTIFY" wrapText="true">
                                  <VBox.margin>
-                                    <Insets left="20.0" right="20.0" top="10.0" />
+                                    <Insets left="20.0" right="20.0" top="5.0" />
                                  </VBox.margin>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
                               </Label>
-                              <HBox layoutX="30.0" layoutY="218.0">
+                              <HBox>
                                  <children>
-                                    <Button fx:id="btnPreviewTargetList" disable="true" mnemonicParsing="false" onAction="#previewTargetList" prefWidth="100.0" text="Preview">
+                                    <Label fx:id="lblVenue" disable="true" maxWidth="110.0" minHeight="30.0" minWidth="110.0" prefWidth="110.0" text="Venue:">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="txtVenue" disable="true" maxHeight="30.0" minHeight="30.0" promptText="Optional...">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="20.0" top="15.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox>
+                                 <children>
+                                    <Label fx:id="lblAssembly" disable="true" maxWidth="110.0" minHeight="30.0" minWidth="110.0" prefWidth="110.0" text="Assembly:">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="txtAssembly" disable="true" maxHeight="30.0" minHeight="30.0" promptText="Optional...">
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="20.0" top="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox>
+                                 <children>
+                                    <Label fx:id="lblSighters" disable="true" maxWidth="110.0" minHeight="30.0" minWidth="110.0" prefWidth="110.0" text="Sighters:">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="txtSighters" disable="true" maxHeight="30.0" minHeight="30.0" promptText="Optional...">
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="20.0" top="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox alignment="TOP_RIGHT" layoutX="30.0" layoutY="218.0">
+                                 <children>
+                                    <Button fx:id="btnGenerateTargetList" disable="true" mnemonicParsing="false" onAction="#previewTargetList" prefWidth="100.0" text="Generate">
                                        <HBox.margin>
                                           <Insets />
                                        </HBox.margin>
                                     </Button>
-                                    <Button fx:id="btnExportTargetList" disable="true" mnemonicParsing="false" onAction="#exportTargetList" prefWidth="100.0" text="Export">
-                                       <HBox.margin>
-                                          <Insets left="20.0" />
-                                       </HBox.margin>
-                                    </Button>
                                  </children>
                                  <VBox.margin>
-                                    <Insets left="20.0" right="20.0" top="10.0" />
+                                    <Insets left="20.0" right="20.0" top="12.5" />
                                  </VBox.margin>
                               </HBox>
                            </children>
@@ -691,7 +757,209 @@
                      </children>
                   </HBox>
                </content></Tab>
-            <Tab text="Scores" />
+            <Tab text="Scores">
+               <content>
+                  <HBox>
+                     <children>
+                        <VBox>
+                           <children>
+                              <TableView fx:id="tbvScores" maxHeight="315.0" maxWidth="750.0" minHeight="315.0" minWidth="750.0" prefHeight="315.0" prefWidth="750.0">
+                                 <columns>
+                                    <TableColumn prefWidth="50.0" text="ID" />
+                                    <TableColumn prefWidth="130.0" text="First Name" />
+                                    <TableColumn prefWidth="130.0" text="Last Name" />
+                                    <TableColumn prefWidth="70.0" text="Target" />
+                                    <TableColumn prefWidth="100.0" text="Score" />
+                                    <TableColumn prefWidth="90.0" text="Hits" />
+                                    <TableColumn prefWidth="90.0" text="Golds" />
+                                    <TableColumn fx:id="tbcXs" prefWidth="90.0" text="X's" />
+                                 </columns>
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
+                                 </HBox.margin>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
+                                 </VBox.margin>
+                              </TableView>
+                              <HBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <Button fx:id="btnSearchScore" disable="true" minWidth="100.0" mnemonicParsing="false" onAction="#searchArcher" prefWidth="100.0" text="Search">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="btnEditScore" disable="true" minWidth="100.0" mnemonicParsing="false" onAction="#beginEditArcher" prefWidth="100.0" text="Edit">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" right="20.0" top="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox>
+                           <children>
+                              <Label text="Scoring Input">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="20.0" top="15.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label text="Upon starting, scores are entered in order of target details. It is possible to cycle forward and backward whilst entering scores, in case of mistakes. Individual scores may also be edited on their own afterwards." textAlignment="JUSTIFY" wrapText="true">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="20.0" right="20.0" top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox alignment="TOP_RIGHT">
+                                 <children>
+                                    <Button fx:id="btnStartScores" disable="true" mnemonicParsing="false" onAction="#previewTargetList" prefWidth="100.0" text="Start">
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                                 <padding>
+                                    <Insets top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox>
+                                 <children>
+                                    <Label disable="true" maxWidth="110.0" minHeight="30.0" minWidth="100.0" prefWidth="110.0" text="Score:">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <TextField fx:id="txtScore" disable="true" maxHeight="30.0" maxWidth="230.0" minHeight="30.0" minWidth="220.0" prefWidth="220.0" promptText="Total score...">
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="20.0" top="30.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox>
+                                 <children>
+                                    <Label disable="true" maxWidth="110.0" minHeight="30.0" minWidth="100.0" prefWidth="110.0" text="Hits:">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <TextField fx:id="txtHits" disable="true" maxHeight="30.0" maxWidth="230.0" minHeight="30.0" minWidth="220.0" prefWidth="220.0" promptText="Total hits...">
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="20.0" top="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox>
+                                 <children>
+                                    <Label fx:id="lblTotalArchers11" disable="true" maxWidth="110.0" minHeight="30.0" minWidth="100.0" prefWidth="110.0" text="Golds:">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <TextField fx:id="txtGolds" disable="true" maxHeight="30.0" maxWidth="230.0" minHeight="30.0" minWidth="220.0" prefWidth="220.0" promptText="Total golds...">
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="20.0" top="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox layoutX="10.0" layoutY="202.0">
+                                 <children>
+                                    <Label fx:id="lblTotalArchers111" disable="true" maxWidth="110.0" minHeight="30.0" minWidth="100.0" prefWidth="110.0" text="X's:">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <TextField fx:id="txtXs" disable="true" maxHeight="30.0" maxWidth="230.0" minHeight="30.0" minWidth="220.0" prefWidth="220.0" promptText="Total X's....">
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="20.0" top="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <StackPane fx:id="stpEditSaveScore">
+                                 <children>
+                                    <HBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0">
+                                       <children>
+                                          <Button fx:id="btnSaveEditScore" mnemonicParsing="false" onAction="#previewTargetList" prefWidth="100.0" text="Save Edit" visible="false">
+                                             <HBox.margin>
+                                                <Insets left="20.0" right="20.0" />
+                                             </HBox.margin>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="TOP_RIGHT">
+                                       <children>
+                                          <Button fx:id="btnBackScore" disable="true" mnemonicParsing="false" onAction="#previewTargetList" prefWidth="100.0" text="Back">
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </Button>
+                                          <Button fx:id="btnNextScore" disable="true" mnemonicParsing="false" onAction="#previewTargetList" prefWidth="100.0" text="Next">
+                                             <HBox.margin>
+                                                <Insets left="20.0" right="20.0" />
+                                             </HBox.margin>
+                                          </Button>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="15.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="15.0" />
+                                 </VBox.margin>
+                              </StackPane>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </content></Tab>
             <Tab text="Results" />
         </tabs>
          <VBox.margin>

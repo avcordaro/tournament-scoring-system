@@ -3,16 +3,20 @@ package tss;
 public class TargetEntry {
 	
 	private int ID;
-	private String archer;
+	private String firstName;
+	private String lastName;
 	private String club;
+	private String category;
 	private String bowType;
 	private String round;
 	private String target;
 	
-	public TargetEntry(int id, String a, String c, String b, String r, String t) {
+	public TargetEntry(int id, String f, String l, String c, String a, String b, String r, String t) {
 		ID = id;
-		archer = a;
+		firstName = f;
+		lastName = l;
 		club = c;
+		category = a;
 		bowType = b;
 		round = r;
 		target = t;
@@ -21,11 +25,17 @@ public class TargetEntry {
 	public int getID() {
 		return ID;
 	}
-	public String getArcher() {
-		return archer;
+	public String getFirstName() {
+		return firstName;
+	}
+	public String getLastName() {
+		return lastName;
 	}
 	public String getClub() {
 		return club;
+	}
+	public String getCategory() {
+		return category;
 	}
 	public String getBowType() {
 		return bowType;

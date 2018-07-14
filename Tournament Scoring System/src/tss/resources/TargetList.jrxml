@@ -4,6 +4,9 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="TITLE" class="java.lang.String"/>
 	<parameter name="DATE" class="java.lang.String"/>
+	<parameter name="VENUE" class="java.lang.String"/>
+	<parameter name="ASSEMBLY" class="java.lang.String"/>
+	<parameter name="SIGHTERS" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -32,7 +35,7 @@
 		</groupHeader>
 	</group>
 	<title>
-		<band height="165" splitType="Stretch">
+		<band height="185" splitType="Stretch">
 			<textField isBlankWhenNull="false">
 				<reportElement positionType="Float" x="30" y="0" width="500" height="30" uuid="fa86f2e6-4c05-41f5-85d7-8a7e0da02e77"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -41,71 +44,124 @@
 				<textFieldExpression><![CDATA[$P{TITLE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="155" y="30" width="250" height="25" uuid="f65987a7-9af0-4ae6-b31d-9ec2e1c3718a"/>
+				<reportElement x="80" y="30" width="400" height="25" uuid="f65987a7-9af0-4ae6-b31d-9ec2e1c3718a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{DATE}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="205" y="80" width="150" height="30" uuid="14499434-1915-426e-bcfe-ce7fc0ee5c33"/>
+				<reportElement x="205" y="112" width="150" height="20" uuid="14499434-1915-426e-bcfe-ce7fc0ee5c33"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Target List]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="5" y="140" width="545" height="20" forecolor="#000000" backcolor="#3A539B" uuid="4fe6806b-5dea-448e-805b-0b5cc8ebfa37"/>
+				<reportElement x="5" y="161" width="545" height="20" forecolor="#000000" backcolor="#3A539B" uuid="4fe6806b-5dea-448e-805b-0b5cc8ebfa37"/>
 				<graphicElement>
 					<pen lineColor="#3A539B"/>
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="70" y="140" width="100" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="e30fd0b1-5c12-44cc-a011-1bffffb3e6c4"/>
+				<reportElement x="70" y="160" width="100" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="e30fd0b1-5c12-44cc-a011-1bffffb3e6c4"/>
 				<textElement verticalAlignment="Middle">
 					<font size="11" isBold="false"/>
 				</textElement>
-				<text><![CDATA[FirstName]]></text>
+				<text><![CDATA[First Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="470" y="140" width="70" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="f1776a9e-b470-49d2-bb1a-03befbf60b0e"/>
+				<reportElement x="470" y="160" width="70" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="f1776a9e-b470-49d2-bb1a-03befbf60b0e"/>
 				<textElement verticalAlignment="Middle">
 					<font size="11" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Category]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="170" y="140" width="100" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="b6b59df4-618f-47cf-8b63-4c03dbc0abd2"/>
+				<reportElement x="170" y="160" width="100" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="b6b59df4-618f-47cf-8b63-4c03dbc0abd2"/>
 				<textElement verticalAlignment="Middle">
 					<font size="11" isBold="false"/>
 				</textElement>
-				<text><![CDATA[LastName]]></text>
+				<text><![CDATA[Last Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="270" y="140" width="120" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="11ea0324-7570-4656-8481-ef6c3f8af71b"/>
+				<reportElement x="270" y="160" width="120" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="11ea0324-7570-4656-8481-ef6c3f8af71b"/>
 				<textElement verticalAlignment="Middle">
 					<font size="11" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Club]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="20" y="140" width="50" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="cf9eb4a3-5cb5-4e2f-a494-d80adfc550e0"/>
+				<reportElement x="20" y="160" width="50" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="cf9eb4a3-5cb5-4e2f-a494-d80adfc550e0"/>
 				<textElement verticalAlignment="Middle">
 					<font size="11" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Target]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="390" y="140" width="80" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="b9d97115-f78a-4042-b13a-6e4a7ecfa38a"/>
+				<reportElement x="390" y="160" width="80" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="b9d97115-f78a-4042-b13a-6e4a7ecfa38a"/>
 				<textElement verticalAlignment="Middle">
 					<font size="11" isBold="false"/>
 				</textElement>
-				<text><![CDATA[BowType]]></text>
+				<text><![CDATA[Bow Type]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="80" y="55" width="400" height="20" uuid="cf3c54dd-95ff-4d43-a4d3-6ff8e14b7d39">
+					<printWhenExpression><![CDATA[$P{VENUE}.length() != 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{VENUE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="115" width="80" height="15" uuid="2a09c582-91b9-4e29-b83c-896892c75ab3">
+					<printWhenExpression><![CDATA[$P{ASSEMBLY}.length() != 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ASSEMBLY}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="15" y="130" width="64" height="15" uuid="4b078a21-4209-4d71-8c50-a255fa3d34bf">
+					<printWhenExpression><![CDATA[$P{SIGHTERS}.length() != 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Sighters:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="115" width="64" height="15" uuid="0889549e-c76b-4373-b633-fcef4eef2aeb">
+					<printWhenExpression><![CDATA[$P{ASSEMBLY}.length() != 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Assembly:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="130" width="80" height="15" uuid="518ebf8f-f031-4e23-9754-d5895c04d6dc">
+					<printWhenExpression><![CDATA[$P{SIGHTERS}.length() != 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SIGHTERS}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<detail>
 		<band height="20">
+			<rectangle>
+				<reportElement positionType="Float" x="10" y="0" width="533" height="20" backcolor="#ECEFF8" uuid="cf931ee3-09ac-425f-aa21-9f0d4efca95d">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT}%2 == 1]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineColor="#FFFFFF"/>
+				</graphicElement>
+			</rectangle>
 			<textField>
 				<reportElement x="70" y="0" width="100" height="20" uuid="6460f0ae-decd-407f-a959-44b18ef3e720"/>
 				<textElement verticalAlignment="Middle">
@@ -128,7 +184,7 @@
 				<textFieldExpression><![CDATA[$F{Club}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="390" y="0" width="80" height="20" uuid="754d4111-89c9-4d81-a3a2-4d8d6f37221e"/>
+				<reportElement positionType="FixRelativeToBottom" x="390" y="0" width="80" height="20" uuid="754d4111-89c9-4d81-a3a2-4d8d6f37221e"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
