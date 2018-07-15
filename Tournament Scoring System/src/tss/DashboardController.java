@@ -89,6 +89,8 @@ public class DashboardController extends Application {
     @FXML
     private Button btnNextScore;
     @FXML
+    private Button btnSaveEditScore;
+    @FXML
     private StackPane stpEditSaveTournament;
     @FXML
     private StackPane stpTournamentDate;
@@ -96,6 +98,8 @@ public class DashboardController extends Application {
     private StackPane stpSaveArcher;
     @FXML
     private StackPane stpEditSaveTarget;
+    @FXML
+    private StackPane stpEditSaveScore;
     @FXML
     private StackPane stpStartStopScores;
     @FXML
@@ -982,7 +986,7 @@ public class DashboardController extends Application {
 	
 	@FXML
     public void enterPressedForScore(KeyEvent event) {
-        if(event.getCode().equals(KeyCode.ENTER)) {
+        if(event.getCode().equals(KeyCode.ENTER) && btnNextScore.isVisible()) {
              btnNextScore.fire();
              event.consume();
         }
@@ -1004,5 +1008,86 @@ public class DashboardController extends Application {
 		if(input.isPresent()) {
 			archerNotFoundDialog(input);
 		}
+	}
+	
+	@FXML
+	public void beginEditArcherScore(ActionEvent event) {
+		cmbTournament.setDisable(true);
+		tpNewTournament.setDisable(true);
+		btnEditTournament.setDisable(true);
+		btnDeleteTournament.setDisable(true);
+		tabArchers.setDisable(true);
+		tabTargetList.setDisable(true);
+		tabResults.setDisable(true);
+		btnSearchScore.setDisable(true);
+		btnEditScore.setDisable(true);
+		btnStartScores.setDisable(true);
+		btnNextScore.setVisible(false);
+		btnBackScore.setVisible(false);
+		btnSaveEditScore.setVisible(true);
+		stpEditSaveScore.getChildren().get(0).toFront();
+		ScoreEntry selectedEntry = tbvScores.getSelectionModel().getSelectedItem();
+		tbvScores.setDisable(true);
+		tbvScores.setOpacity(1.00);
+		txtScore.setDisable(false);
+		txtHits.setDisable(false);
+		txtGolds.setDisable(false);
+		lblScore.setDisable(false);
+		lblHits.setDisable(false);
+		lblGolds.setDisable(false);
+		txtScore.setText(Integer.toString(selectedEntry.getScore()));
+		txtHits.setText(Integer.toString(selectedEntry.getHits()));
+		txtGolds.setText(Integer.toString(selectedEntry.getGolds()));
+		if(chkMetric.isSelected()) {
+			txtXs.setDisable(false);
+			lblXs.setDisable(false);
+			txtXs.setText(Integer.toString(selectedEntry.getXs()));
+		}
+	}
+	
+	@FXML
+	public void saveEditArcherScore(ActionEvent event) throws SQLException {
+		cmbTournament.setDisable(false);
+		tpNewTournament.setDisable(false);
+		btnEditTournament.setDisable(false);
+		btnDeleteTournament.setDisable(false);
+		tabArchers.setDisable(false);
+		tabTargetList.setDisable(false);
+		tabResults.setDisable(false);
+		btnSearchScore.setDisable(false);
+		btnEditScore.setDisable(false);
+		btnStartScores.setDisable(false);
+		btnNextScore.setVisible(true);
+		btnBackScore.setVisible(true);
+		btnSaveEditScore.setVisible(false);
+		stpEditSaveScore.getChildren().get(0).toFront();
+		ScoreEntry selectedEntry = tbvScores.getSelectionModel().getSelectedItem();
+		int score = Integer.parseInt(txtScore.getText());
+		int hits = Integer.parseInt(txtHits.getText());
+		int golds = Integer.parseInt(txtGolds.getText());
+		selectedEntry.setScore(score);
+		selectedEntry.setHits(hits);
+		selectedEntry.setGolds(golds);
+		if(chkMetric.isSelected()) {
+			int Xs = Integer.parseInt(txtXs.getText());
+			selectedEntry.setXs(Xs);
+			scores.updateRecord(selectedEntry.getID(), score, hits, golds, Xs);
+			txtXs.clear();
+			txtXs.setDisable(true);
+			lblXs.setDisable(true);
+		} else {
+			scores.updateRecord(selectedEntry.getID(), score, hits, golds);
+		}
+		tbvScores.setDisable(false);
+		tbvScores.refresh();
+		txtScore.clear();
+		txtHits.clear();
+		txtGolds.clear();
+		txtScore.setDisable(true);
+		txtHits.setDisable(true);
+		txtGolds.setDisable(true);
+		lblScore.setDisable(true);
+		lblHits.setDisable(true);
+		lblGolds.setDisable(true);
 	}
 }
