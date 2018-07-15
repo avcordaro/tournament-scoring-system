@@ -220,7 +220,7 @@
                         <Insets top="295.0" />
                      </StackPane.margin>
                   </ImageView>
-                  <TitledPane expanded="false" text="Start New Tournament">
+                  <TitledPane fx:id="tpNewTournament" expanded="false" text="Start New Tournament">
                     <content>
                         <VBox prefWidth="530.0">
                            <children>
@@ -383,9 +383,9 @@
             </StackPane>
          </children>
       </HBox>
-      <TabPane maxWidth="1160.0" minWidth="1160.0" prefHeight="500.0" prefWidth="1160.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabPane" maxWidth="1160.0" minWidth="1160.0" prefHeight="500.0" prefWidth="1160.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Archers">
+          <Tab fx:id="tabArchers" text="Archers">
                <content>
                   <HBox>
                      <children>
@@ -577,7 +577,7 @@
                      </children>
                   </HBox>
                </content></Tab>
-            <Tab text="Target List">
+            <Tab fx:id="tabTargetList" text="Target List">
                <content>
                   <HBox>
                      <children>
@@ -757,7 +757,7 @@
                      </children>
                   </HBox>
                </content></Tab>
-            <Tab text="Scores">
+            <Tab fx:id="tabScores" text="Scores">
                <content>
                   <HBox>
                      <children>
@@ -772,7 +772,7 @@
                                     <TableColumn prefWidth="100.0" text="Score" />
                                     <TableColumn prefWidth="90.0" text="Hits" />
                                     <TableColumn prefWidth="90.0" text="Golds" />
-                                    <TableColumn fx:id="tbcXs" prefWidth="90.0" text="X's" />
+                                    <TableColumn fx:id="tbcXs" prefWidth="90.0" text="X's" visible="false" />
                                  </columns>
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
@@ -788,7 +788,7 @@
                                           <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button fx:id="btnEditScore" disable="true" minWidth="100.0" mnemonicParsing="false" onAction="#beginEditArcher" prefWidth="100.0" text="Edit">
+                                    <Button fx:id="btnEditScore" disable="true" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Edit">
                                        <HBox.margin>
                                           <Insets bottom="10.0" right="20.0" top="10.0" />
                                        </HBox.margin>
@@ -818,18 +818,30 @@
                                     <Insets left="20.0" right="20.0" top="10.0" />
                                  </VBox.margin>
                               </Label>
-                              <HBox alignment="TOP_RIGHT">
+                              <StackPane fx:id="stpStartStopScores" alignment="CENTER_RIGHT">
                                  <children>
-                                    <Button fx:id="btnStartScores" disable="true" mnemonicParsing="false" onAction="#previewTargetList" prefWidth="100.0" text="Start">
+                                    <Button fx:id="btnStopScores" layoutX="270.0" layoutY="10.0" mnemonicParsing="false" onAction="#stopScoring" prefWidth="100.0" text="Stop" visible="false" />
+                                    <Button fx:id="btnStartScores" disable="true" mnemonicParsing="false" onAction="#startScoring" prefWidth="100.0" text="Start">
                                        <HBox.margin>
                                           <Insets right="20.0" />
                                        </HBox.margin>
                                     </Button>
+                                    <Label fx:id="lblCurrentTarget" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" visible="false">
+                                       <StackPane.margin>
+                                          <Insets right="130.0" />
+                                       </StackPane.margin>
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets top="5.0" />
+                                       </padding>
+                                    </Label>
                                  </children>
-                                 <padding>
-                                    <Insets top="10.0" />
-                                 </padding>
-                              </HBox>
+                                 <VBox.margin>
+                                    <Insets right="20.0" top="15.0" />
+                                 </VBox.margin>
+                              </StackPane>
                               <HBox>
                                  <children>
                                     <Label fx:id="lblScore" disable="true" maxWidth="110.0" minHeight="30.0" minWidth="100.0" prefWidth="110.0" text="Score:">
@@ -850,7 +862,7 @@
                                     </TextField>
                                  </children>
                                  <VBox.margin>
-                                    <Insets left="20.0" top="30.0" />
+                                    <Insets left="20.0" top="25.0" />
                                  </VBox.margin>
                               </HBox>
                               <HBox>
@@ -886,7 +898,7 @@
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <TextField fx:id="txtGolds" disable="true" maxHeight="30.0" maxWidth="230.0" minHeight="30.0" minWidth="220.0" prefWidth="220.0" promptText="Total golds...">
+                                    <TextField fx:id="txtGolds" disable="true" maxHeight="30.0" maxWidth="230.0" minHeight="30.0" minWidth="220.0" onKeyPressed="#enterPressedForScore" prefWidth="220.0" promptText="Total golds...">
                                        <HBox.margin>
                                           <Insets right="20.0" />
                                        </HBox.margin>
@@ -909,7 +921,7 @@
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <TextField fx:id="txtXs" disable="true" maxHeight="30.0" maxWidth="230.0" minHeight="30.0" minWidth="220.0" prefWidth="220.0" promptText="Total X's....">
+                                    <TextField fx:id="txtXs" disable="true" maxHeight="30.0" maxWidth="230.0" minHeight="30.0" minWidth="220.0" onKeyPressed="#enterPressedForScore" prefWidth="220.0" promptText="Total X's....">
                                        <HBox.margin>
                                           <Insets right="20.0" />
                                        </HBox.margin>
@@ -935,12 +947,12 @@
                                     </HBox>
                                     <HBox alignment="TOP_RIGHT">
                                        <children>
-                                          <Button fx:id="btnBackScore" disable="true" mnemonicParsing="false" onAction="#previewTargetList" prefWidth="100.0" text="Back">
+                                          <Button fx:id="btnBackScore" disable="true" mnemonicParsing="false" onAction="#backScore" prefWidth="100.0" text="Back">
                                              <HBox.margin>
                                                 <Insets />
                                              </HBox.margin>
                                           </Button>
-                                          <Button fx:id="btnNextScore" disable="true" mnemonicParsing="false" onAction="#previewTargetList" prefWidth="100.0" text="Next">
+                                          <Button fx:id="btnNextScore" disable="true" mnemonicParsing="false" onAction="#nextScore" prefWidth="100.0" text="Next">
                                              <HBox.margin>
                                                 <Insets left="20.0" right="20.0" />
                                              </HBox.margin>
@@ -960,7 +972,7 @@
                      </children>
                   </HBox>
                </content></Tab>
-            <Tab text="Results" />
+            <Tab fx:id="tabResults" text="Results" />
         </tabs>
          <VBox.margin>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

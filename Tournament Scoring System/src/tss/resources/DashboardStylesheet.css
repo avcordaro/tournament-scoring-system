@@ -102,6 +102,10 @@
 	-fx-border-color: lightgrey;
 	-fx-cursor: hand;
 }
+.table-view > .column-header-background > .filler {
+	-fx-background-color: #ECEFF8;
+
+}
 .date-picker > .arrow-button {
 	-fx-background-color: #3A539B;
 	-fx-border-width: 1 1 1 0;

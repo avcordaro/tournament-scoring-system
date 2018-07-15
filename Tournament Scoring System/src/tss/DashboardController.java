@@ -27,12 +27,18 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -77,6 +83,8 @@ public class DashboardController extends Application {
     @FXML
     private Button btnStartScores;
     @FXML
+    private Button btnStopScores;
+    @FXML
     private Button btnBackScore;
     @FXML
     private Button btnNextScore;
@@ -88,6 +96,8 @@ public class DashboardController extends Application {
     private StackPane stpSaveArcher;
     @FXML
     private StackPane stpEditSaveTarget;
+    @FXML
+    private StackPane stpStartStopScores;
     @FXML
     private DatePicker datePicker;
     @FXML
@@ -155,6 +165,8 @@ public class DashboardController extends Application {
     @FXML
     private Label lblXs;
     @FXML
+    private Label lblCurrentTarget;
+    @FXML
     private ComboBox<TournamentMap> cmbTournament;
     @FXML
     private ComboBox<String> cmbCategory;
@@ -169,11 +181,25 @@ public class DashboardController extends Application {
     @FXML
     private VBox vboxTournament;
     @FXML
+    private TableColumn<ScoreEntry, Integer> tbcXs;
+    @FXML
     private TableView<ArcherEntry> tbvArchers;
     @FXML
     private TableView<TargetEntry> tbvTargetList;
     @FXML
     private TableView<ScoreEntry> tbvScores;
+    @FXML
+	private TitledPane tpNewTournament;
+    @FXML
+    private TabPane tabPane;
+    @FXML
+    private Tab tabArchers;
+    @FXML
+    private Tab tabTargetList;
+    @FXML
+    private Tab tabScores;
+    @FXML
+    private Tab tabResults;
     
     private static Connection conn;
     private static Tournaments tournaments;
@@ -302,6 +328,16 @@ public class DashboardController extends Application {
 			chkMarriedCouples.setSelected(Boolean.valueOf(rs.getString("MarriedCouples")));
 			btnEditTournament.setDisable(false);
 			btnDeleteTournament.setDisable(false);
+			tbvArchers.getItems().clear();
+			tbvTargetList.getItems().clear();
+			tbvScores.getItems().clear();
+			txtFirstName.clear();
+			txtLastName.clear();
+			txtClub.clear();
+			cmbCategory.getSelectionModel().clearSelection();
+			cmbBowType.getSelectionModel().clearSelection();
+			cmbRound.getSelectionModel().clearSelection();
+			cmbMarriedCouple.getSelectionModel().clearSelection();
 			btnSearchTarget.setDisable(true);
 			btnEditTarget.setDisable(true);
 			btnAllocateTargets.setDisable(true);
@@ -312,12 +348,12 @@ public class DashboardController extends Application {
 			txtVenue.setDisable(false);
 			txtAssembly.setDisable(false);
 			txtSighters.setDisable(false);
+			txtVenue.clear();
+			txtAssembly.clear();
+			txtSighters.clear();
 			fillArcherTableView(id);
 			fillTargetListTableView(id);
 			fillScoresTableView(id);
-		} else {
-			tbvArchers.getItems().clear();
-			tbvTargetList.getItems().clear();
 		}
 	}
 	
@@ -339,11 +375,30 @@ public class DashboardController extends Application {
 		chkNewMetric.setSelected(false);
 		chkNewTeams.setSelected(false);
 		chkNewMarriedCouples.setSelected(false);
+		btnDeleteTournament.setDisable(false);
+		btnEditTournament.setDisable(false);
+		tbvArchers.getItems().clear();
+		tbvTargetList.getItems().clear();
+		tbvScores.getItems().clear();
+		txtFirstName.clear();
+		txtLastName.clear();
+		txtClub.clear();
+		cmbCategory.getSelectionModel().clearSelection();
+		cmbBowType.getSelectionModel().clearSelection();
+		cmbRound.getSelectionModel().clearSelection();
+		cmbMarriedCouple.getSelectionModel().clearSelection();
 		btnSearchArcher.setDisable(true);
     	btnEditArcher.setDisable(true);
     	btnDeleteArcher.setDisable(true);
     	btnNewArcher.setDisable(false);
     	cmbMarriedCouple.setDisable(!chkMarriedCouples.isSelected());
+		txtFirstName.clear();
+		txtLastName.clear();
+		txtClub.clear();
+		cmbCategory.getSelectionModel().clearSelection();
+		cmbBowType.getSelectionModel().clearSelection();
+		cmbRound.getSelectionModel().clearSelection();
+		cmbMarriedCouple.getSelectionModel().clearSelection();
 		btnSearchTarget.setDisable(true);
 		btnEditTarget.setDisable(true);
 		btnAllocateTargets.setDisable(true);
@@ -354,6 +409,9 @@ public class DashboardController extends Application {
 		txtVenue.setDisable(true);
 		txtAssembly.setDisable(true);
 		txtSighters.setDisable(true);
+		txtVenue.clear();
+		txtAssembly.clear();
+		txtSighters.clear();
 		btnSearchScore.setDisable(true);
 		btnEditScore.setDisable(true);
 		btnStartScores.setDisable(true);
@@ -384,12 +442,29 @@ public class DashboardController extends Application {
 		chkMetric.setSelected(false);
 		chkTeams.setSelected(false);
 		chkMarriedCouples.setSelected(false);
+		tbvArchers.getItems().clear();
+		tbvTargetList.getItems().clear();
+		tbvScores.getItems().clear();
     	btnSearchArcher.setDisable(true);
     	btnEditArcher.setDisable(true);
     	btnDeleteArcher.setDisable(true);
     	btnNewArcher.setDisable(true);
+		txtFirstName.clear();
+		txtLastName.clear();
+		txtClub.clear();
+		cmbCategory.getSelectionModel().clearSelection();
+		cmbBowType.getSelectionModel().clearSelection();
+		cmbRound.getSelectionModel().clearSelection();
+		cmbMarriedCouple.getSelectionModel().clearSelection();
 		btnSearchTarget.setDisable(true);
 		btnEditTarget.setDisable(true);
+		txtFirstName.clear();
+		txtLastName.clear();
+		txtClub.clear();
+		cmbCategory.getSelectionModel().clearSelection();
+		cmbBowType.getSelectionModel().clearSelection();
+		cmbRound.getSelectionModel().clearSelection();
+		cmbMarriedCouple.getSelectionModel().clearSelection();
 		btnAllocateTargets.setDisable(true);
 		btnGenerateTargetList.setDisable(true);
 		lblVenue.setDisable(true);
@@ -398,6 +473,9 @@ public class DashboardController extends Application {
 		txtVenue.setDisable(true);
 		txtAssembly.setDisable(true);
 		txtSighters.setDisable(true);
+		txtVenue.clear();
+		txtAssembly.clear();
+		txtSighters.clear();
 		btnSearchScore.setDisable(true);
 		btnEditScore.setDisable(true);
 		btnStartScores.setDisable(true);
@@ -416,6 +494,9 @@ public class DashboardController extends Application {
 	
 	@FXML
 	public void beginEditTournament(ActionEvent event) throws SQLException {
+		tabPane.setDisable(true);
+		tabPane.setOpacity(1.00);
+		tpNewTournament.setDisable(true);
 		btnEditSaveTournament.setVisible(true);
 		stpEditSaveTournament.getChildren().get(0).toFront();
 		btnEditTournament.setVisible(false);
@@ -452,6 +533,8 @@ public class DashboardController extends Application {
 		String teams = Boolean.toString(chkTeams.isSelected());
 		String couples = Boolean.toString(chkMarriedCouples.isSelected());
 		tournaments.updateRecord(id, title, date, apt, metric, teams, couples);
+		tabPane.setDisable(false);
+		tpNewTournament.setDisable(false);
 		loadTournament(event);
 	}
 	
@@ -524,6 +607,14 @@ public class DashboardController extends Application {
 	
 	@FXML
 	public void beginEditArcher(ActionEvent event) throws SQLException {
+		cmbTournament.setDisable(true);
+		tpNewTournament.setDisable(true);
+		btnEditTournament.setDisable(true);
+		btnDeleteTournament.setDisable(true);
+		tabTargetList.setDisable(true);
+		tabScores.setDisable(true);
+		tabResults.setDisable(true);
+		btnSearchArcher.setDisable(true);
 		btnEditArcher.setDisable(true);
 		btnDeleteArcher.setDisable(true);
 		tbvArchers.setDisable(true);
@@ -583,6 +674,14 @@ public class DashboardController extends Application {
 		cmbBowType.getSelectionModel().clearSelection();
 		cmbRound.getSelectionModel().clearSelection();
 		cmbMarriedCouple.getSelectionModel().clearSelection();
+		cmbTournament.setDisable(false);
+		tpNewTournament.setDisable(false);
+		btnEditTournament.setDisable(false);
+		btnDeleteTournament.setDisable(false);
+		tabTargetList.setDisable(false);
+		tabScores.setDisable(false);
+		tabResults.setDisable(false);
+		btnSearchArcher.setDisable(false);
 	}
 	
 	@FXML
@@ -662,9 +761,20 @@ public class DashboardController extends Application {
 	
 	@FXML
 	public void beginEditTargetDetail(ActionEvent event) throws SQLException {
+		cmbTournament.setDisable(true);
+		tpNewTournament.setDisable(true);
+		btnEditTournament.setDisable(true);
+		btnDeleteTournament.setDisable(true);
+		tabArchers.setDisable(true);
+		tabScores.setDisable(true);
+		tabResults.setDisable(true);
+		btnSearchTarget.setDisable(true);
+		btnAllocateTargets.setDisable(true);
+		btnGenerateTargetList.setDisable(true);
 		btnSaveEditTarget.setVisible(true);
 		btnEditTarget.setVisible(false);
 		tbvTargetList.setDisable(true);
+		tbvTargetList.setOpacity(1.00);
 		stpEditSaveTarget.getChildren().get(0).toFront();
 		fillSwapTargetComboBox();
 		cmbEditTarget.setDisable(false);
@@ -688,6 +798,16 @@ public class DashboardController extends Application {
 		fillScoresTableView(tID);
 		btnEditTarget.setDisable(true);
 		cmbEditTarget.setDisable(true);
+		cmbTournament.setDisable(false);
+		tpNewTournament.setDisable(false);
+		btnEditTournament.setDisable(false);
+		btnDeleteTournament.setDisable(false);
+		tabArchers.setDisable(false);
+		tabScores.setDisable(false);
+		tabResults.setDisable(false);
+		btnSearchTarget.setDisable(false);
+		btnAllocateTargets.setDisable(false);
+		btnGenerateTargetList.setDisable(false);
 	}
 	
 	public void fillSwapTargetComboBox() throws SQLException {
@@ -712,13 +832,161 @@ public class DashboardController extends Application {
 	
 	public void fillScoresTableView(int tournamentID) throws SQLException {
 		tbvScores.getItems().clear();
+		btnEditScore.setDisable(true);
+		tbcXs.setVisible(chkMetric.isSelected() ? true : false);
 		ArrayList<ScoreEntry> tableData = scores.getDataForTable(tournamentID);
 		for(ScoreEntry entry : tableData) {
 			tbvScores.getItems().add(entry);
 		}
 		btnSearchScore.setDisable(tableData.isEmpty() ? true : false);
-		btnStartScores.setDisable(false);
+		btnStartScores.setDisable(tableData.isEmpty() ? true : false);
 	}
+	
+	@FXML
+	public void startScoring(ActionEvent event) {
+		cmbTournament.setDisable(true);
+		tpNewTournament.setDisable(true);
+		btnEditTournament.setDisable(true);
+		btnDeleteTournament.setDisable(true);
+		tabArchers.setDisable(true);
+		tabTargetList.setDisable(true);
+		tabResults.setDisable(true);
+		btnStopScores.setVisible(true);
+		btnStartScores.setVisible(false);
+		btnNextScore.setDisable(false);
+		stpStartStopScores.getChildren().get(0).toFront();
+		btnSearchScore.setDisable(true);
+		btnEditScore.setDisable(true);
+		tbvScores.setDisable(true);
+		tbvScores.setOpacity(1.00);
+		txtScore.setDisable(false);
+		txtHits.setDisable(false);
+		txtGolds.setDisable(false);
+		txtXs.setDisable(chkMetric.isSelected() ? false : true);
+		lblScore.setDisable(false);
+		lblHits.setDisable(false);
+		lblGolds.setDisable(false);
+		lblXs.setDisable(chkMetric.isSelected() ? false : true);
+		tbvScores.getSelectionModel().select(0);
+		ScoreEntry firstEntry = tbvScores.getSelectionModel().getSelectedItem();
+		btnEditScore.setDisable(true);
+		lblCurrentTarget.setVisible(true);
+		lblCurrentTarget.setText("Target: " + firstEntry.getTarget());
+		txtScore.setText(Integer.toString(firstEntry.getScore()));
+		txtHits.setText(Integer.toString(firstEntry.getHits()));
+		txtGolds.setText(Integer.toString(firstEntry.getGolds()));
+		if(chkMetric.isSelected()) {
+			txtXs.setText(Integer.toString(firstEntry.getXs()));
+		}
+		txtScore.requestFocus();
+	}
+	
+	@FXML
+	public void stopScoring(ActionEvent event) throws SQLException {
+		cmbTournament.setDisable(false);
+		tpNewTournament.setDisable(false);
+		btnEditTournament.setDisable(false);
+		btnDeleteTournament.setDisable(false);
+		tabArchers.setDisable(false);
+		tabTargetList.setDisable(false);
+		tabResults.setDisable(false);
+		btnStopScores.setVisible(false);
+		btnStartScores.setVisible(true);
+		btnNextScore.setDisable(true);
+		btnBackScore.setDisable(true);
+		stpStartStopScores.getChildren().get(0).toFront();
+		btnSearchScore.setDisable(false);
+		tbvScores.setDisable(false);
+		txtScore.setDisable(true);
+		txtHits.setDisable(true);
+		txtGolds.setDisable(true);
+		txtXs.setDisable(true);
+		txtScore.clear();
+		txtHits.clear();
+		txtGolds.clear();
+		txtXs.clear();
+		lblScore.setDisable(true);
+		lblHits.setDisable(true);
+		lblGolds.setDisable(true);
+		txtXs.setDisable(true);
+		lblCurrentTarget.setVisible(false);
+		fillScoresTableView(cmbTournament.getSelectionModel().getSelectedItem().getID());
+	}
+	
+	@FXML
+	public void nextScore(ActionEvent event) throws SQLException {
+		ScoreEntry currentEntry = tbvScores.getSelectionModel().getSelectedItem();
+		int score = Integer.parseInt(txtScore.getText());
+		int hits = Integer.parseInt(txtHits.getText());
+		int golds = Integer.parseInt(txtGolds.getText());
+		currentEntry.setScore(score);
+		currentEntry.setHits(hits);
+		currentEntry.setGolds(golds);
+		if(chkMetric.isSelected()) {
+			int Xs = Integer.parseInt(txtXs.getText());
+			currentEntry.setXs(Xs);
+			scores.updateRecord(currentEntry.getID(), score, hits, golds, Xs);
+		} else {
+			scores.updateRecord(currentEntry.getID(), score, hits, golds);
+		}
+		tbvScores.refresh();
+		int currentIndex = tbvScores.getSelectionModel().getSelectedIndex();
+		if(currentIndex != tbvScores.getItems().size() - 1) {
+			btnBackScore.setDisable(false);
+			tbvScores.getSelectionModel().select(currentIndex + 1);
+			tbvScores.scrollTo(currentIndex + 1);
+			btnEditScore.setDisable(true);
+			currentEntry = tbvScores.getSelectionModel().getSelectedItem();
+			lblCurrentTarget.setText("Target: " + currentEntry.getTarget());
+			txtScore.setText(Integer.toString(currentEntry.getScore()));
+			txtHits.setText(Integer.toString(currentEntry.getHits()));
+			txtGolds.setText(Integer.toString(currentEntry.getGolds()));
+			if(chkMetric.isSelected()) {
+				txtXs.setText(Integer.toString(currentEntry.getXs()));
+			}
+			txtScore.requestFocus();
+		} else {
+			stopScoring(event);
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Score Inputs Finished");
+			alert.setHeaderText(null);
+			alert.setContentText("Thank you, all archer's score inputs have been completed.");
+			DialogPane dialogPane = alert.getDialogPane();
+			dialogPane = alert.getDialogPane();
+			dialogPane.getStylesheets().add(getClass().getResource("resources/DashboardStylesheet.css").toExternalForm());
+			Stage alertStage = (Stage)alert.getDialogPane().getScene().getWindow();
+			alertStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/logo.png")));
+			alert.showAndWait();	
+		}
+	}
+	
+	@FXML
+	public void backScore(ActionEvent event) {
+		int currentIndex = tbvScores.getSelectionModel().getSelectedIndex();
+		tbvScores.getSelectionModel().select(currentIndex - 1);
+		if(currentIndex - 1 == 0) {
+			btnBackScore.setDisable(true);
+		}
+		ScoreEntry currentEntry = tbvScores.getSelectionModel().getSelectedItem();
+		btnEditScore.setDisable(true);
+		lblCurrentTarget.setVisible(true);
+		lblCurrentTarget.setText("Target: " + currentEntry.getTarget());
+		txtScore.setText(Integer.toString(currentEntry.getScore()));
+		txtHits.setText(Integer.toString(currentEntry.getHits()));
+		txtGolds.setText(Integer.toString(currentEntry.getGolds()));
+		if(chkMetric.isSelected()) {
+			txtXs.setText(Integer.toString(currentEntry.getXs()));
+		}
+		txtScore.requestFocus();
+	}
+	
+	@FXML
+    public void enterPressedForScore(KeyEvent event) {
+        if(event.getCode().equals(KeyCode.ENTER)) {
+             btnNextScore.fire();
+             event.consume();
+        }
+    }
 	
 	@FXML
 	public void searchArcherScore(ActionEvent event) {

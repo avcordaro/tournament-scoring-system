@@ -30,10 +30,34 @@ public class Scores {
 	}
 	
 	public void newRecord(int archerID) throws SQLException {
-		String sql = "INSERT INTO Score (ArcherID) VALUES (?);";
+		String sql = "INSERT INTO Score (ArcherID, Score, Hits, Golds, Xs) VALUES (?, ?, ?, ?, ?);";
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		prepStmt.setInt(1, archerID);
+		prepStmt.setInt(2, 0);
+		prepStmt.setInt(3, 0);
+		prepStmt.setInt(4, 0);
+		prepStmt.setInt(5, 0);
 		prepStmt.execute();
 	}
-
+	
+	public void updateRecord(int archerID, int score, int hits, int golds) throws SQLException {
+		String sql = "UPDATE Score SET Score=?, Hits=?, Golds=? WHERE ArcherID=?";
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		prepStmt.setInt(1, score);
+		prepStmt.setInt(2, hits);
+		prepStmt.setInt(3, golds);
+		prepStmt.setInt(4, archerID);
+		prepStmt.execute();
+	}
+	
+	public void updateRecord(int archerID, int score, int hits, int golds, int Xs) throws SQLException {
+		String sql = "UPDATE Score SET Score=?, Hits=?, Golds=?, Xs=? WHERE ArcherID=?";
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		prepStmt.setInt(1, score);
+		prepStmt.setInt(2, hits);
+		prepStmt.setInt(3, golds);
+		prepStmt.setInt(4, Xs);
+		prepStmt.setInt(5, archerID);
+		prepStmt.execute();
+	}
 }
