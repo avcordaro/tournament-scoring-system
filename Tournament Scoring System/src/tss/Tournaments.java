@@ -1,4 +1,3 @@
-
 package tss;
 
 import java.sql.Connection;
@@ -45,9 +44,14 @@ public class Tournaments {
 		return newID;
 	}
 	
-	public void deleteRecord(int recordID) throws SQLException {
+	public void deleteRecord(int recordID, Archers archers) throws SQLException {
 		Statement stmt = conn.createStatement();
 		stmt.executeUpdate("DELETE FROM Tournament WHERE TournamentID =" + recordID + ";");
+		stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT ArcherID FROM Archer WHERE TournamentID = " + recordID + ";");
+		while(rs.next()) {
+			archers.deleteRecord(rs.getInt("ArcherID"));
+		}
 	}
 	
 	public void updateRecord(int recordID, String title, String date, int apt, String metric, String teams, 

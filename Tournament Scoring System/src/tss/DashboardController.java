@@ -438,7 +438,7 @@ public class DashboardController extends Application {
 		btnEditTournament.setDisable(true);
 		btnDeleteTournament.setDisable(true);
 		btnEditSaveTournament.setVisible(false);
-		tournaments.deleteRecord(id);
+		tournaments.deleteRecord(id, archers);
 		txtTitle.clear();
 		txtDate.clear();
 		txtTotalArchers.clear();
@@ -710,6 +710,7 @@ public class DashboardController extends Application {
 	public void deleteArcher(ActionEvent event) throws SQLException {
 		ArcherEntry selectedArcher = tbvArchers.getSelectionModel().getSelectedItem();
 		archers.deleteRecord(selectedArcher.getID());
+		scores.deletedRecord(selectedArcher.getID());
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		fillArcherTableView(tID);
 		fillTargetListTableView(tID);

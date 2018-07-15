@@ -60,4 +60,9 @@ public class Scores {
 		prepStmt.setInt(5, archerID);
 		prepStmt.execute();
 	}
+	
+	public void deletedRecord(int archerID) throws SQLException {
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("DELETE FROM Score WHERE ArcherID = " + archerID + ";");
+	}
 }
