@@ -972,7 +972,183 @@
                      </children>
                   </HBox>
                </content></Tab>
-            <Tab fx:id="tabResults" text="Results" />
+            <Tab fx:id="tabResults" text="Results">
+               <content>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox>
+                           <children>
+                              <Label minHeight="30.0" minWidth="150.0" prefWidth="150.0" text="Team Results">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <HBox>
+                                 <children>
+                                    <Label disable="true" prefWidth="150.0" text="Round:">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font></Label>
+                                    <ComboBox disable="true" prefWidth="200.0" promptText="Select..." />
+                                 </children>
+                                 <padding>
+                                    <Insets top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <Label text="Bow Types:">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin></Label>
+                              <HBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <Label disable="true" prefWidth="150.0" text="Compound" />
+                                    <CheckBox disable="true" mnemonicParsing="false" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <Label disable="true" prefWidth="150.0" text="Recurve" />
+                                    <CheckBox disable="true" mnemonicParsing="false" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="2.5" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="20.0" prefWidth="125.0">
+                                 <children>
+                                    <Label disable="true" prefWidth="150.0" text="Barebow" />
+                                    <CheckBox disable="true" mnemonicParsing="false" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="2.5" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <Label disable="true" prefWidth="150.0" text="Longbow" />
+                                    <CheckBox disable="true" mnemonicParsing="false" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="2.5" />
+                                 </VBox.margin>
+                              </HBox>
+                              <Label text="Team Gender:">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin></Label>
+                              <HBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <Label disable="true" prefWidth="150.0" text="Mixed" />
+                                    <RadioButton disable="true" mnemonicParsing="false">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="Gender" />
+                                       </toggleGroup></RadioButton>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <Label disable="true" prefWidth="150.0" text="Separate" />
+                                    <RadioButton disable="true" mnemonicParsing="false" toggleGroup="$Gender" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="2.5" />
+                                 </VBox.margin>
+                              </HBox>
+                              <Button disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Generate">
+                                 <VBox.margin>
+                                    <Insets top="12.0" />
+                                 </VBox.margin></Button>
+                           </children>
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <Separator orientation="VERTICAL" prefHeight="200.0">
+                           <HBox.margin>
+                              <Insets left="20.0" top="10.0" />
+                           </HBox.margin>
+                        </Separator>
+                        <VBox>
+                           <children>
+                              <Label minHeight="30.0" minWidth="150.0" prefWidth="250.0" text="Married Couple Results">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Button disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Generate">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Label minHeight="30.0" minWidth="150.0" prefWidth="250.0" text="Individual Results">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="22.5" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <Label disable="true" prefHeight="30.0" prefWidth="150.0" text="Best Gold:">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Label>
+                                    <ComboBox disable="true" prefWidth="200.0" promptText="Optional..." />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <Label disable="true" prefHeight="30.0" prefWidth="150.0" text="Worst White:" />
+                                    <ComboBox disable="true" prefWidth="200.0" promptText="Optional..." />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <Button disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Generate">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Label minHeight="30.0" minWidth="150.0" prefWidth="250.0" text="Full Results PDF">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="22.5" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label prefHeight="20.0" prefWidth="380.0" text="Individual, Team and Married Couple results combined." />
+                              <Button disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Export">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="30.0" right="10.0" top="10.0" />
+                           </HBox.margin>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </content></Tab>
         </tabs>
          <VBox.margin>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
