@@ -985,11 +985,11 @@
                               </Label>
                               <HBox>
                                  <children>
-                                    <Label disable="true" prefWidth="150.0" text="Round:">
+                                    <Label fx:id="lblTeamRound" disable="true" prefWidth="150.0" text="Round:">
                                        <font>
                                           <Font name="System Bold" size="15.0" />
                                        </font></Label>
-                                    <ComboBox disable="true" prefWidth="200.0" promptText="Select..." />
+                                    <ComboBox fx:id="cmbTeamRound" disable="true" prefWidth="200.0" promptText="Select..." />
                                  </children>
                                  <padding>
                                     <Insets top="10.0" />
@@ -1004,8 +1004,8 @@
                                  </VBox.margin></Label>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Label disable="true" prefWidth="150.0" text="Compound" />
-                                    <CheckBox disable="true" mnemonicParsing="false" />
+                                    <Label fx:id="lblTeamCompound" disable="true" prefWidth="150.0" text="Compound" />
+                                    <CheckBox fx:id="chkTeamCompound" disable="true" mnemonicParsing="false" />
                                  </children>
                                  <VBox.margin>
                                     <Insets top="10.0" />
@@ -1013,8 +1013,8 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Label disable="true" prefWidth="150.0" text="Recurve" />
-                                    <CheckBox disable="true" mnemonicParsing="false" />
+                                    <Label fx:id="lblTeamRecurve" disable="true" prefWidth="150.0" text="Recurve" />
+                                    <CheckBox fx:id="chkTeamRecurve" disable="true" mnemonicParsing="false" />
                                  </children>
                                  <VBox.margin>
                                     <Insets top="2.5" />
@@ -1022,8 +1022,8 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="20.0" prefWidth="125.0">
                                  <children>
-                                    <Label disable="true" prefWidth="150.0" text="Barebow" />
-                                    <CheckBox disable="true" mnemonicParsing="false" />
+                                    <Label fx:id="lblTeamBarebow" disable="true" prefWidth="150.0" text="Barebow" />
+                                    <CheckBox fx:id="chkTeamBarebow" disable="true" mnemonicParsing="false" />
                                  </children>
                                  <VBox.margin>
                                     <Insets top="2.5" />
@@ -1031,8 +1031,8 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Label disable="true" prefWidth="150.0" text="Longbow" />
-                                    <CheckBox disable="true" mnemonicParsing="false" />
+                                    <Label fx:id="lblTeamLongbow" disable="true" prefWidth="150.0" text="Longbow" />
+                                    <CheckBox fx:id="chkTeamLongbow" disable="true" mnemonicParsing="false" />
                                  </children>
                                  <VBox.margin>
                                     <Insets top="2.5" />
@@ -1047,8 +1047,8 @@
                                  </VBox.margin></Label>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Label disable="true" prefWidth="150.0" text="Mixed" />
-                                    <RadioButton disable="true" mnemonicParsing="false">
+                                    <Label fx:id="lblGenderMixed" disable="true" prefWidth="150.0" text="Mixed" />
+                                    <RadioButton fx:id="rdbGenderMixed" disable="true" mnemonicParsing="false">
                                        <toggleGroup>
                                           <ToggleGroup fx:id="Gender" />
                                        </toggleGroup></RadioButton>
@@ -1059,14 +1059,14 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Label disable="true" prefWidth="150.0" text="Separate" />
-                                    <RadioButton disable="true" mnemonicParsing="false" toggleGroup="$Gender" />
+                                    <Label fx:id="lblGenderSeparate" disable="true" prefWidth="150.0" text="Separate" />
+                                    <RadioButton fx:id="rdbGenderSeparate" disable="true" mnemonicParsing="false" toggleGroup="$Gender" />
                                  </children>
                                  <VBox.margin>
                                     <Insets top="2.5" />
                                  </VBox.margin>
                               </HBox>
-                              <Button disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Generate">
+                              <Button fx:id="btnGenerateTeamResults" disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Generate">
                                  <VBox.margin>
                                     <Insets top="12.0" />
                                  </VBox.margin></Button>
@@ -1087,7 +1087,7 @@
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <Button disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Generate">
+                              <Button fx:id="btnGenerateCouplerResults" disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Generate">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
@@ -1102,12 +1102,12 @@
                               </Label>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Label disable="true" prefHeight="30.0" prefWidth="150.0" text="Best Gold:">
+                                    <Label fx:id="lblBestGold" disable="true" prefHeight="30.0" prefWidth="150.0" text="Best Gold:">
                                        <HBox.margin>
                                           <Insets />
                                        </HBox.margin>
                                     </Label>
-                                    <ComboBox disable="true" prefWidth="200.0" promptText="Optional..." />
+                                    <ComboBox fx:id="cmbBestGold" disable="true" prefWidth="200.0" promptText="Optional..." />
                                  </children>
                                  <VBox.margin>
                                     <Insets top="10.0" />
@@ -1115,14 +1115,14 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Label disable="true" prefHeight="30.0" prefWidth="150.0" text="Worst White:" />
-                                    <ComboBox disable="true" prefWidth="200.0" promptText="Optional..." />
+                                    <Label fx:id="lblWorstWhite" disable="true" prefHeight="30.0" prefWidth="150.0" text="Worst White:" />
+                                    <ComboBox fx:id="cmbWorstWhite" disable="true" prefWidth="200.0" promptText="Optional..." />
                                  </children>
                                  <VBox.margin>
                                     <Insets top="5.0" />
                                  </VBox.margin>
                               </HBox>
-                              <Button disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Generate">
+                              <Button fx:id="btnGenerateIndividualResults" disable="true" mnemonicParsing="false" onAction="#previewIndividualResults" prefHeight="30.0" prefWidth="100.0" text="Generate">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
@@ -1136,7 +1136,7 @@
                                  </VBox.margin>
                               </Label>
                               <Label prefHeight="20.0" prefWidth="380.0" text="Individual, Team and Married Couple results combined." />
-                              <Button disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Export">
+                              <Button fx:id="btnExportFullResults" disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Export">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>

@@ -4,3 +4,4 @@ Tournament field validation
 Archer Editor validation
 Score input validation
 Married Couple indicator on target list?
+Results properties validation

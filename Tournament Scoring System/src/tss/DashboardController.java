@@ -91,6 +91,8 @@ public class DashboardController extends Application {
     @FXML
     private Button btnSaveEditScore;
     @FXML
+    private Button btnGenerateIndividualResults;
+    @FXML
     private StackPane stpEditSaveTournament;
     @FXML
     private StackPane stpTournamentDate;
@@ -171,6 +173,10 @@ public class DashboardController extends Application {
     @FXML
     private Label lblCurrentTarget;
     @FXML
+    private Label lblBestGold;
+    @FXML
+    private Label lblWorstWhite;
+    @FXML
     private ComboBox<TournamentMap> cmbTournament;
     @FXML
     private ComboBox<String> cmbCategory;
@@ -182,6 +188,10 @@ public class DashboardController extends Application {
     private ComboBox<String> cmbMarriedCouple;
     @FXML
     private ComboBox<String> cmbEditTarget;
+    @FXML
+    private ComboBox<String> cmbBestGold;
+    @FXML
+    private ComboBox<String> cmbWorstWhite;
     @FXML
     private VBox vboxTournament;
     @FXML
@@ -211,6 +221,7 @@ public class DashboardController extends Application {
     private static MarriedCouples marriedCouples;
     private static Targets targets;
     private static Scores scores;
+    private static Results results;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
     
     @FXML
@@ -221,6 +232,7 @@ public class DashboardController extends Application {
 		marriedCouples = new MarriedCouples(conn);
 		targets = new Targets(conn);
 		scores = new Scores(conn);
+		results = new Results(conn);
 		tbvArchers.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("ID"));
 		tbvArchers.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("firstName"));
 		tbvArchers.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("lastName"));
@@ -429,9 +441,16 @@ public class DashboardController extends Application {
 		lblHits.setDisable(true);
 		lblGolds.setDisable(true);
 		lblXs.setDisable(true);
+		lblBestGold.setDisable(true);
+		lblWorstWhite.setDisable(true);
+		cmbBestGold.setDisable(true);
+		cmbWorstWhite.setDisable(true);
+		btnGenerateIndividualResults.setDisable(true);
 	}
 	
+	
 	@FXML
+	
 	public void deleteTournament(ActionEvent event) throws SQLException {
 		int id = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		cmbTournament.getItems().remove(cmbTournament.getSelectionModel().getSelectedItem());
@@ -493,6 +512,11 @@ public class DashboardController extends Application {
 		lblHits.setDisable(true);
 		lblGolds.setDisable(true);
 		lblXs.setDisable(true);
+		lblBestGold.setDisable(true);
+		lblWorstWhite.setDisable(true);
+		cmbBestGold.setDisable(true);
+		cmbWorstWhite.setDisable(true);
+		btnGenerateIndividualResults.setDisable(true);
 		loadTournament(event);
 	}
 	
@@ -546,6 +570,10 @@ public class DashboardController extends Application {
 		tbvArchers.getItems().clear();
 		cmbMarriedCouple.getItems().clear();
 		cmbMarriedCouple.getItems().add("None");
+		cmbBestGold.getItems().clear();
+		cmbBestGold.getItems().add("None");
+		cmbWorstWhite.getItems().clear();
+		cmbWorstWhite.getItems().add("None");
 		ResultSet rs = archers.getAllRecords(tournamentID);
 		int archerCount = 0;
 		btnSearchArcher.setDisable(rs.isBeforeFirst() ? false : true);
@@ -553,8 +581,11 @@ public class DashboardController extends Application {
     		tbvArchers.getItems().add(new ArcherEntry(rs.getInt("ArcherID"), rs.getString("FirstName"), 
     				rs.getString("LastName"), rs.getString("Club"), rs.getString("Category"), 
     				rs.getString("BowType"), rs.getString("Round")));
-    		cmbMarriedCouple.getItems().add(rs.getString("ArcherID") + " - "  + rs.getString("FirstName")
-    				+ " " + rs.getString("LastName"));
+    		String comboBoxString = rs.getString("ArcherID") + " - "  + rs.getString("FirstName") + " "
+    				+ rs.getString("LastName");
+    		cmbMarriedCouple.getItems().add(comboBoxString);
+    		cmbBestGold.getItems().add(comboBoxString);
+    		cmbWorstWhite.getItems().add(comboBoxString);
     		archerCount++;
     	}
     	txtTotalArchers.setText(Integer.toString(archerCount));
@@ -845,6 +876,11 @@ public class DashboardController extends Application {
 		}
 		btnSearchScore.setDisable(tableData.isEmpty() ? true : false);
 		btnStartScores.setDisable(tableData.isEmpty() ? true : false);
+		lblBestGold.setDisable(tableData.isEmpty() ? true : false);
+		lblWorstWhite.setDisable(tableData.isEmpty() ? true : false);
+		cmbBestGold.setDisable(tableData.isEmpty() ? true : false);
+		cmbWorstWhite.setDisable(tableData.isEmpty() ? true : false);
+		btnGenerateIndividualResults.setDisable(tableData.isEmpty() ? true : false);
 	}
 	
 	@FXML
@@ -1090,5 +1126,24 @@ public class DashboardController extends Application {
 		lblScore.setDisable(true);
 		lblHits.setDisable(true);
 		lblGolds.setDisable(true);
+	}
+	
+	@FXML
+	public void previewIndividualResults(ActionEvent event) throws ParseException, JRException, SQLException {
+		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
+		String title = txtTitle.getText();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy");
+		Date dateUnformatted = dateFormat.parse(txtDate.getText());
+		DateFormat formatter = DateFormat.getDateInstance(DateFormat.FULL);
+		String date = formatter.format(dateUnformatted);
+		String bestGold = "", worstWhite = "";
+		if(!cmbBestGold.getSelectionModel().isEmpty() && !cmbBestGold.getSelectionModel().getSelectedItem().equals("None")) {
+			bestGold = cmbBestGold.getSelectionModel().getSelectedItem().split("-")[1];
+		}
+		if(!cmbWorstWhite.getSelectionModel().isEmpty() && !cmbWorstWhite.getSelectionModel().getSelectedItem().equals("None")) {
+			worstWhite = cmbWorstWhite.getSelectionModel().getSelectedItem().split("-")[1];
+		}
+		boolean metric = chkMetric.isSelected();
+		results.generateIndividualResults(tID, title, date, metric, bestGold, worstWhite);
 	}
 }
