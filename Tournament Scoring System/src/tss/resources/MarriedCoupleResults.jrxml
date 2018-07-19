@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MarriedCoupleResults" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="865b6f3c-c2ce-4ac2-bd3a-cbbf6829dc8d">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="METRIC" class="java.lang.Boolean"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="ArcherFirstName" class="java.lang.String"/>
+	<field name="ArcherLastName" class="java.lang.String"/>
+	<field name="ArcherScore" class="java.lang.Integer"/>
+	<field name="ArcherHits" class="java.lang.Integer"/>
+	<field name="ArcherGolds" class="java.lang.Integer"/>
+	<field name="ArcherXs" class="java.lang.Integer"/>
+	<field name="SpouseFirstName" class="java.lang.String"/>
+	<field name="SpouseLastName" class="java.lang.String"/>
+	<field name="SpouseScore" class="java.lang.Integer"/>
+	<field name="SpouseHits" class="java.lang.Integer"/>
+	<field name="SpouseGolds" class="java.lang.Integer"/>
+	<field name="SpouseXs" class="java.lang.Integer"/>
+	<variable name="ScoreTotal" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{ArcherScore} + $F{SpouseScore}]]></variableExpression>
+	</variable>
+	<variable name="HitsTotal" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{ArcherHits} + $F{SpouseHits}]]></variableExpression>
+	</variable>
+	<variable name="GoldsTotal" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{ArcherGolds} + $F{SpouseGolds}]]></variableExpression>
+	</variable>
+	<variable name="XsTotal" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{ArcherXs} + $F{SpouseXs}]]></variableExpression>
+	</variable>
+	<title>
+		<band height="80" splitType="Stretch">
+			<rectangle>
+				<reportElement x="5" y="60" width="545" height="20" forecolor="#000000" backcolor="#3A539B" uuid="e7737412-0fbc-477e-bc8e-f63d335917fc"/>
+				<graphicElement>
+					<pen lineColor="#3A539B"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="475" y="60" width="40" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="b3fdd19f-dae9-4ac9-8c8c-856dcb16b1f8"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Golds]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="60" width="50" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="ffca6b8d-89c7-4afd-a460-4318902bb1c1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Score]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="60" width="40" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="d5dbf8c1-910f-428a-abe9-8125bdb486c7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Hits]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="515" y="60" width="25" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="123610d2-6de8-40b8-8f89-7508ed3d2692">
+					<printWhenExpression><![CDATA[$P{METRIC} == true]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Xs]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="22" width="200" height="20" uuid="c886e804-c589-4f09-af21-8f4c633f6168"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Married Couple Results]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="95" splitType="Stretch">
+			<textField>
+				<reportElement x="80" y="30" width="100" height="20" uuid="98a3e0b3-714f-4dca-aebe-62d1ac631440"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ArcherFirstName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="30" width="100" height="20" uuid="99d103a8-974a-4561-b9f7-c2798588e485"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ArcherLastName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="385" y="30" width="50" height="20" uuid="d6e1990f-7829-4746-85c7-8abb4d2e9f3e"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ArcherScore}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="435" y="30" width="40" height="20" uuid="c5ae672e-0c1b-457b-9d72-b9ec2c30740e"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ArcherHits}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="475" y="30" width="40" height="20" uuid="ba99bbcd-5800-4bc1-a0f9-a36f7c9dc3b5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ArcherGolds}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="515" y="30" width="25" height="20" uuid="a2e02bb6-3278-45c6-9e6a-59d6bec5ea5b">
+					<printWhenExpression><![CDATA[$P{METRIC} == true]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ArcherXs}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="30" width="25" height="20" uuid="5ab1b776-bea7-40f6-a36d-176eea1e5fec"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="50" width="100" height="20" uuid="64e7a177-7854-492e-9cc0-09bd9f76a884"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SpouseFirstName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="50" width="100" height="20" uuid="8c49cc46-0f51-498e-8f67-512a8f5d5c7b"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SpouseLastName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="385" y="50" width="50" height="20" uuid="4add9cca-7a3b-43bd-8b31-d3d2605342f3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SpouseScore}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="435" y="50" width="40" height="20" uuid="89a71008-d191-4d14-9208-98d59613e7a3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SpouseHits}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="475" y="50" width="40" height="20" uuid="dd15d853-ef17-46b4-8dbc-b32bc375df6f"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SpouseGolds}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="515" y="50" width="25" height="20" uuid="9efd0252-fd40-4940-9fd4-f04ba07be41c">
+					<printWhenExpression><![CDATA[$P{METRIC} == true]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SpouseXs}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="375" y="71" width="160" height="1" forecolor="#7D7D7D" uuid="f04ce4b4-ec1f-42ac-8f76-33c5a3e39128"/>
+			</line>
+			<textField>
+				<reportElement x="385" y="71" width="50" height="20" uuid="503de67f-e9ba-448a-bcd5-60a58b996311"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{ScoreTotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="435" y="71" width="40" height="20" uuid="f83f2d11-7d5f-4d40-8d9b-2b31b5419f20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{HitsTotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="475" y="71" width="40" height="20" uuid="ae558cf6-d964-43fe-9488-9d321581cad6"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{GoldsTotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="515" y="71" width="25" height="20" uuid="54565f32-60d9-4ad0-8f78-d19862aed779">
+					<printWhenExpression><![CDATA[$P{METRIC} == true]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{XsTotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

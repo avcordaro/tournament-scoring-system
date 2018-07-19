@@ -93,6 +93,8 @@ public class DashboardController extends Application {
     @FXML
     private Button btnGenerateIndividualResults;
     @FXML
+    private Button btnGenerateCoupleResults;
+    @FXML
     private StackPane stpEditSaveTournament;
     @FXML
     private StackPane stpTournamentDate;
@@ -446,6 +448,7 @@ public class DashboardController extends Application {
 		cmbBestGold.setDisable(true);
 		cmbWorstWhite.setDisable(true);
 		btnGenerateIndividualResults.setDisable(true);
+		btnGenerateCoupleResults.setDisable(true);
 	}
 	
 	
@@ -517,6 +520,7 @@ public class DashboardController extends Application {
 		cmbBestGold.setDisable(true);
 		cmbWorstWhite.setDisable(true);
 		btnGenerateIndividualResults.setDisable(true);
+		btnGenerateCoupleResults.setDisable(true);
 		loadTournament(event);
 	}
 	
@@ -670,7 +674,6 @@ public class DashboardController extends Application {
 				cmbMarriedCouple.getSelectionModel().select(rs.getString(1) + " - " + rs.getString(3)
 						+ " " + rs.getString(4));
 				cmbMarriedCouple.setDisable(true);
-				cmbMarriedCouple.setOpacity(1.00);
 			}
 		}
 		btnSaveEditArcher.setVisible(true);
@@ -881,6 +884,7 @@ public class DashboardController extends Application {
 		cmbBestGold.setDisable(tableData.isEmpty() ? true : false);
 		cmbWorstWhite.setDisable(tableData.isEmpty() ? true : false);
 		btnGenerateIndividualResults.setDisable(tableData.isEmpty() ? true : false);
+		btnGenerateCoupleResults.setDisable(!chkMarriedCouples.isSelected() || tableData.isEmpty() ? true : false);
 	}
 	
 	@FXML
@@ -1145,5 +1149,12 @@ public class DashboardController extends Application {
 		}
 		boolean metric = chkMetric.isSelected();
 		results.generateIndividualResults(tID, title, date, metric, bestGold, worstWhite);
+	}
+	
+	@FXML
+	public void previewMarriedCoupleResults(ActionEvent event) throws ParseException, JRException, SQLException {
+		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
+		boolean metric = chkMetric.isSelected();
+		results.generateMarriedCoupleResults(tID, metric);
 	}
 }
