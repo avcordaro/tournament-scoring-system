@@ -10,6 +10,7 @@
 	<field name="lastName" class="java.lang.String"/>
 	<field name="club" class="java.lang.String"/>
 	<field name="bowType" class="java.lang.String"/>
+	<field name="gender" class="java.lang.String"/>
 	<field name="score" class="java.lang.Integer"/>
 	<field name="hits" class="java.lang.Integer"/>
 	<field name="golds" class="java.lang.Integer"/>
@@ -45,6 +46,20 @@
 				<line>
 					<reportElement x="10" y="41" width="533" height="1" forecolor="#7D7D7D" uuid="920814c2-5e4b-411e-b259-c70013abf759"/>
 				</line>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Gender">
+		<groupExpression><![CDATA[$F{gender}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<textField>
+					<reportElement x="34" y="10" width="100" height="20" uuid="09485420-0ea0-4ee3-8255-d826b008e639"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true" isItalic="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{gender} + 's']]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
 	</group>

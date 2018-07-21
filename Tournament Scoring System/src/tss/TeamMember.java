@@ -10,6 +10,7 @@ public class TeamMember implements Serializable {
 	private String lastName;
 	private String club;
 	private String bowType;
+	private String gender;
 	private int score;
 	private int hits;
 	private int golds;
@@ -58,6 +59,15 @@ public class TeamMember implements Serializable {
 	public void setBowType(String bowType) {
 		this.bowType = bowType;
 	}
+	
+	public String getGender() {
+		return gender;
+	}
+	
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	
 	public int getScore() {
 		return score;
 	}

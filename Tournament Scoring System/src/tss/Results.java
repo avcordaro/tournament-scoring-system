@@ -77,58 +77,73 @@ public class Results {
 	public void generateTeamResults(int tournamentID, String round, int apt, ArrayList<String> bowTypes, boolean mixed, boolean metric) 
 			throws SQLException, JRException {
 		ArrayList<TeamMember> teamResultsData = new ArrayList<TeamMember>();
+		ArrayList<String> genders = new ArrayList<String>();
+		if(mixed) {
+			genders.add("\"Men\", \"Women\"");
+		} else {
+			genders.add("\"Men\"");
+			genders.add("\"Women\"");
+		}
 		for(String bow : bowTypes) {
-			String query = "SELECT Club FROM Archer, Score, Category WHERE Archer.ArcherID = Score.ArcherID AND Archer.Category = Category.Name"
-					+ " AND TournamentID=? AND Round=? AND BowType=? GROUP BY Club HAVING COUNT(*) >= ?;";
-			PreparedStatement prepStmt = conn.prepareStatement(query);
-			prepStmt.setInt(1, tournamentID);
-			prepStmt.setString(2, round);
-			prepStmt.setString(3, bow);
-			prepStmt.setInt(4, apt);
-			ResultSet qualifyingClubs = prepStmt.executeQuery();
-			ArrayList<Team> clubTeams = new ArrayList<Team>();
-			while(qualifyingClubs.next()) {
-				String sql = "SELECT Archer.ArcherID AS ArchID, Score, Hits, Golds, Xs FROM Archer, Score WHERE Archer.ArcherID = Score.ArcherID AND TournamentID=?"
-						+ " AND Club=? ORDER BY Score DESC, Hits DESC, Golds DESC, Xs DESC LIMIT ?;";
-				PreparedStatement stmt = conn.prepareStatement(sql);
-				stmt.setInt(1, tournamentID);
-				stmt.setString(2, qualifyingClubs.getString("Club"));
-				stmt.setInt(3, apt);
-				ResultSet clubTeam = stmt.executeQuery();
-				Team team = new Team(qualifyingClubs.getString("Club"));
-				while(clubTeam.next()) {
-					team.addArcherID(clubTeam.getInt("ArchID"));
-					team.incrementTotalHits(clubTeam.getInt("Score"));
-					team.incrementTotalGolds(clubTeam.getInt("Golds"));
-					team.incrementTotalXs(clubTeam.getInt("Xs"));
+			for(String gender : genders) {
+				String query = "SELECT Club FROM Archer, Score, Category WHERE Archer.ArcherID = Score.ArcherID AND Archer.Category = Category.Name"
+						+ " AND TournamentID=? AND Round=? AND BowType=? AND Gender IN (" + gender + ") GROUP BY Club HAVING COUNT(*) >= ?;";
+				PreparedStatement prepStmt = conn.prepareStatement(query);
+				prepStmt.setInt(1, tournamentID);
+				prepStmt.setString(2, round);
+				prepStmt.setString(3, bow);
+				prepStmt.setInt(4, apt);
+				ResultSet qualifyingClubs = prepStmt.executeQuery();
+				ArrayList<Team> clubTeams = new ArrayList<Team>();
+				while(qualifyingClubs.next()) {
+					String sql = "SELECT Archer.ArcherID AS ArchID, Score, Hits, Golds, Xs FROM Archer, Score, Category WHERE Archer.ArcherID = Score.ArcherID AND Archer.Category = Category.Name AND TournamentID=?"
+							+ " AND Club=? AND Gender IN (" + gender + ") ORDER BY Score DESC, Hits DESC, Golds DESC, Xs DESC LIMIT ?;";
+					PreparedStatement stmt = conn.prepareStatement(sql);
+					stmt.setInt(1, tournamentID);
+					stmt.setString(2, qualifyingClubs.getString("Club"));
+					stmt.setInt(3, apt);
+					ResultSet clubTeam = stmt.executeQuery();
+					Team team = new Team(qualifyingClubs.getString("Club"));
+					while(clubTeam.next()) {
+						team.addArcherID(clubTeam.getInt("ArchID"));
+						team.incrementTotalHits(clubTeam.getInt("Score"));
+						team.incrementTotalGolds(clubTeam.getInt("Golds"));
+						team.incrementTotalXs(clubTeam.getInt("Xs"));
+					}
+					clubTeams.add(team);
 				}
-				clubTeams.add(team);
-			}
-			Collections.sort(clubTeams);
-			for(Team t : clubTeams) {
-				String sql = "SELECT FirstName, LastName, Club, BowType, Score, Hits, Golds, Xs FROM Archer, Score WHERE Archer.ArcherID = "
-						+ "Score.ArcherID AND TournamentID=? AND Club=? ORDER BY Score DESC, Hits DESC, Golds DESC, Xs DESC LIMIT ?;";
-				PreparedStatement stmt = conn.prepareStatement(sql);
-				stmt.setInt(1, tournamentID);
-				stmt.setString(2, t.getClub());
-				stmt.setInt(3, apt);
-				ResultSet teamMembers = stmt.executeQuery();
-				while(teamMembers.next()) {
-					TeamMember member = new TeamMember();
-					member.setTeamPosition(clubTeams.indexOf(t) + 1);
-					member.setFirstName(teamMembers.getString("FirstName"));
-					member.setLastName(teamMembers.getString("LastName"));
-					member.setClub(teamMembers.getString("Club"));
-					member.setBowType(teamMembers.getString("BowType"));
-					member.setScore(teamMembers.getInt("Score"));
-					member.setHits(teamMembers.getInt("Hits"));
-					member.setGolds(teamMembers.getInt("Golds"));
-					member.setXs(teamMembers.getInt("Xs"));
-					teamResultsData.add(member);
+				Collections.sort(clubTeams);
+				for(Team t : clubTeams) {
+					String sql = "SELECT FirstName, LastName, Club, BowType, Gender, Score, Hits, Golds, Xs FROM Archer, Score, Category WHERE Archer.ArcherID = "
+							+ "Score.ArcherID AND Archer.Category = Category.Name AND TournamentID=? AND Club=? AND Gender IN (" + gender + ") ORDER BY Score DESC, Hits DESC, Golds DESC, Xs DESC LIMIT ?;";
+					PreparedStatement stmt = conn.prepareStatement(sql);
+					stmt.setInt(1, tournamentID);
+					stmt.setString(2, t.getClub());
+					stmt.setInt(3, apt);
+					ResultSet teamMembers = stmt.executeQuery();
+					while(teamMembers.next()) {
+						TeamMember member = new TeamMember();
+						member.setTeamPosition(clubTeams.indexOf(t) + 1);
+						member.setFirstName(teamMembers.getString("FirstName"));
+						member.setLastName(teamMembers.getString("LastName"));
+						member.setClub(teamMembers.getString("Club"));
+						member.setBowType(teamMembers.getString("BowType"));
+						if(!mixed) { member.setGender(teamMembers.getString("Gender")); }
+						member.setScore(teamMembers.getInt("Score"));
+						member.setHits(teamMembers.getInt("Hits"));
+						member.setGolds(teamMembers.getInt("Golds"));
+						member.setXs(teamMembers.getInt("Xs"));
+						teamResultsData.add(member);
+					}
 				}
 			}
 		}
-		JasperReport jr = JasperCompileManager.compileReport(getClass().getResourceAsStream("resources/TeamMixedResults.jrxml"));
+		JasperReport jr;
+		if(mixed) {
+			jr = JasperCompileManager.compileReport(getClass().getResourceAsStream("resources/TeamMixedResults.jrxml"));
+		} else {
+			jr = JasperCompileManager.compileReport(getClass().getResourceAsStream("resources/TeamSeparateResults.jrxml"));
+		}
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("METRIC", metric);
 		params.put("ROUND", round);
