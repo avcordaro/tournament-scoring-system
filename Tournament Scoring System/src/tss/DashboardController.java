@@ -346,11 +346,11 @@ public class DashboardController extends Application {
 		return input;
 	}
 	
-	public void archerNotFoundDialog(Optional<String> input) {
+	public void informationDialog(String title, String message) {
 		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Archer not found");
+		alert.setTitle(title);
 		alert.setHeaderText(null);
-		alert.setContentText("Archer ID \"" + input.get() + "\" could not be found.");
+		alert.setContentText(message);
 		DialogPane dialogPane = alert.getDialogPane();
 		dialogPane = alert.getDialogPane();
 		dialogPane.getStylesheets().add(getClass().getResource("resources/DashboardStylesheet.css").toExternalForm());
@@ -405,6 +405,16 @@ public class DashboardController extends Application {
 			txtVenue.clear();
 			txtAssembly.clear();
 			txtSighters.clear();
+			cmbTeamRound.getSelectionModel().clearSelection();
+			txtArchersPerTeam.clear();
+			chkTeamCompound.setSelected(false);
+			chkTeamRecurve.setSelected(false);
+			chkTeamBarebow.setSelected(false);
+			chkTeamLongbow.setSelected(false);
+			rdbGenderMixed.setSelected(true);
+			rdbGenderSeparate.setSelected(false);
+			cmbBestGold.getSelectionModel().clearSelection();
+			cmbWorstWhite.getSelectionModel().clearSelection();
 			fillArcherTableView(id);
 			fillTargetListTableView(id);
 			fillScoresTableView(id);
@@ -806,7 +816,7 @@ public class DashboardController extends Application {
 			}
 		}
 		if(input.isPresent()) {
-			archerNotFoundDialog(input);
+			informationDialog("Archer Not Found", "Archer ID " + input.get() + "does not exist.");
 		}
 	}
 	
@@ -868,7 +878,7 @@ public class DashboardController extends Application {
 			}
 		} 
 		if(input.isPresent()) {
-			archerNotFoundDialog(input);
+			informationDialog("Archer Not Found", "Archer ID " + input.get() + "does not exist.");
 		}
 	}
 	
@@ -1138,7 +1148,7 @@ public class DashboardController extends Application {
 			}
 		}
 		if(input.isPresent()) {
-			archerNotFoundDialog(input);
+			informationDialog("Archer Not Found", "Archer ID " + input.get() + "does not exist.");
 		}
 	}
 	
@@ -1239,14 +1249,20 @@ public class DashboardController extends Application {
 			worstWhite = cmbWorstWhite.getSelectionModel().getSelectedItem().split("-")[1];
 		}
 		boolean metric = chkMetric.isSelected();
-		results.generateIndividualResults(tID, title, date, metric, bestGold, worstWhite);
+		boolean success = results.generateIndividualResults(tID, title, date, metric, bestGold, worstWhite);
+		if(!success) { 
+			informationDialog("No Results", "No results were yielded for Individual Results."); 
+		}
 	}
 	
 	@FXML
 	public void previewMarriedCoupleResults(ActionEvent event) throws ParseException, JRException, SQLException {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		boolean metric = chkMetric.isSelected();
-		results.generateMarriedCoupleResults(tID, metric);
+		boolean success = results.generateMarriedCoupleResults(tID, metric);
+		if(!success) { 
+			informationDialog("No Results", "No results were yielded for Married Couples."); 
+		}
 	}
 	
 	@FXML
@@ -1261,6 +1277,9 @@ public class DashboardController extends Application {
 		if(chkTeamBarebow.isSelected()) { bowTypes.add("Barebow"); }
 		if(chkTeamLongbow.isSelected()) { bowTypes.add("Longbow"); }
 		boolean mixed = rdbGenderMixed.isSelected();
-		results.generateTeamResults(tID, round, apt, bowTypes, mixed, metric);
+		boolean success = results.generateTeamResults(tID, round, apt, bowTypes, mixed, metric);
+		if(!success) { 
+			informationDialog("No Results", "Your team properties selection yielded no results."); 
+		}
 	}
 }
