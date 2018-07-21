@@ -10,8 +10,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Optional;
 
 import javafx.application.Application;
@@ -485,6 +485,23 @@ public class DashboardController extends Application {
 		cmbWorstWhite.setDisable(true);
 		btnGenerateIndividualResults.setDisable(true);
 		btnGenerateCoupleResults.setDisable(true);
+		cmbTeamRound.setDisable(true);
+		lblTeamRound.setDisable(true);
+		txtArchersPerTeam.setDisable(true);
+		lblArchersPerTeam.setDisable(true);
+		chkTeamCompound.setDisable(true);
+		lblTeamCompound.setDisable(true);
+		chkTeamRecurve.setDisable(true);
+		lblTeamRecurve.setDisable(true);
+		chkTeamBarebow.setDisable(true);
+		lblTeamBarebow.setDisable(true);
+		chkTeamLongbow.setDisable(true);
+		lblTeamLongbow.setDisable(true);
+		rdbGenderMixed.setDisable(true);
+		lblGenderMixed.setDisable(true);
+		rdbGenderSeparate.setDisable(true);
+		lblGenderSeparate.setDisable(true);
+		btnGenerateTeamResults.setDisable(true);
 	}
 	
 	
@@ -557,6 +574,23 @@ public class DashboardController extends Application {
 		cmbWorstWhite.setDisable(true);
 		btnGenerateIndividualResults.setDisable(true);
 		btnGenerateCoupleResults.setDisable(true);
+		cmbTeamRound.setDisable(true);
+		lblTeamRound.setDisable(true);
+		txtArchersPerTeam.setDisable(true);
+		lblArchersPerTeam.setDisable(true);
+		chkTeamCompound.setDisable(true);
+		lblTeamCompound.setDisable(true);
+		chkTeamRecurve.setDisable(true);
+		lblTeamRecurve.setDisable(true);
+		chkTeamBarebow.setDisable(true);
+		lblTeamBarebow.setDisable(true);
+		chkTeamLongbow.setDisable(true);
+		lblTeamLongbow.setDisable(true);
+		rdbGenderMixed.setDisable(true);
+		lblGenderMixed.setDisable(true);
+		rdbGenderSeparate.setDisable(true);
+		lblGenderSeparate.setDisable(true);
+		btnGenerateTeamResults.setDisable(true);
 		loadTournament(event);
 	}
 	
@@ -801,11 +835,15 @@ public class DashboardController extends Application {
 		txtVenue.setDisable(data.isEmpty() ? true : false);
 		txtAssembly.setDisable(data.isEmpty() ? true : false);
 		txtSighters.setDisable(data.isEmpty() ? true : false);
+		HashSet<String> roundsSet = new HashSet<String>();
     	if(!data.isEmpty()) {
     		for(TargetEntry entry : data) {
     			tbvTargetList.getItems().add(entry);
+    			roundsSet.add(entry.getRound());
     		}
     	}
+    	cmbTeamRound.getItems().clear();
+    	cmbTeamRound.getItems().addAll(roundsSet);
 	}
 	
 	@FXML
@@ -921,6 +959,23 @@ public class DashboardController extends Application {
 		cmbWorstWhite.setDisable(tableData.isEmpty() ? true : false);
 		btnGenerateIndividualResults.setDisable(tableData.isEmpty() ? true : false);
 		btnGenerateCoupleResults.setDisable(!chkMarriedCouples.isSelected() || tableData.isEmpty() ? true : false);
+		cmbTeamRound.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		lblTeamRound.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		txtArchersPerTeam.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		lblArchersPerTeam.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		chkTeamCompound.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		lblTeamCompound.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		chkTeamRecurve.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		lblTeamRecurve.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		chkTeamBarebow.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		lblTeamBarebow.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		chkTeamLongbow.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		lblTeamLongbow.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		rdbGenderMixed.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		lblGenderMixed.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		rdbGenderSeparate.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		lblGenderSeparate.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		btnGenerateTeamResults.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
 	}
 	
 	@FXML
@@ -1195,13 +1250,17 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
-	public void previewTeamResults(ActionEvent event) {
+	public void previewTeamResults(ActionEvent event) throws SQLException, JRException {
+		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
+		boolean metric = chkMetric.isSelected();
 		String round = cmbTeamRound.getSelectionModel().getSelectedItem();
+		int apt = Integer.parseInt(txtArchersPerTeam.getText());
 		ArrayList<String> bowTypes = new ArrayList<String>();
 		if(chkTeamCompound.isSelected()) { bowTypes.add("Compound"); }
 		if(chkTeamRecurve.isSelected()) { bowTypes.add("Recurve"); }
 		if(chkTeamBarebow.isSelected()) { bowTypes.add("Barebow"); }
 		if(chkTeamLongbow.isSelected()) { bowTypes.add("Longbow"); }
 		boolean mixed = rdbGenderMixed.isSelected();
+		results.generateTeamResults(tID, round, apt, bowTypes, mixed, metric);
 	}
 }

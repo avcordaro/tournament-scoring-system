@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TeamMixedResults" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b147b0e9-900f-4b5c-bd49-588caab449f4">
+	<parameter name="METRIC" class="java.lang.Boolean"/>
+	<parameter name="ROUND" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="firstName" class="java.lang.String"/>
+	<field name="lastName" class="java.lang.String"/>
+	<field name="club" class="java.lang.String"/>
+	<field name="bowType" class="java.lang.String"/>
+	<field name="score" class="java.lang.Integer"/>
+	<field name="hits" class="java.lang.Integer"/>
+	<field name="golds" class="java.lang.Integer"/>
+	<field name="xs" class="java.lang.Integer"/>
+	<field name="teamPosition" class="java.lang.Integer"/>
+	<variable name="TOTAL_SCORE" class="java.lang.Integer" resetType="Group" resetGroup="Club" calculation="Sum">
+		<variableExpression><![CDATA[$F{score}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="TOTAL_HITS" class="java.lang.Integer" resetType="Group" resetGroup="Club" calculation="Sum">
+		<variableExpression><![CDATA[$F{hits}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="TOTAL_GOLDS" class="java.lang.Integer" resetType="Group" resetGroup="Club" calculation="Sum">
+		<variableExpression><![CDATA[$F{golds}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="TOTAL_XS" class="java.lang.Integer" resetType="Group" resetGroup="Club" calculation="Sum">
+		<variableExpression><![CDATA[$F{xs}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<group name="BowType">
+		<groupExpression><![CDATA[$F{bowType}]]></groupExpression>
+		<groupHeader>
+			<band height="46">
+				<textField>
+					<reportElement x="20" y="21" width="100" height="20" uuid="190f4ceb-0bda-4afd-a176-2129f79df4f9"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{bowType}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="10" y="41" width="533" height="1" forecolor="#7D7D7D" uuid="920814c2-5e4b-411e-b259-c70013abf759"/>
+				</line>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Club">
+		<groupExpression><![CDATA[$F{club}]]></groupExpression>
+		<groupHeader>
+			<band height="40">
+				<rectangle>
+					<reportElement positionType="Float" x="33" y="20" width="510" height="20" backcolor="#ECEFF8" uuid="ef25b6b7-28ac-42fe-9808-dffb7f81ac11"/>
+					<graphicElement>
+						<pen lineColor="#FFFFFF"/>
+					</graphicElement>
+				</rectangle>
+				<textField>
+					<reportElement x="70" y="20" width="200" height="20" uuid="1e5e0c3d-1ca4-4eb3-a8ca-19d6b8cb786c"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{club}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="45" y="20" width="25" height="20" uuid="ac3fc53e-5944-4ebf-a23b-a824c83a16d0"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{teamPosition}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="22">
+				<textField>
+					<reportElement x="385" y="2" width="50" height="20" uuid="4c6955e9-1f07-4cf7-9b10-751d88d34b43"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{TOTAL_SCORE}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="435" y="2" width="40" height="20" uuid="fa89291d-81b5-44e8-9dee-51d181a4763d"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{TOTAL_HITS}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="475" y="2" width="40" height="20" uuid="893948a1-aeab-4bff-acec-1370c514736e"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{TOTAL_GOLDS}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="515" y="2" width="25" height="20" uuid="d7337e5d-1867-4847-9870-aa5599f287ad">
+						<printWhenExpression><![CDATA[$P{METRIC} == true]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{TOTAL_XS}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="375" y="2" width="160" height="1" forecolor="#7D7D7D" uuid="6a6d4f95-819c-451e-a5ec-41a6cf4baf4c"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<title>
+		<band height="100" splitType="Stretch">
+			<rectangle>
+				<reportElement x="5" y="80" width="545" height="20" forecolor="#000000" backcolor="#3A539B" uuid="0be99a93-d35f-4b8d-9c41-ab2b13a735ed"/>
+				<graphicElement>
+					<pen lineColor="#3A539B"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="475" y="80" width="40" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="cc5dc690-cbf9-4dd9-a486-97febb05505a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Golds]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="80" width="50" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="b89e901e-7832-42be-a379-aee9ff2e23a6"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Score]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="80" width="40" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="8461f3cd-2e9d-475b-9ecc-96f56b75fb51"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Hits]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="515" y="80" width="25" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="114c7a10-3e4e-459d-a125-20f258a222a9">
+					<printWhenExpression><![CDATA[$P{METRIC} == true]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Xs]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="22" width="200" height="20" uuid="f7d15f4c-f772-4651-a4de-1e6a90d973c6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Team Results]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="180" y="44" width="200" height="20" uuid="c25a1146-ea41-4614-b05c-4378fd5ed2fa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ROUND}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="70" y="0" width="100" height="20" uuid="f1aa2f79-0ea4-4389-bef6-9195f348a1ea"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{firstName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="0" width="100" height="20" uuid="ab10aed9-db02-4703-99a3-c3c0b5b5188b"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{lastName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="385" y="0" width="50" height="20" uuid="46391d03-e086-482e-b6c0-e36b598322ee"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{score}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="435" y="0" width="40" height="20" uuid="c8de61f8-349c-4936-8e2f-1a7259417cb5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{hits}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="475" y="0" width="40" height="20" uuid="3b794dde-542b-42e2-b6ca-857670ffd73c"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{golds}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="515" y="0" width="25" height="20" uuid="fe86a189-1156-4343-97c5-9e6c1cc5e565">
+					<printWhenExpression><![CDATA[$P{METRIC} == true]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{xs}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

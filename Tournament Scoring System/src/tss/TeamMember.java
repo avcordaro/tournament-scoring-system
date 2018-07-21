@@ -5,16 +5,26 @@ import java.io.Serializable;
 public class TeamMember implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
+	private int teamPosition;
 	private String firstName;
 	private String lastName;
 	private String club;
+	private String bowType;
 	private int score;
 	private int hits;
 	private int golds;
-	private int Xs;
+	private int xs;
 	
 	public TeamMember() {
 		super();
+	}
+	
+	public int getTeamPosition() {
+		return teamPosition;
+	}
+	
+	public void setTeamPosition(int teamPosition) {
+		this.teamPosition = teamPosition;
 	}
 	
 	public String getFirstName() {
@@ -40,7 +50,14 @@ public class TeamMember implements Serializable {
 	public void setClub(String club) {
 		this.club = club;
 	}
-
+	
+	public String getBowType() {
+		return bowType;
+	}
+	
+	public void setBowType(String bowType) {
+		this.bowType = bowType;
+	}
 	public int getScore() {
 		return score;
 	}
@@ -66,11 +83,10 @@ public class TeamMember implements Serializable {
 	}
 
 	public int getXs() {
-		return Xs;
+		return xs;
 	}
 
 	public void setXs(int xs) {
-		Xs = xs;
+		this.xs = xs;
 	}
-
 }

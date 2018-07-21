@@ -13,6 +13,7 @@ public class Team implements Comparable<Team> {
 	
 	public Team(String c) {
 		club = c;
+		archerIDs = new ArrayList<Integer>();
 	}
 	
 	public void addArcherID(int id) {
