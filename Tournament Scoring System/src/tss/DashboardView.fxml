@@ -983,7 +983,7 @@
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <HBox>
+                              <HBox alignment="CENTER">
                                  <children>
                                     <Label fx:id="lblTeamRound" disable="true" prefWidth="150.0" text="Round:">
                                        <font>
@@ -995,12 +995,25 @@
                                     <Insets top="10.0" />
                                  </padding>
                               </HBox>
+                              <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="40.0">
+                                 <children>
+                                    <Label fx:id="lblArchersPerTeam" disable="true" prefWidth="150.0" text="Archers per Team:">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="txtArchersPerTeam" disable="true" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets top="5.0" />
+                                 </padding>
+                              </HBox>
                               <Label text="Bow Types:">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="20.0" />
+                                    <Insets top="10.0" />
                                  </VBox.margin></Label>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
@@ -1008,7 +1021,7 @@
                                     <CheckBox fx:id="chkTeamCompound" disable="true" mnemonicParsing="false" />
                                  </children>
                                  <VBox.margin>
-                                    <Insets top="10.0" />
+                                    <Insets top="2.5" />
                                  </VBox.margin>
                               </HBox>
                               <HBox alignment="CENTER_LEFT">
@@ -1043,18 +1056,18 @@
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="20.0" />
+                                    <Insets top="10.0" />
                                  </VBox.margin></Label>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
                                     <Label fx:id="lblGenderMixed" disable="true" prefWidth="150.0" text="Mixed" />
-                                    <RadioButton fx:id="rdbGenderMixed" disable="true" mnemonicParsing="false">
+                                    <RadioButton fx:id="rdbGenderMixed" disable="true" mnemonicParsing="false" selected="true">
                                        <toggleGroup>
                                           <ToggleGroup fx:id="Gender" />
                                        </toggleGroup></RadioButton>
                                  </children>
                                  <VBox.margin>
-                                    <Insets top="10.0" />
+                                    <Insets top="2.5" />
                                  </VBox.margin>
                               </HBox>
                               <HBox alignment="CENTER_LEFT">

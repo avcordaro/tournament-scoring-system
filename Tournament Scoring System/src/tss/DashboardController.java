@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
 
@@ -27,6 +28,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -95,6 +97,8 @@ public class DashboardController extends Application {
     @FXML
     private Button btnGenerateCoupleResults;
     @FXML
+    private Button btnGenerateTeamResults;
+    @FXML
     private StackPane stpEditSaveTournament;
     @FXML
     private StackPane stpTournamentDate;
@@ -145,6 +149,8 @@ public class DashboardController extends Application {
     @FXML
     private TextField txtXs;
     @FXML
+    private TextField txtArchersPerTeam;
+    @FXML
     private CheckBox chkMetric;
     @FXML
     private CheckBox chkTeams;
@@ -156,6 +162,18 @@ public class DashboardController extends Application {
     private CheckBox chkNewTeams;
     @FXML
     private CheckBox chkNewMarriedCouples;
+    @FXML
+    private CheckBox chkTeamCompound;
+    @FXML
+    private CheckBox chkTeamRecurve;
+    @FXML
+    private CheckBox chkTeamBarebow;
+    @FXML
+    private CheckBox chkTeamLongbow;
+    @FXML
+    private RadioButton rdbGenderMixed;
+    @FXML
+    private RadioButton rdbGenderSeparate;
     @FXML
     private Label lblTotalArchers;
     @FXML
@@ -179,6 +197,22 @@ public class DashboardController extends Application {
     @FXML
     private Label lblWorstWhite;
     @FXML
+    private Label lblTeamRound;
+    @FXML
+    private Label lblArchersPerTeam;
+    @FXML
+    private Label lblTeamCompound;
+    @FXML
+    private Label lblTeamRecurve;
+    @FXML
+    private Label lblTeamBarebow;
+    @FXML
+    private Label lblTeamLongbow;
+    @FXML
+    private Label lblGenderMixed;
+    @FXML
+    private Label lblGenderSeparate;
+    @FXML
     private ComboBox<TournamentMap> cmbTournament;
     @FXML
     private ComboBox<String> cmbCategory;
@@ -194,6 +228,8 @@ public class DashboardController extends Application {
     private ComboBox<String> cmbBestGold;
     @FXML
     private ComboBox<String> cmbWorstWhite;
+    @FXML
+    private ComboBox<String> cmbTeamRound;
     @FXML
     private VBox vboxTournament;
     @FXML
@@ -1156,5 +1192,16 @@ public class DashboardController extends Application {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		boolean metric = chkMetric.isSelected();
 		results.generateMarriedCoupleResults(tID, metric);
+	}
+	
+	@FXML
+	public void previewTeamResults(ActionEvent event) {
+		String round = cmbTeamRound.getSelectionModel().getSelectedItem();
+		ArrayList<String> bowTypes = new ArrayList<String>();
+		if(chkTeamCompound.isSelected()) { bowTypes.add("Compound"); }
+		if(chkTeamRecurve.isSelected()) { bowTypes.add("Recurve"); }
+		if(chkTeamBarebow.isSelected()) { bowTypes.add("Barebow"); }
+		if(chkTeamLongbow.isSelected()) { bowTypes.add("Longbow"); }
+		boolean mixed = rdbGenderMixed.isSelected();
 	}
 }
