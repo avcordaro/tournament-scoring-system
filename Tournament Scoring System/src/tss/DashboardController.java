@@ -14,12 +14,17 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
 
+import javax.swing.ImageIcon;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRPrintPage;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -98,6 +103,8 @@ public class DashboardController extends Application {
     private Button btnGenerateCoupleResults;
     @FXML
     private Button btnGenerateTeamResults;
+    @FXML
+    private Button btnExportFullResults;
     @FXML
     private StackPane stpEditSaveTournament;
     @FXML
@@ -512,6 +519,7 @@ public class DashboardController extends Application {
 		rdbGenderSeparate.setDisable(true);
 		lblGenderSeparate.setDisable(true);
 		btnGenerateTeamResults.setDisable(true);
+		btnExportFullResults.setDisable(true);
 	}
 	
 	
@@ -601,6 +609,7 @@ public class DashboardController extends Application {
 		rdbGenderSeparate.setDisable(true);
 		lblGenderSeparate.setDisable(true);
 		btnGenerateTeamResults.setDisable(true);
+		btnExportFullResults.setDisable(true);
 		loadTournament(event);
 	}
 	
@@ -986,6 +995,7 @@ public class DashboardController extends Application {
 		rdbGenderSeparate.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
 		lblGenderSeparate.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
 		btnGenerateTeamResults.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		btnExportFullResults.setDisable(tableData.isEmpty() ? true : false);
 	}
 	
 	@FXML
@@ -1249,8 +1259,8 @@ public class DashboardController extends Application {
 			worstWhite = cmbWorstWhite.getSelectionModel().getSelectedItem().split("-")[1];
 		}
 		boolean metric = chkMetric.isSelected();
-		boolean success = results.generateIndividualResults(tID, title, date, metric, bestGold, worstWhite);
-		if(!success) { 
+		JasperPrint jPrint = results.generateIndividualResults(tID, title, date, metric, bestGold, worstWhite, true);
+		if(jPrint.getPages().isEmpty()) { 
 			informationDialog("No Results", "No results were yielded for Individual Results."); 
 		}
 	}
@@ -1259,8 +1269,8 @@ public class DashboardController extends Application {
 	public void previewMarriedCoupleResults(ActionEvent event) throws ParseException, JRException, SQLException {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		boolean metric = chkMetric.isSelected();
-		boolean success = results.generateMarriedCoupleResults(tID, metric);
-		if(!success) { 
+		JasperPrint jPrint = results.generateMarriedCoupleResults(tID, metric, true);
+		if(jPrint.getPages().isEmpty()) { 
 			informationDialog("No Results", "No results were yielded for Married Couples."); 
 		}
 	}
@@ -1277,9 +1287,67 @@ public class DashboardController extends Application {
 		if(chkTeamBarebow.isSelected()) { bowTypes.add("Barebow"); }
 		if(chkTeamLongbow.isSelected()) { bowTypes.add("Longbow"); }
 		boolean mixed = rdbGenderMixed.isSelected();
-		boolean success = results.generateTeamResults(tID, round, apt, bowTypes, mixed, metric);
-		if(!success) { 
+		JasperPrint jPrint = results.generateTeamResults(tID, round, apt, bowTypes, mixed, metric, true);
+		if(jPrint.getPages().isEmpty()) { 
 			informationDialog("No Results", "Your team properties selection yielded no results."); 
 		}
+	}
+	
+	@FXML
+	public void previewFullResults(ActionEvent event) throws ParseException, JRException, SQLException {
+		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
+		String title = txtTitle.getText();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy");
+		Date dateUnformatted = dateFormat.parse(txtDate.getText());
+		DateFormat formatter = DateFormat.getDateInstance(DateFormat.FULL);
+		String date = formatter.format(dateUnformatted);
+		String bestGold = "", worstWhite = "";
+		if(!cmbBestGold.getSelectionModel().isEmpty() && !cmbBestGold.getSelectionModel().getSelectedItem().equals("None")) {
+			bestGold = cmbBestGold.getSelectionModel().getSelectedItem().split("-")[1];
+		}
+		if(!cmbWorstWhite.getSelectionModel().isEmpty() && !cmbWorstWhite.getSelectionModel().getSelectedItem().equals("None")) {
+			worstWhite = cmbWorstWhite.getSelectionModel().getSelectedItem().split("-")[1];
+		}
+		boolean metric = chkMetric.isSelected();
+		String round = cmbTeamRound.getSelectionModel().getSelectedItem();
+		int apt = 0;
+		if(txtArchersPerTeam.getText().length() != 0) {
+			apt = Integer.parseInt(txtArchersPerTeam.getText());
+		}
+		ArrayList<String> bowTypes = new ArrayList<String>();
+		if(chkTeamCompound.isSelected()) { bowTypes.add("Compound"); }
+		if(chkTeamRecurve.isSelected()) { bowTypes.add("Recurve"); }
+		if(chkTeamBarebow.isSelected()) { bowTypes.add("Barebow"); }
+		if(chkTeamLongbow.isSelected()) { bowTypes.add("Longbow"); }
+		boolean mixed = rdbGenderMixed.isSelected();
+		JasperPrint individual = results.generateIndividualResults(tID, title, date, metric, bestGold, worstWhite, false);
+		JasperPrint couples = null;
+		JasperPrint teams = null;
+		if(chkMarriedCouples.isSelected()) {
+			couples = results.generateMarriedCoupleResults(tID, metric, false);
+		}
+		if(chkTeams.isSelected()) {
+			teams = results.generateTeamResults(tID, round, apt, bowTypes, mixed, metric, false);
+		}
+		JasperPrint fullResults = individual;
+		if(!individual.getPages().isEmpty()) {
+			if(teams != null && !teams.getPages().isEmpty()) {
+				for(JRPrintPage page : teams.getPages()) {
+					fullResults.getPages().add(page);
+				}
+			}
+			if(couples != null && !couples.getPages().isEmpty()) {
+				for(JRPrintPage page : couples.getPages()) {
+					fullResults.getPages().add(page);
+				}
+			}
+		} else {
+			informationDialog("No Results", "Full results could be created as no results for Individuals were yielded.");
+		}
+		JasperViewer jViewer = new JasperViewer(fullResults, false);
+		jViewer.setTitle("Married Couple Results Preview");
+		ImageIcon img = new ImageIcon(getClass().getResource("resources/list.png"));
+		jViewer.setIconImage(img.getImage());
+		jViewer.setVisible(true);
 	}
 }

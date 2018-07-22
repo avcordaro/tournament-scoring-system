@@ -1149,7 +1149,7 @@
                                  </VBox.margin>
                               </Label>
                               <Label prefHeight="20.0" prefWidth="380.0" text="Individual, Team and Married Couple results combined." />
-                              <Button fx:id="btnExportFullResults" disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Export">
+                              <Button fx:id="btnExportFullResults" disable="true" mnemonicParsing="false" onAction="#previewFullResults" prefHeight="30.0" prefWidth="100.0" text="Export">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>

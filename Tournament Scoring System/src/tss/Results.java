@@ -29,7 +29,7 @@ public class Results {
 		conn = c;
 	}
 	
-	public boolean generateMarriedCoupleResults(int tournamentID, boolean metric) throws JRException, SQLException {
+	public JasperPrint generateMarriedCoupleResults(int tournamentID, boolean metric, boolean preview) throws JRException, SQLException {
 		JasperReport jr = JasperCompileManager.compileReport(getClass().getResourceAsStream("resources/MarriedCoupleResults.jrxml"));
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("METRIC", metric);
@@ -44,18 +44,17 @@ public class Results {
 		ResultSet rs = stmt.executeQuery(query);
 		JRDataSource jrDataSource = new JRResultSetDataSource(rs);
 		JasperPrint jPrint = JasperFillManager.fillReport(jr, params, jrDataSource);
-		if(jPrint.getPages().isEmpty()) {
-			return false;
+		if(preview) {
+			JasperViewer jViewer = new JasperViewer(jPrint, false);
+			jViewer.setTitle("Married Couple Results Preview");
+			ImageIcon img = new ImageIcon(getClass().getResource("resources/list.png"));
+			jViewer.setIconImage(img.getImage());
+			jViewer.setVisible(true);
 		}
-		JasperViewer jViewer = new JasperViewer(jPrint, false);
-		jViewer.setTitle("Married Couple Results Preview");
-		ImageIcon img = new ImageIcon(getClass().getResource("resources/list.png"));
-		jViewer.setIconImage(img.getImage());
-		jViewer.setVisible(true);
-		return true;
+		return jPrint;
 	}
 	
-	public boolean generateIndividualResults(int tournamentID, String title, String date, boolean metric, String bestGold, String worstWhite) 
+	public JasperPrint generateIndividualResults(int tournamentID, String title, String date, boolean metric, String bestGold, String worstWhite, boolean preview) 
 			throws JRException, SQLException {
 		JasperReport jr = JasperCompileManager.compileReport(getClass().getResourceAsStream("resources/IndividualResults.jrxml"));
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -71,18 +70,17 @@ public class Results {
 		ResultSet rs = stmt.executeQuery(query);
 		JRDataSource jrDataSource = new JRResultSetDataSource(rs);
 		JasperPrint jPrint = JasperFillManager.fillReport(jr, params, jrDataSource);
-		if(jPrint.getPages().isEmpty()) {
-			return false;
+		if(preview) {
+			JasperViewer jViewer = new JasperViewer(jPrint, false);
+			jViewer.setTitle("Individual Results Preview");
+			ImageIcon img = new ImageIcon(getClass().getResource("resources/list.png"));
+			jViewer.setIconImage(img.getImage());
+			jViewer.setVisible(true);
 		}
-		JasperViewer jViewer = new JasperViewer(jPrint, false);
-		jViewer.setTitle("Individual Results Preview");
-		ImageIcon img = new ImageIcon(getClass().getResource("resources/list.png"));
-		jViewer.setIconImage(img.getImage());
-		jViewer.setVisible(true);
-		return true;
+		return jPrint;
 	}
 	
-	public boolean generateTeamResults(int tournamentID, String round, int apt, ArrayList<String> bowTypes, boolean mixed, boolean metric) 
+	public JasperPrint generateTeamResults(int tournamentID, String round, int apt, ArrayList<String> bowTypes, boolean mixed, boolean metric, boolean preview) 
 			throws SQLException, JRException {
 		ArrayList<TeamMember> teamResultsData = new ArrayList<TeamMember>();
 		ArrayList<String> genders = new ArrayList<String>();
@@ -159,14 +157,13 @@ public class Results {
 		params.put("ROUND", round);
 		JRDataSource jrDataSource = new JRBeanCollectionDataSource(teamResultsData);
 		JasperPrint jPrint = JasperFillManager.fillReport(jr, params, jrDataSource);
-		if(jPrint.getPages().isEmpty()) {
-			return false;
+		if(preview) {
+			JasperViewer jViewer = new JasperViewer(jPrint, false);
+			jViewer.setTitle("Married Couple Results Preview");
+			ImageIcon img = new ImageIcon(getClass().getResource("resources/list.png"));
+			jViewer.setIconImage(img.getImage());
+			jViewer.setVisible(true);
 		}
-		JasperViewer jViewer = new JasperViewer(jPrint, false);
-		jViewer.setTitle("Married Couple Results Preview");
-		ImageIcon img = new ImageIcon(getClass().getResource("resources/list.png"));
-		jViewer.setIconImage(img.getImage());
-		jViewer.setVisible(true);
-		return true;
+		return jPrint;
 	}
 }
