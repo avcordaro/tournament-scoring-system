@@ -15,54 +15,74 @@ public class Scores {
 		conn = c;
 	}
 	
-	public ArrayList<ScoreEntry> getDataForTable(int tournamentID) throws SQLException {
-		Statement stmt = conn.createStatement();
-		String query = "SELECT * FROM Archer, Score WHERE Archer.TournamentID = " + tournamentID
-				+ " AND Score.ArcherID = Archer.ArcherID ORDER BY Target";
-		ResultSet rs = stmt.executeQuery(query);
+	public ArrayList<ScoreEntry> getDataForTable(int tournamentID) {
 		ArrayList<ScoreEntry> data = new ArrayList<ScoreEntry>();
-		while(rs.next()) {
-			data.add(new ScoreEntry(rs.getInt("ArcherID"), rs.getString("FirstName"), 
-					rs.getString("LastName"), rs.getString("Target"), rs.getInt("Score"), 
-					rs.getInt("Hits"), rs.getInt("Golds"), rs.getInt("Xs")));
+		try {
+			Statement stmt = conn.createStatement();
+			String query = "SELECT * FROM Archer, Score WHERE Archer.TournamentID = " + tournamentID
+					+ " AND Score.ArcherID = Archer.ArcherID ORDER BY Target";
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				data.add(new ScoreEntry(rs.getInt("ArcherID"), rs.getString("FirstName"), 
+						rs.getString("LastName"), rs.getString("Target"), rs.getInt("Score"), 
+						rs.getInt("Hits"), rs.getInt("Golds"), rs.getInt("Xs")));
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
 		}
 		return data;
 	}
 	
-	public void newRecord(int archerID) throws SQLException {
+	public void newRecord(int archerID) {
 		String sql = "INSERT INTO Score (ArcherID, Score, Hits, Golds, Xs) VALUES (?, ?, ?, ?, ?);";
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		prepStmt.setInt(1, archerID);
-		prepStmt.setInt(2, 0);
-		prepStmt.setInt(3, 0);
-		prepStmt.setInt(4, 0);
-		prepStmt.setInt(5, 0);
-		prepStmt.execute();
+		try {
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			prepStmt.setInt(1, archerID);
+			prepStmt.setInt(2, 0);
+			prepStmt.setInt(3, 0);
+			prepStmt.setInt(4, 0);
+			prepStmt.setInt(5, 0);
+			prepStmt.execute();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public void updateRecord(int archerID, int score, int hits, int golds) throws SQLException {
+	public void updateRecord(int archerID, int score, int hits, int golds)  {
 		String sql = "UPDATE Score SET Score=?, Hits=?, Golds=? WHERE ArcherID=?";
+		try {
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		prepStmt.setInt(1, score);
 		prepStmt.setInt(2, hits);
 		prepStmt.setInt(3, golds);
 		prepStmt.setInt(4, archerID);
 		prepStmt.execute();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public void updateRecord(int archerID, int score, int hits, int golds, int Xs) throws SQLException {
+	public void updateRecord(int archerID, int score, int hits, int golds, int Xs) {
 		String sql = "UPDATE Score SET Score=?, Hits=?, Golds=?, Xs=? WHERE ArcherID=?";
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		prepStmt.setInt(1, score);
-		prepStmt.setInt(2, hits);
-		prepStmt.setInt(3, golds);
-		prepStmt.setInt(4, Xs);
-		prepStmt.setInt(5, archerID);
-		prepStmt.execute();
+		try {
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			prepStmt.setInt(1, score);
+			prepStmt.setInt(2, hits);
+			prepStmt.setInt(3, golds);
+			prepStmt.setInt(4, Xs);
+			prepStmt.setInt(5, archerID);
+			prepStmt.execute();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public void deletedRecord(int archerID) throws SQLException {
-		Statement stmt = conn.createStatement();
-		stmt.executeUpdate("DELETE FROM Score WHERE ArcherID = " + archerID + ";");
+	public void deletedRecord(int archerID) {
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("DELETE FROM Score WHERE ArcherID = " + archerID + ";");
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

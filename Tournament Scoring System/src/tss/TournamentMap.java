@@ -13,7 +13,6 @@ public class TournamentMap {
 	public int getID() {
 		return tournamentID;
 	}
-	
 	public String toString() {
 		return title;
 	}

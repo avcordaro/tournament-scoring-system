@@ -7,7 +7,6 @@ import java.sql.SQLException;
 public class SQLiteConnection {
 	
 	public static Connection getConnection() {
-		
 		Connection conn = null;
 		try {
 			String url = "jdbc:sqlite:TSSDatabase.db";

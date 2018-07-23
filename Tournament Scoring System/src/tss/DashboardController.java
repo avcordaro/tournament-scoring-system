@@ -1,6 +1,5 @@
 package tss;
 
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +20,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRPrintPage;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
@@ -51,7 +49,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-
 
 public class DashboardController extends Application {
 
@@ -270,7 +267,7 @@ public class DashboardController extends Application {
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
     
     @FXML
-    public void initialize() throws SQLException {
+    public void initialize() {
 		conn = SQLiteConnection.getConnection();
 		tournaments = new Tournaments(conn);
 		archers = new Archers(conn);
@@ -336,7 +333,7 @@ public class DashboardController extends Application {
 		}
 	}
 	
-	public static void main(String[] args) throws SQLException {
+	public static void main(String[] args) {
 		launch(args);
 	}
 	
@@ -366,27 +363,35 @@ public class DashboardController extends Application {
 		alert.showAndWait();	
 	}
 	
-	public void fillTournamentComboBox() throws SQLException {
+	public void fillTournamentComboBox() {
     	ResultSet rs = tournaments.getAllRecords();
-    	while(rs.next()) {
-    		TournamentMap map = new TournamentMap(rs.getString("Title"), rs.getInt("TournamentID"));
-    		cmbTournament.getItems().add(map);
-    	}
+    	try {
+	    	while(rs.next()) {
+	    		TournamentMap map = new TournamentMap(rs.getString("Title"), rs.getInt("TournamentID"));
+	    		cmbTournament.getItems().add(map);
+	    	}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML
-	public void loadTournament(ActionEvent event) throws SQLException {
+	public void loadTournament(ActionEvent event) {
 		if(!cmbTournament.getSelectionModel().isEmpty()) {
 			int id = cmbTournament.getSelectionModel().getSelectedItem().getID();
-			ResultSet rs = tournaments.getRecord(id);
-			txtTitle.setText(rs.getString("Title"));
-			txtDate.setText(rs.getString("Date"));
-			LocalDate localDate = LocalDate.parse(rs.getString("Date"), formatter);
-			datePicker.setValue(localDate);
-			txtArchersPerTarget.setText(Integer.toString(rs.getInt("ArchersPerTarget")));
-			chkMetric.setSelected(Boolean.valueOf(rs.getString("Metric")));
-			chkTeams.setSelected(Boolean.valueOf(rs.getString("Teams")));
-			chkMarriedCouples.setSelected(Boolean.valueOf(rs.getString("MarriedCouples")));
+			try {
+				ResultSet rs = tournaments.getRecord(id);
+				txtTitle.setText(rs.getString("Title"));
+				txtDate.setText(rs.getString("Date"));
+				LocalDate localDate = LocalDate.parse(rs.getString("Date"), formatter);
+				datePicker.setValue(localDate);
+				txtArchersPerTarget.setText(Integer.toString(rs.getInt("ArchersPerTarget")));
+				chkMetric.setSelected(Boolean.valueOf(rs.getString("Metric")));
+				chkTeams.setSelected(Boolean.valueOf(rs.getString("Teams")));
+				chkMarriedCouples.setSelected(Boolean.valueOf(rs.getString("MarriedCouples")));
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
 			btnEditTournament.setDisable(false);
 			btnDeleteTournament.setDisable(false);
 			tbvArchers.getItems().clear();
@@ -429,7 +434,7 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
-	public void newTournament(ActionEvent event) throws SQLException {
+	public void newTournament(ActionEvent event) {
 		String title = txtNewTitle.getText();
 		String date = newDatePicker.getValue().format(formatter);
 		String apt = txtNewArchersPerTarget.getText();
@@ -521,17 +526,14 @@ public class DashboardController extends Application {
 		btnGenerateTeamResults.setDisable(true);
 		btnExportFullResults.setDisable(true);
 	}
-	
-	
 	@FXML
-	
-	public void deleteTournament(ActionEvent event) throws SQLException {
+	public void deleteTournament(ActionEvent event) {
 		int id = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		cmbTournament.getItems().remove(cmbTournament.getSelectionModel().getSelectedItem());
 		btnEditTournament.setDisable(true);
 		btnDeleteTournament.setDisable(true);
 		btnEditSaveTournament.setVisible(false);
-		tournaments.deleteRecord(id, archers);
+		tournaments.deleteRecord(id, archers, scores, marriedCouples);
 		txtTitle.clear();
 		txtDate.clear();
 		txtTotalArchers.clear();
@@ -614,7 +616,7 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
-	public void beginEditTournament(ActionEvent event) throws SQLException {
+	public void beginEditTournament(ActionEvent event) {
 		tabPane.setDisable(true);
 		tabPane.setOpacity(1.00);
 		tpNewTournament.setDisable(true);
@@ -633,7 +635,7 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
-	public void saveEditTournament(ActionEvent event) throws SQLException {
+	public void saveEditTournament(ActionEvent event) {
 		btnEditTournament.setVisible(true);
 		stpEditSaveTournament.getChildren().get(0).toFront();
 		btnEditSaveTournament.setVisible(false);
@@ -659,7 +661,7 @@ public class DashboardController extends Application {
 		loadTournament(event);
 	}
 	
-	public void fillArcherTableView(int tournamentID) throws SQLException {
+	public void fillArcherTableView(int tournamentID) {
 		tbvArchers.getItems().clear();
 		cmbMarriedCouple.getItems().clear();
 		cmbMarriedCouple.getItems().add("None");
@@ -669,40 +671,48 @@ public class DashboardController extends Application {
 		cmbWorstWhite.getItems().add("None");
 		ResultSet rs = archers.getAllRecords(tournamentID);
 		int archerCount = 0;
-		btnSearchArcher.setDisable(rs.isBeforeFirst() ? false : true);
-    	while(rs.next()) {
-    		tbvArchers.getItems().add(new ArcherEntry(rs.getInt("ArcherID"), rs.getString("FirstName"), 
-    				rs.getString("LastName"), rs.getString("Club"), rs.getString("Category"), 
-    				rs.getString("BowType"), rs.getString("Round")));
-    		String comboBoxString = rs.getString("ArcherID") + " - "  + rs.getString("FirstName") + " "
-    				+ rs.getString("LastName");
-    		cmbMarriedCouple.getItems().add(comboBoxString);
-    		cmbBestGold.getItems().add(comboBoxString);
-    		cmbWorstWhite.getItems().add(comboBoxString);
-    		archerCount++;
-    	}
+		try {
+			btnSearchArcher.setDisable(rs.isBeforeFirst() ? false : true);
+			while(rs.next()) {
+	    		tbvArchers.getItems().add(new ArcherEntry(rs.getInt("ArcherID"), rs.getString("FirstName"), 
+	    				rs.getString("LastName"), rs.getString("Club"), rs.getString("Category"), 
+	    				rs.getString("BowType"), rs.getString("Round")));
+	    		String comboBoxString = rs.getString("ArcherID") + " - "  + rs.getString("FirstName") + " "
+	    				+ rs.getString("LastName");
+	    		cmbMarriedCouple.getItems().add(comboBoxString);
+	    		cmbBestGold.getItems().add(comboBoxString);
+	    		cmbWorstWhite.getItems().add(comboBoxString);
+	    		archerCount++;
+	    	}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
     	txtTotalArchers.setText(Integer.toString(archerCount));
     	cmbMarriedCouple.setDisable(!chkMarriedCouples.isSelected());
     	btnNewArcher.setDisable(false);
 	}
 	
-	public void fillArcherEditorComboBoxes() throws SQLException {
+	public void fillArcherEditorComboBoxes() {
 		ResultSet rs = archers.getCategories();
-		while(rs.next()) {
-			cmbCategory.getItems().add(rs.getString("Name"));
-		}
-		rs = archers.getBowTypes();
-		while(rs.next()) {
-			cmbBowType.getItems().add(rs.getString("Name"));
-		}
-		rs = archers.getRounds();
-		while(rs.next()) {
-			cmbRound.getItems().add(rs.getString("Name"));
+		try {
+			while(rs.next()) {
+				cmbCategory.getItems().add(rs.getString("Name"));
+			}
+			rs = archers.getBowTypes();
+			while(rs.next()) {
+				cmbBowType.getItems().add(rs.getString("Name"));
+			}
+			rs = archers.getRounds();
+			while(rs.next()) {
+				cmbRound.getItems().add(rs.getString("Name"));
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
 		}
 	}
 	
 	@FXML
-	public void newArcher(ActionEvent event) throws SQLException {
+	public void newArcher(ActionEvent event) {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		String fname = txtFirstName.getText();
 		String lname = txtLastName.getText();
@@ -734,7 +744,7 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
-	public void beginEditArcher(ActionEvent event) throws SQLException {
+	public void beginEditArcher(ActionEvent event) {
 		cmbTournament.setDisable(true);
 		tpNewTournament.setDisable(true);
 		btnEditTournament.setDisable(true);
@@ -755,15 +765,19 @@ public class DashboardController extends Application {
 		cmbBowType.getSelectionModel().select(archer.getBowType());
 		cmbRound.getSelectionModel().select(archer.getRound());
 		ResultSet rs = marriedCouples.getRecord(archer.getID());
-		if(rs.isBeforeFirst()) {
-			if(rs.getInt(1) == archer.getID()) {
-				cmbMarriedCouple.getSelectionModel().select(rs.getString(2) + " - " + rs.getString(3)
-				+ " " + rs.getString(4));
-			} else {
-				cmbMarriedCouple.getSelectionModel().select(rs.getString(1) + " - " + rs.getString(3)
-						+ " " + rs.getString(4));
-				cmbMarriedCouple.setDisable(true);
+		try {
+			if(rs.isBeforeFirst()) {
+				if(rs.getInt(1) == archer.getID()) {
+					cmbMarriedCouple.getSelectionModel().select(rs.getString(2) + " - " + rs.getString(3)
+					+ " " + rs.getString(4));
+				} else {
+					cmbMarriedCouple.getSelectionModel().select(rs.getString(1) + " - " + rs.getString(3)
+							+ " " + rs.getString(4));
+					cmbMarriedCouple.setDisable(true);
+				}
 			}
+		} catch(SQLException e) {
+			e.printStackTrace();
 		}
 		btnSaveEditArcher.setVisible(true);
 		btnNewArcher.setVisible(false);
@@ -771,7 +785,7 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
-	public void saveEditArcher(ActionEvent event) throws SQLException {
+	public void saveEditArcher(ActionEvent event) {
 		btnSaveEditArcher.setVisible(false);
 		btnNewArcher.setVisible(true);
 		tbvArchers.setDisable(false);
@@ -830,10 +844,11 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
-	public void deleteArcher(ActionEvent event) throws SQLException {
+	public void deleteArcher(ActionEvent event) {
 		ArcherEntry selectedArcher = tbvArchers.getSelectionModel().getSelectedItem();
 		archers.deleteRecord(selectedArcher.getID());
 		scores.deletedRecord(selectedArcher.getID());
+		marriedCouples.deleteRecord(selectedArcher.getID());
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		fillArcherTableView(tID);
 		fillTargetListTableView(tID);
@@ -842,7 +857,7 @@ public class DashboardController extends Application {
 		btnDeleteArcher.setDisable(true);
 	}
 
-	public void fillTargetListTableView(int tournamentID) throws SQLException {
+	public void fillTargetListTableView(int tournamentID) {
 		tbvTargetList.getItems().clear();
 		ArrayList<TargetEntry> data = targets.getDataForTable(tournamentID);
 		btnSearchTarget.setDisable(data.isEmpty() ? true : false);
@@ -866,7 +881,7 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
-	public void allocateTargetDetails(ActionEvent event) throws SQLException {
+	public void allocateTargetDetails(ActionEvent event) {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		targets.assignAllDetails(tID, Integer.parseInt(txtArchersPerTarget.getText()));
 		fillTargetListTableView(tID);
@@ -892,7 +907,7 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
-	public void beginEditTargetDetail(ActionEvent event) throws SQLException {
+	public void beginEditTargetDetail(ActionEvent event) {
 		cmbTournament.setDisable(true);
 		tpNewTournament.setDisable(true);
 		btnEditTournament.setDisable(true);
@@ -913,7 +928,7 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
-	public void saveEditTargetDetail(ActionEvent event) throws SQLException {
+	public void saveEditTargetDetail(ActionEvent event) {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		if(!cmbEditTarget.getSelectionModel().isEmpty() && !cmbEditTarget.getSelectionModel().getSelectedItem().equals("None")) {
 			String target1 = cmbEditTarget.getSelectionModel().getSelectedItem().split(" ")[0].trim();
@@ -942,27 +957,32 @@ public class DashboardController extends Application {
 		btnGenerateTargetList.setDisable(false);
 	}
 	
-	public void fillSwapTargetComboBox() throws SQLException {
+	public void fillSwapTargetComboBox() {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		TargetEntry selectedEntry = tbvTargetList.getSelectionModel().getSelectedItem();
 		targets.fillSwapDetailsComboBox(tID, selectedEntry, cmbEditTarget);
 	}
 	
 	@FXML 
-	public void previewTargetList(ActionEvent event) throws SQLException, JRException, ParseException {
+	public void previewTargetList(ActionEvent event) {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		String title = txtTitle.getText();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy");
-		Date dateUnformatted = dateFormat.parse(txtDate.getText());
-		DateFormat formatter = DateFormat.getDateInstance(DateFormat.FULL);
-		String date = formatter.format(dateUnformatted);
+		String date = null;
+		try {
+			Date dateUnformatted = dateFormat.parse(txtDate.getText());
+			DateFormat formatter = DateFormat.getDateInstance(DateFormat.FULL);
+			date = formatter.format(dateUnformatted);
+		} catch(ParseException e) {
+			e.printStackTrace();
+		}
 		String venue = txtVenue.getText();
 		String assembly = txtAssembly.getText();
 		String sighters = txtSighters.getText();
 		targets.previewTargetList(tID, title, date, venue, assembly, sighters);
 	}
 	
-	public void fillScoresTableView(int tournamentID) throws SQLException {
+	public void fillScoresTableView(int tournamentID) {
 		tbvScores.getItems().clear();
 		btnEditScore.setDisable(true);
 		tbcXs.setVisible(chkMetric.isSelected() ? true : false);
@@ -1038,7 +1058,7 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
-	public void stopScoring(ActionEvent event) throws SQLException {
+	public void stopScoring(ActionEvent event) {
 		cmbTournament.setDisable(false);
 		tpNewTournament.setDisable(false);
 		btnEditTournament.setDisable(false);
@@ -1070,7 +1090,7 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
-	public void nextScore(ActionEvent event) throws SQLException {
+	public void nextScore(ActionEvent event) {
 		ScoreEntry currentEntry = tbvScores.getSelectionModel().getSelectedItem();
 		int score = Integer.parseInt(txtScore.getText());
 		int hits = Integer.parseInt(txtHits.getText());
@@ -1198,7 +1218,7 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
-	public void saveEditArcherScore(ActionEvent event) throws SQLException {
+	public void saveEditArcherScore(ActionEvent event) {
 		cmbTournament.setDisable(false);
 		tpNewTournament.setDisable(false);
 		btnEditTournament.setDisable(false);
@@ -1244,13 +1264,18 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
-	public void previewIndividualResults(ActionEvent event) throws ParseException, JRException, SQLException {
+	public void previewIndividualResults(ActionEvent event) {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		String title = txtTitle.getText();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy");
-		Date dateUnformatted = dateFormat.parse(txtDate.getText());
-		DateFormat formatter = DateFormat.getDateInstance(DateFormat.FULL);
-		String date = formatter.format(dateUnformatted);
+		String date = null;
+		try {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy");
+			Date dateUnformatted = dateFormat.parse(txtDate.getText());
+			DateFormat formatter = DateFormat.getDateInstance(DateFormat.FULL);
+			date = formatter.format(dateUnformatted);
+		} catch(ParseException e) {
+			e.printStackTrace();
+		}
 		String bestGold = "", worstWhite = "";
 		if(!cmbBestGold.getSelectionModel().isEmpty() && !cmbBestGold.getSelectionModel().getSelectedItem().equals("None")) {
 			bestGold = cmbBestGold.getSelectionModel().getSelectedItem().split("-")[1];
@@ -1266,7 +1291,7 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
-	public void previewMarriedCoupleResults(ActionEvent event) throws ParseException, JRException, SQLException {
+	public void previewMarriedCoupleResults(ActionEvent event) {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		boolean metric = chkMetric.isSelected();
 		JasperPrint jPrint = results.generateMarriedCoupleResults(tID, metric, true);
@@ -1276,7 +1301,7 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
-	public void previewTeamResults(ActionEvent event) throws SQLException, JRException {
+	public void previewTeamResults(ActionEvent event) {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		boolean metric = chkMetric.isSelected();
 		String round = cmbTeamRound.getSelectionModel().getSelectedItem();
@@ -1294,13 +1319,18 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
-	public void previewFullResults(ActionEvent event) throws ParseException, JRException, SQLException {
+	public void previewFullResults(ActionEvent event) {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		String title = txtTitle.getText();
+		String date = null;
+		try {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy");
 		Date dateUnformatted = dateFormat.parse(txtDate.getText());
 		DateFormat formatter = DateFormat.getDateInstance(DateFormat.FULL);
-		String date = formatter.format(dateUnformatted);
+		date = formatter.format(dateUnformatted);
+		} catch(ParseException e) {
+			e.printStackTrace();
+		}
 		String bestGold = "", worstWhite = "";
 		if(!cmbBestGold.getSelectionModel().isEmpty() && !cmbBestGold.getSelectionModel().getSelectedItem().equals("None")) {
 			bestGold = cmbBestGold.getSelectionModel().getSelectedItem().split("-")[1];

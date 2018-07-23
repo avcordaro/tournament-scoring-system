@@ -30,131 +30,158 @@ public class Targets {
 		conn = c;
 	}
 	
-	public ResultSet getOrderedArcherRecords(int tournamentID) throws SQLException {
-		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM Archer WHERE TournamentID = " + tournamentID 
-				+ " ORDER BY Target;");
+	public ResultSet getOrderedArcherRecords(int tournamentID) {
+		ResultSet rs = null;
+		try {
+			Statement stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM Archer LEFT JOIN MarriedCouple ON Archer.ArcherID ="
+					+ " MarriedCouple.Archer OR Archer.ArcherID = MarriedCouple.Spouse WHERE TournamentID = "
+					+ tournamentID + " ORDER BY Target;");
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 		return rs;
 	}
 	
-	public ArrayList<TargetEntry> getDataForTable(int tournamentID) throws SQLException {
+	public ArrayList<TargetEntry> getDataForTable(int tournamentID) {
 		ResultSet rs = getOrderedArcherRecords(tournamentID);
 		ArrayList<TargetEntry> data = new ArrayList<TargetEntry>();
-		while(rs.next()) {
-    		data.add(new TargetEntry(rs.getInt("ArcherID"), rs.getString("FirstName"), 
-    				rs.getString("LastName"), rs.getString("Club"), rs.getString("Category"), 
-    				rs.getString("BowType"),rs.getString("Round"), rs.getString("Target")));
-    	}
+		try {
+			while(rs.next()) {
+	    		data.add(new TargetEntry(rs.getInt("ArcherID"), rs.getString("FirstName"), 
+	    				rs.getString("LastName"), rs.getString("Club"), rs.getString("Category"), 
+	    				rs.getString("BowType"),rs.getString("Round"), rs.getString("Target")));
+	    	}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 		return data;
 	}
 	
-	public void updateDetail(int archerID, String detail) throws SQLException {
+	public void updateDetail(int archerID, String detail) {
 		String sql = "UPDATE Archer SET Target=? WHERE ArcherID=?;";
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		prepStmt.setString(1, detail);
-		prepStmt.setInt(2, archerID);
-		prepStmt.execute();
+		try {
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			prepStmt.setString(1, detail);
+			prepStmt.setInt(2, archerID);
+			prepStmt.execute();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public void assignAllDetails(int tournamentID, int apt) throws SQLException {
-		Statement stmt = conn.createStatement();
-		String query = "SELECT Archer.ArcherID AS ID, Archer.Round AS Round FROM Archer, BowType, Round WHERE"
-				+ " TournamentID = " + tournamentID + " AND Archer.BowType = BowType.Name AND Archer.Round = "
-				+ "Round.Name ORDER BY Round.Precedence, BowType.Precedence, random();";
-		ResultSet rs = stmt.executeQuery(query);
-		double detailNumber = 1.0;
-		double detailIncrement = 1.0 / apt;
-		char detailLetter = 'A';
-		char resetLetter = (char)(detailLetter + apt);
-		String sql = "UPDATE Archer SET Target=? WHERE ArcherID=?;";
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		rs.next();
-		while(!rs.isAfterLast()) {
-			String round = rs.getString("Round");
-			while(!rs.isAfterLast() && rs.getString("Round").equals(round)) {
-				String detail = Integer.toString((int)detailNumber) + detailLetter;
-				prepStmt.setString(1, detail);
-				prepStmt.setInt(2, rs.getInt("ID"));
-				prepStmt.addBatch();
-				detailNumber += detailIncrement;
-				detailLetter++;
-				if(detailLetter == resetLetter) { 
-					detailLetter = 'A'; 
-				}
-				rs.next();
-			}
-			detailNumber = Math.ceil(detailNumber);
-			detailLetter = 'A';
-		}
-		prepStmt.executeBatch();
-	}
-	
-	public void fillSwapDetailsComboBox(int tournamentID, TargetEntry entry, ComboBox<String> cmb) throws SQLException {
-		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM Archer WHERE TournamentID = " + tournamentID 
-				+ " AND Round = \"" + entry.getRound() + "\" ORDER BY Target;");
-		if(rs.isAfterLast()) {
-			return;
-		}
-		int startingTarget = Integer.parseInt(rs.getString("Target").split("A|B|C|D")[0]);
-		HashMap<String, String> targetMap = new HashMap<String, String>();
-		String archerDetail;
-		while(rs.next()) {
-			archerDetail = rs.getString("Target") + " - " + rs.getString("FirstName") + " " + rs.getString("LastName");
-			targetMap.put(rs.getString("Target"), archerDetail);
-		}
-		int i = startingTarget;
-		String detail;
-		cmb.getItems().add("None");
-		while(!targetMap.isEmpty()) {
-			for(char c = 'A'; c < 'E'; c++) {
-				detail = Integer.toString(i) + c;
-				archerDetail = targetMap.get(detail);
-				if(archerDetail != null) {
-					if(!detail.equals(entry.getTarget())) {
-						cmb.getItems().add(archerDetail);
+	public void assignAllDetails(int tournamentID, int apt) {
+		try {
+			Statement stmt = conn.createStatement();
+			String query = "SELECT Archer.ArcherID AS ID, Archer.Round AS Round FROM Archer, BowType, Round WHERE"
+					+ " TournamentID = " + tournamentID + " AND Archer.BowType = BowType.Name AND Archer.Round = "
+					+ "Round.Name ORDER BY Round.Precedence, BowType.Precedence, random();";
+			ResultSet rs = stmt.executeQuery(query);
+			double detailNumber = 1.0;
+			double detailIncrement = 1.0 / apt;
+			char detailLetter = 'A';
+			char resetLetter = (char)(detailLetter + apt);
+			String sql = "UPDATE Archer SET Target=? WHERE ArcherID=?;";
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			rs.next();
+			while(!rs.isAfterLast()) {
+				String round = rs.getString("Round");
+				while(!rs.isAfterLast() && rs.getString("Round").equals(round)) {
+					String detail = Integer.toString((int)detailNumber) + detailLetter;
+					prepStmt.setString(1, detail);
+					prepStmt.setInt(2, rs.getInt("ID"));
+					prepStmt.addBatch();
+					detailNumber += detailIncrement;
+					detailLetter++;
+					if(detailLetter == resetLetter) { 
+						detailLetter = 'A'; 
 					}
-					targetMap.remove(detail);
+					rs.next();
 				}
-				else {
-					cmb.getItems().add(detail + " - Empty");
-				}
+				detailNumber = Math.ceil(detailNumber);
+				detailLetter = 'A';
 			}
-			i++;
+			prepStmt.executeBatch();
+		} catch(SQLException e) {
+			e.printStackTrace();
 		}
-		
 	}
 	
-	public void swapTargetDetails(int tournamentID, String target1, String target2) throws SQLException {
-		Statement stmt1 = conn.createStatement();
-		ResultSet target1Archer = stmt1.executeQuery("SELECT * FROM Archer WHERE TournamentID = " + tournamentID
-				+ " AND Target = \"" + target1 + "\";");
-		Statement stmt2 = conn.createStatement();
-		ResultSet target2Archer = stmt2.executeQuery("SELECT * FROM Archer WHERE TournamentID = " + tournamentID
-				+ " AND Target = \"" + target2 + "\";");
-		if(!target1Archer.isAfterLast()) {
-			updateDetail(target1Archer.getInt("ArcherID"), target2);
+	public void fillSwapDetailsComboBox(int tournamentID, TargetEntry entry, ComboBox<String> cmb) {
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Archer WHERE TournamentID = " + tournamentID 
+					+ " AND Round = \"" + entry.getRound() + "\" ORDER BY Target;");
+			if(rs.isAfterLast()) {
+				return;
+			}
+			int startingTarget = Integer.parseInt(rs.getString("Target").split("A|B|C|D")[0]);
+			HashMap<String, String> targetMap = new HashMap<String, String>();
+			String archerDetail;
+			while(rs.next()) {
+				archerDetail = rs.getString("Target") + " - " + rs.getString("FirstName") + " " + rs.getString("LastName");
+				targetMap.put(rs.getString("Target"), archerDetail);
+			}
+			int i = startingTarget;
+			String detail;
+			cmb.getItems().add("None");
+			while(!targetMap.isEmpty()) {
+				for(char c = 'A'; c < 'E'; c++) {
+					detail = Integer.toString(i) + c;
+					archerDetail = targetMap.get(detail);
+					if(archerDetail != null) {
+						if(!detail.equals(entry.getTarget())) {
+							cmb.getItems().add(archerDetail);
+						}
+						targetMap.remove(detail);
+					}
+					else {
+						cmb.getItems().add(detail + " - Empty");
+					}
+				}
+				i++;
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
 		}
-		updateDetail(target2Archer.getInt("ArcherID"), target1);
 	}
 	
-	public void previewTargetList(int tournamentID, String title, String date, String venue, String assembly, String sighters)
-			throws SQLException, JRException {
-		JasperReport jr = JasperCompileManager.compileReport(getClass().getResourceAsStream("resources/TargetList.jrxml"));
-		HashMap<String, Object> params = new HashMap<String, Object>();
-		params.put("TITLE", title);
-		params.put("DATE", date);
-		params.put("VENUE", venue); 
-		params.put("ASSEMBLY", assembly); 
-		params.put("SIGHTERS", sighters); 
-		ResultSet rs = getOrderedArcherRecords(tournamentID);
-		JRDataSource jrDataSource = new JRResultSetDataSource(rs);
-		JasperPrint jPrint = JasperFillManager.fillReport(jr, params, jrDataSource);
-		JasperViewer jViewer = new JasperViewer(jPrint, false);
-		jViewer.setTitle("Target List Preview");
-		ImageIcon img = new ImageIcon(getClass().getResource("resources/list.png"));
-		jViewer.setIconImage(img.getImage());
-		jViewer.setVisible(true);
+	public void swapTargetDetails(int tournamentID, String target1, String target2) {
+		try {
+			Statement stmt1 = conn.createStatement();
+			ResultSet target1Archer = stmt1.executeQuery("SELECT * FROM Archer WHERE TournamentID = " + tournamentID
+					+ " AND Target = \"" + target1 + "\";");
+			Statement stmt2 = conn.createStatement();
+			ResultSet target2Archer = stmt2.executeQuery("SELECT * FROM Archer WHERE TournamentID = " + tournamentID
+					+ " AND Target = \"" + target2 + "\";");
+			if(!target1Archer.isAfterLast()) {
+				updateDetail(target1Archer.getInt("ArcherID"), target2);
+			}
+			updateDetail(target2Archer.getInt("ArcherID"), target1);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void previewTargetList(int tournamentID, String title, String date, String venue, String assembly, String sighters) {
+		try {
+			JasperReport jr = JasperCompileManager.compileReport(getClass().getResourceAsStream("resources/TargetList.jrxml"));
+			HashMap<String, Object> params = new HashMap<String, Object>();
+			params.put("TITLE", title);
+			params.put("DATE", date);
+			params.put("VENUE", venue); 
+			params.put("ASSEMBLY", assembly); 
+			params.put("SIGHTERS", sighters); 
+			ResultSet rs = getOrderedArcherRecords(tournamentID);
+			JRDataSource jrDataSource = new JRResultSetDataSource(rs);
+			JasperPrint jPrint = JasperFillManager.fillReport(jr, params, jrDataSource);
+			JasperViewer jViewer = new JasperViewer(jPrint, false);
+			jViewer.setTitle("Target List Preview");
+			ImageIcon img = new ImageIcon(getClass().getResource("resources/list.png"));
+			jViewer.setIconImage(img.getImage());
+			jViewer.setVisible(true);
+		} catch(JRException e) {
+			e.printStackTrace();
+		}
 	}
 }
-

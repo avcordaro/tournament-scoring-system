@@ -29,21 +29,28 @@ public class Results {
 		conn = c;
 	}
 	
-	public JasperPrint generateMarriedCoupleResults(int tournamentID, boolean metric, boolean preview) throws JRException, SQLException {
-		JasperReport jr = JasperCompileManager.compileReport(getClass().getResourceAsStream("resources/MarriedCoupleResults.jrxml"));
-		HashMap<String, Object> params = new HashMap<String, Object>();
-		params.put("METRIC", metric);
-		Statement stmt = conn.createStatement();
-		String query = "SELECT *, (ArcherScore + SpouseScore) AS TotalScore, (ArcherHits + SpouseHits) AS TotalHits, (ArcherGolds + SpouseGolds)"
-				+ " AS TotalGolds, (ArcherXs + SpouseXs) AS TotalXs FROM (SELECT ArcherFirstName, ArcherLastName, ArcherScore, ArcherHits, ArcherGolds,"
-				+ " ArcherXs, FirstName AS SpouseFirstName, LastName AS SpouseLastName, Score AS SpouseScore, Hits AS SpouseHits, Golds AS SpouseGolds,"
-				+ " Xs AS SpouseXs FROM (SELECT Archer, Spouse, FirstName AS ArcherFirstName, LastName AS ArcherLastName, Score AS ArcherScore, Hits AS"
-				+ " ArcherHits, Golds AS ArcherGolds, Xs AS ArcherXs FROM MarriedCouple, Archer, Score WHERE TournamentID = " + tournamentID + " AND"
-				+ " MarriedCouple.Archer = Archer.ArcherID AND Archer.ArcherID = Score.ArcherID) AS FirstPartner, Archer, Score WHERE FirstPartner.Spouse"
-				+ " = Archer.ArcherID AND Archer.ArcherID = Score.ArcherID) ORDER BY TotalScore DESC, TotalHits DESC, TotalGolds DESC, TotalXs DESC;";
-		ResultSet rs = stmt.executeQuery(query);
-		JRDataSource jrDataSource = new JRResultSetDataSource(rs);
-		JasperPrint jPrint = JasperFillManager.fillReport(jr, params, jrDataSource);
+	public JasperPrint generateMarriedCoupleResults(int tournamentID, boolean metric, boolean preview) {
+		JasperPrint jPrint = null;
+		try {
+			JasperReport jr = JasperCompileManager.compileReport(getClass().getResourceAsStream("resources/MarriedCoupleResults.jrxml"));
+			HashMap<String, Object> params = new HashMap<String, Object>();
+			params.put("METRIC", metric);
+			Statement stmt = conn.createStatement();
+			String query = "SELECT *, (ArcherScore + SpouseScore) AS TotalScore, (ArcherHits + SpouseHits) AS TotalHits, (ArcherGolds + SpouseGolds)"
+					+ " AS TotalGolds, (ArcherXs + SpouseXs) AS TotalXs FROM (SELECT ArcherFirstName, ArcherLastName, ArcherScore, ArcherHits, ArcherGolds,"
+					+ " ArcherXs, FirstName AS SpouseFirstName, LastName AS SpouseLastName, Score AS SpouseScore, Hits AS SpouseHits, Golds AS SpouseGolds,"
+					+ " Xs AS SpouseXs FROM (SELECT Archer, Spouse, FirstName AS ArcherFirstName, LastName AS ArcherLastName, Score AS ArcherScore, Hits AS"
+					+ " ArcherHits, Golds AS ArcherGolds, Xs AS ArcherXs FROM MarriedCouple, Archer, Score WHERE TournamentID = " + tournamentID + " AND"
+					+ " MarriedCouple.Archer = Archer.ArcherID AND Archer.ArcherID = Score.ArcherID) AS FirstPartner, Archer, Score WHERE FirstPartner.Spouse"
+					+ " = Archer.ArcherID AND Archer.ArcherID = Score.ArcherID) ORDER BY TotalScore DESC, TotalHits DESC, TotalGolds DESC, TotalXs DESC;";
+			ResultSet rs = stmt.executeQuery(query);
+			JRDataSource jrDataSource = new JRResultSetDataSource(rs);
+			jPrint = JasperFillManager.fillReport(jr, params, jrDataSource);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} catch(JRException e) {
+			e.printStackTrace();
+		}
 		if(preview) {
 			JasperViewer jViewer = new JasperViewer(jPrint, false);
 			jViewer.setTitle("Married Couple Results Preview");
@@ -54,22 +61,28 @@ public class Results {
 		return jPrint;
 	}
 	
-	public JasperPrint generateIndividualResults(int tournamentID, String title, String date, boolean metric, String bestGold, String worstWhite, boolean preview) 
-			throws JRException, SQLException {
-		JasperReport jr = JasperCompileManager.compileReport(getClass().getResourceAsStream("resources/IndividualResults.jrxml"));
-		HashMap<String, Object> params = new HashMap<String, Object>();
-		params.put("TITLE", title);
-		params.put("DATE", date);
-		params.put("METRIC", metric);
-		params.put("BEST_GOLD", bestGold);
-		params.put("WORST_WHITE", worstWhite);
-		Statement stmt = conn.createStatement();
-		String query = "SELECT * FROM Archer, Score, Round, Category WHERE TournamentID = " + tournamentID + " AND Archer.ArcherID ="
-				+ " Score.ArcherID AND Archer.Round = Round.Name and Archer.Category = Category.Name ORDER BY Round.Precedence,"
-				+ " Category.Precedence, Score DESC, Hits DESC, Golds DESC, Xs DESC;";
-		ResultSet rs = stmt.executeQuery(query);
-		JRDataSource jrDataSource = new JRResultSetDataSource(rs);
-		JasperPrint jPrint = JasperFillManager.fillReport(jr, params, jrDataSource);
+	public JasperPrint generateIndividualResults(int tournamentID, String title, String date, boolean metric, String bestGold, String worstWhite, boolean preview) {
+		JasperPrint jPrint = null;
+		try {
+			JasperReport jr = JasperCompileManager.compileReport(getClass().getResourceAsStream("resources/IndividualResults.jrxml"));
+			HashMap<String, Object> params = new HashMap<String, Object>();
+			params.put("TITLE", title);
+			params.put("DATE", date);
+			params.put("METRIC", metric);
+			params.put("BEST_GOLD", bestGold);
+			params.put("WORST_WHITE", worstWhite);
+			Statement stmt = conn.createStatement();
+			String query = "SELECT * FROM Archer, Score, Round, Category WHERE TournamentID = " + tournamentID + " AND Archer.ArcherID ="
+					+ " Score.ArcherID AND Archer.Round = Round.Name and Archer.Category = Category.Name ORDER BY Round.Precedence,"
+					+ " Category.Precedence, Score DESC, Hits DESC, Golds DESC, Xs DESC;";
+			ResultSet rs = stmt.executeQuery(query);
+			JRDataSource jrDataSource = new JRResultSetDataSource(rs);
+			jPrint = JasperFillManager.fillReport(jr, params, jrDataSource);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} catch(JRException e) {
+			e.printStackTrace();
+		}
 		if(preview) {
 			JasperViewer jViewer = new JasperViewer(jPrint, false);
 			jViewer.setTitle("Individual Results Preview");
@@ -80,8 +93,8 @@ public class Results {
 		return jPrint;
 	}
 	
-	public JasperPrint generateTeamResults(int tournamentID, String round, int apt, ArrayList<String> bowTypes, boolean mixed, boolean metric, boolean preview) 
-			throws SQLException, JRException {
+	public JasperPrint generateTeamResults(int tournamentID, String round, int apt, ArrayList<String> bowTypes, boolean mixed, boolean metric, boolean preview) {
+		JasperPrint jPrint = null;
 		ArrayList<TeamMember> teamResultsData = new ArrayList<TeamMember>();
 		ArrayList<String> genders = new ArrayList<String>();
 		if(mixed) {
@@ -90,6 +103,7 @@ public class Results {
 			genders.add("\"Men\"");
 			genders.add("\"Women\"");
 		}
+		try {
 		for(String bow : bowTypes) {
 			for(String gender : genders) {
 				String query = "SELECT Club FROM Archer, Score, Category WHERE Archer.ArcherID = Score.ArcherID AND Archer.Category = Category.Name"
@@ -156,7 +170,12 @@ public class Results {
 		params.put("METRIC", metric);
 		params.put("ROUND", round);
 		JRDataSource jrDataSource = new JRBeanCollectionDataSource(teamResultsData);
-		JasperPrint jPrint = JasperFillManager.fillReport(jr, params, jrDataSource);
+		jPrint = JasperFillManager.fillReport(jr, params, jrDataSource);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} catch(JRException e) {
+			e.printStackTrace();
+		}
 		if(preview) {
 			JasperViewer jViewer = new JasperViewer(jPrint, false);
 			jViewer.setTitle("Married Couple Results Preview");

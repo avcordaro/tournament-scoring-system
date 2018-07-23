@@ -17,6 +17,7 @@
 	<field name="Round" class="java.lang.String"/>
 	<field name="Category" class="java.lang.String"/>
 	<field name="BowType" class="java.lang.String"/>
+	<field name="CoupleID" class="java.lang.Integer"/>
 	<group name="Round">
 		<groupExpression><![CDATA[$F{Round}]]></groupExpression>
 		<groupHeader>
@@ -29,7 +30,7 @@
 					<textFieldExpression><![CDATA[$F{Round}]]></textFieldExpression>
 				</textField>
 				<line>
-					<reportElement x="10" y="41" width="533" height="1" forecolor="#7D7D7D" uuid="47bfa7a3-48fb-4dec-ad3d-847eefa27b42"/>
+					<reportElement x="10" y="41" width="535" height="1" forecolor="#7D7D7D" uuid="47bfa7a3-48fb-4dec-ad3d-847eefa27b42"/>
 				</line>
 			</band>
 		</groupHeader>
@@ -155,7 +156,7 @@
 	<detail>
 		<band height="20">
 			<rectangle>
-				<reportElement positionType="Float" x="10" y="0" width="533" height="20" backcolor="#ECEFF8" uuid="cf931ee3-09ac-425f-aa21-9f0d4efca95d">
+				<reportElement positionType="Float" x="10" y="0" width="515" height="20" backcolor="#ECEFF8" uuid="cf931ee3-09ac-425f-aa21-9f0d4efca95d">
 					<printWhenExpression><![CDATA[$V{REPORT_COUNT}%2 == 1]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
@@ -198,12 +199,21 @@
 				<textFieldExpression><![CDATA[$F{Target}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="470" y="0" width="70" height="20" uuid="1de188f2-bba6-4b53-b608-ea384e55e09e"/>
+				<reportElement x="470" y="0" width="50" height="20" uuid="1de188f2-bba6-4b53-b608-ea384e55e09e"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{Category}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="530" y="0" width="20" height="20" forecolor="#3A539B" uuid="a1bbf35f-c46d-4ddf-940a-5f3844c8e99e">
+					<printWhenExpression><![CDATA[$F{CoupleID} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MC]]></text>
+			</staticText>
 		</band>
 	</detail>
 </jasperReport>
