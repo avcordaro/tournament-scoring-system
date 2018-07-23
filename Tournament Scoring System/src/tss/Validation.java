@@ -19,14 +19,21 @@ public final class Validation {
 	}
 	
 	public static boolean validateAsName(String input) {
-		if(input.matches("^[a-zA-Z-'.\\s]+$")) {
+		if(input.matches("^[\\p{L} .'-]+$")) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean validateAsTitle(String input) {
+		if(input.matches("^[\\p{L}0-9 .'-]+$")) {
 			return true;
 		}
 		return false;
 	}
 	
 	public static boolean validateAsTime(String input) {
-		if(input.matches("^[0-9][0-9.:apm\\s]+$")) {
+		if(input.matches("^[0-9][0-9.:apm ]+$")) {
 			return true;
 		}
 		return false;

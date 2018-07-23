@@ -1,4 +1,0 @@
-Tournament field validation
-Archer Editor validation
-Score input validation
-Results properties validation

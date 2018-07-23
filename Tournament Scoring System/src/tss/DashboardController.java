@@ -445,7 +445,7 @@ public class DashboardController extends Application {
 			informationDialog("Missing Details", "You have not filled in all textfields.");
 			return;
 		} 
-		if(!Validation.validateAsName(title) || !Validation.validateAsInteger(apt)) {
+		if(!Validation.validateAsTitle(title) || !Validation.validateAsInteger(apt)) {
 			informationDialog("Invalid Details", "You have entered invalid details into one or more of the textfields.");
 			return;
 		}
@@ -668,7 +668,7 @@ public class DashboardController extends Application {
 			informationDialog("Missing Details", "You have not filled in all textfields.");
 			return;
 		} 
-		if(!Validation.validateAsName(title) || !Validation.validateAsInteger(apt)) {
+		if(!Validation.validateAsTitle(title) || !Validation.validateAsInteger(apt)) {
 			informationDialog("Invalid Details", "You have entered invalid details into one or more of the textfields.");
 			return;
 		}
@@ -738,6 +738,15 @@ public class DashboardController extends Application {
 		String cat = cmbCategory.getSelectionModel().getSelectedItem();
 		String bow = cmbBowType.getSelectionModel().getSelectedItem();
 		String round = cmbRound.getSelectionModel().getSelectedItem();
+		if(!Validation.validatePresence(fname) || !Validation.validatePresence(lname) || !Validation.validatePresence(club)|| 
+				cmbCategory.getSelectionModel().isEmpty() || cmbBowType.getSelectionModel().isEmpty() || cmbRound.getSelectionModel().isEmpty()) {
+			informationDialog("Missing Details", "You have not filled in all the fields for this new archer.");
+			return;
+		} 
+		if(!Validation.validateAsName(fname) || !Validation.validateAsName(lname) || !Validation.validateAsName(club)) {
+			informationDialog("Invalid Details", "You have entered invalid details into one or more the textfields.");
+			return;
+		}
 		int newArcherID = archers.newRecord(tID, fname, lname, club, cat, bow, round);
 		if(!cmbMarriedCouple.getSelectionModel().isEmpty()) {
 			if(!cmbMarriedCouple.getSelectionModel().getSelectedItem().equals("None")) {
@@ -812,6 +821,15 @@ public class DashboardController extends Application {
 		String fname = txtFirstName.getText();
 		String lname = txtLastName.getText();
 		String club = txtClub.getText();
+		if(!Validation.validatePresence(fname) || !Validation.validatePresence(lname) || !Validation.validatePresence(club)|| 
+				cmbCategory.getSelectionModel().isEmpty() || cmbBowType.getSelectionModel().isEmpty() || cmbRound.getSelectionModel().isEmpty()) {
+			informationDialog("Missing Details", "You have not filled in all the fields for this new archer.");
+			return;
+		} 
+		if(!Validation.validateAsName(fname) || !Validation.validateAsName(lname) || !Validation.validateAsName(club)) {
+			informationDialog("Invalid Details", "You have entered invalid details into one or more the textfields.");
+			return;
+		}
 		String cat = cmbCategory.getSelectionModel().getSelectedItem();
 		String bow = cmbBowType.getSelectionModel().getSelectedItem();
 		String round = cmbRound.getSelectionModel().getSelectedItem();
@@ -997,6 +1015,24 @@ public class DashboardController extends Application {
 		String venue = txtVenue.getText();
 		String assembly = txtAssembly.getText();
 		String sighters = txtSighters.getText();
+		if(Validation.validatePresence(venue)) {
+			if(!Validation.validateAsTitle(venue)) {
+				informationDialog("Invalid Details", "You have entered an invalid venue name.");
+				return;
+			}
+		}
+		if(Validation.validatePresence(assembly)) {
+			if(!Validation.validateAsTime(assembly)) {
+				informationDialog("Invalid Details", "You have entered an invalid assembly time.");
+				return;
+			}
+		}
+		if(Validation.validatePresence(sighters)) {
+			if(!Validation.validateAsTime(sighters)) {
+				informationDialog("Invalid Details", "You have entered an invalid sighters time.");
+				return;
+			}
+		}
 		targets.previewTargetList(tID, title, date, venue, assembly, sighters);
 	}
 	
@@ -1110,18 +1146,38 @@ public class DashboardController extends Application {
 	@FXML
 	public void nextScore(ActionEvent event) {
 		ScoreEntry currentEntry = tbvScores.getSelectionModel().getSelectedItem();
-		int score = Integer.parseInt(txtScore.getText());
-		int hits = Integer.parseInt(txtHits.getText());
-		int golds = Integer.parseInt(txtGolds.getText());
-		currentEntry.setScore(score);
-		currentEntry.setHits(hits);
-		currentEntry.setGolds(golds);
+		String score = txtScore.getText();
+		String hits = txtHits.getText();
+		String golds = txtGolds.getText();
+		if(!Validation.validatePresence(score) || !Validation.validatePresence(hits) || !Validation.validatePresence(golds)) {
+			informationDialog("Missing Details", "You have no filled in all the fields for this score.");
+			return;
+		}
+		if(!Validation.validateAsInteger(score) || !Validation.validateAsInteger(hits) || !Validation.validateAsInteger(golds)) {
+			informationDialog("Invalid Details", "You have entered invalid details for this score.");
+			return;
+		}
+		int scoreNum = Integer.parseInt(score);
+		int hitsNum = Integer.parseInt(hits);
+		int goldsNum = Integer.parseInt(golds);
+		currentEntry.setScore(scoreNum);
+		currentEntry.setHits(hitsNum);
+		currentEntry.setGolds(goldsNum);
 		if(chkMetric.isSelected()) {
-			int Xs = Integer.parseInt(txtXs.getText());
-			currentEntry.setXs(Xs);
-			scores.updateRecord(currentEntry.getID(), score, hits, golds, Xs);
+			String Xs = txtXs.getText();
+			if(!Validation.validatePresence(Xs)) {
+				informationDialog("Missing Details", "You have no filled in all the fields for this score.");
+				return;
+			}
+			if(!Validation.validateAsInteger(Xs)) {
+				informationDialog("Invalid Details", "You have entered invalid details for this score.");
+				return;
+			}
+			int XsNum = Integer.parseInt(Xs);
+			currentEntry.setXs(XsNum);
+			scores.updateRecord(currentEntry.getID(), scoreNum, hitsNum, goldsNum, XsNum);
 		} else {
-			scores.updateRecord(currentEntry.getID(), score, hits, golds);
+			scores.updateRecord(currentEntry.getID(), scoreNum, hitsNum, goldsNum);
 		}
 		tbvScores.refresh();
 		int currentIndex = tbvScores.getSelectionModel().getSelectedIndex();
@@ -1237,6 +1293,43 @@ public class DashboardController extends Application {
 	
 	@FXML
 	public void saveEditArcherScore(ActionEvent event) {
+		ScoreEntry selectedEntry = tbvScores.getSelectionModel().getSelectedItem();
+		String score = txtScore.getText();
+		String hits = txtHits.getText();
+		String golds = txtGolds.getText();
+		if(!Validation.validatePresence(score) || !Validation.validatePresence(hits) || !Validation.validatePresence(golds)) {
+			informationDialog("Missing Details", "You have no filled in all the fields for this score.");
+			return;
+		}
+		if(!Validation.validateAsInteger(score) || !Validation.validateAsInteger(hits) || !Validation.validateAsInteger(golds)) {
+			informationDialog("Invalid Details", "You have entered invalid details for this score.");
+			return;
+		}
+		int scoreNum = Integer.parseInt(txtScore.getText());
+		int hitsNum = Integer.parseInt(txtHits.getText());
+		int goldsNum = Integer.parseInt(txtGolds.getText());
+		selectedEntry.setScore(scoreNum);
+		selectedEntry.setHits(hitsNum);
+		selectedEntry.setGolds(goldsNum);
+		if(chkMetric.isSelected()) {
+			String Xs = txtXs.getText();
+			if(!Validation.validatePresence(Xs)) {
+				informationDialog("Missing Details", "You have no filled in all the fields for this score.");
+				return;
+			}
+			if(!Validation.validateAsInteger(Xs)) {
+				informationDialog("Invalid Details", "You have entered invalid details for this score.");
+				return;
+			}
+			int XsNum = Integer.parseInt(Xs);
+			selectedEntry.setXs(XsNum);
+			scores.updateRecord(selectedEntry.getID(), scoreNum, hitsNum, goldsNum, XsNum);
+			txtXs.clear();
+			txtXs.setDisable(true);
+			lblXs.setDisable(true);
+		} else {
+			scores.updateRecord(selectedEntry.getID(), scoreNum, hitsNum, goldsNum);
+		}
 		cmbTournament.setDisable(false);
 		tpNewTournament.setDisable(false);
 		btnEditTournament.setDisable(false);
@@ -1251,23 +1344,6 @@ public class DashboardController extends Application {
 		btnBackScore.setVisible(true);
 		btnSaveEditScore.setVisible(false);
 		stpEditSaveScore.getChildren().get(0).toFront();
-		ScoreEntry selectedEntry = tbvScores.getSelectionModel().getSelectedItem();
-		int score = Integer.parseInt(txtScore.getText());
-		int hits = Integer.parseInt(txtHits.getText());
-		int golds = Integer.parseInt(txtGolds.getText());
-		selectedEntry.setScore(score);
-		selectedEntry.setHits(hits);
-		selectedEntry.setGolds(golds);
-		if(chkMetric.isSelected()) {
-			int Xs = Integer.parseInt(txtXs.getText());
-			selectedEntry.setXs(Xs);
-			scores.updateRecord(selectedEntry.getID(), score, hits, golds, Xs);
-			txtXs.clear();
-			txtXs.setDisable(true);
-			lblXs.setDisable(true);
-		} else {
-			scores.updateRecord(selectedEntry.getID(), score, hits, golds);
-		}
 		tbvScores.setDisable(false);
 		tbvScores.refresh();
 		txtScore.clear();
@@ -1335,17 +1411,30 @@ public class DashboardController extends Application {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		boolean metric = chkMetric.isSelected();
 		String round = cmbTeamRound.getSelectionModel().getSelectedItem();
-		int apt = Integer.parseInt(txtArchersPerTeam.getText());
+		String apt = txtArchersPerTeam.getText();
+		if(cmbTeamRound.getSelectionModel().isEmpty()) {
+			informationDialog("Missing Details", "You have not selected a round for the Team Results.");
+			return;
+		}
+		if(!Validation.validatePresence(apt)) {
+			informationDialog("Missing Details", "You have not entered a number for Archers Per Team.");
+			return;
+		}
+		if(!Validation.validateAsInteger(apt)) {
+			informationDialog("Invalid Details", "You have entered an invalid number for Archers Per Team.");
+			return;
+		}
+		int aptNum = Integer.parseInt(apt);
 		ArrayList<String> bowTypes = new ArrayList<String>();
 		if(chkTeamCompound.isSelected()) { bowTypes.add("Compound"); }
 		if(chkTeamRecurve.isSelected()) { bowTypes.add("Recurve"); }
 		if(chkTeamBarebow.isSelected()) { bowTypes.add("Barebow"); }
 		if(chkTeamLongbow.isSelected()) { bowTypes.add("Longbow"); }
 		if(bowTypes.isEmpty()) {
-			informationDialog("No Results", "Your team properties selection yielded no results."); 
+			informationDialog("No Results", "You have not selected any bow types."); 
 		} else {
 			boolean mixed = rdbGenderMixed.isSelected();
-			JasperPrint jPrint = results.generateTeamResults(tID, round, apt, bowTypes, mixed, metric);
+			JasperPrint jPrint = results.generateTeamResults(tID, round, aptNum, bowTypes, mixed, metric);
 			if(jPrint.getPages().isEmpty()) { 
 				informationDialog("No Results", "Your team properties selection yielded no results."); 
 			} else {
@@ -1380,15 +1469,29 @@ public class DashboardController extends Application {
 		}
 		boolean metric = chkMetric.isSelected();
 		String round = cmbTeamRound.getSelectionModel().getSelectedItem();
-		int apt = 0;
-		if(txtArchersPerTeam.getText().length() != 0) {
-			apt = Integer.parseInt(txtArchersPerTeam.getText());
+		String apt = txtArchersPerTeam.getText();
+		if(chkTeams.isSelected() && cmbTeamRound.getSelectionModel().isEmpty()) {
+			informationDialog("Missing Details", "You have not selected a round for the Team Results.");
+			return;
 		}
+		if(chkTeams.isSelected() && !Validation.validatePresence(apt)) {
+			informationDialog("Missing Details", "You have not entered a number for Archers Per Team.");
+			return;
+		}
+		if(chkTeams.isSelected() && !Validation.validateAsInteger(apt)) {
+			informationDialog("Invalid Details", "You have entered an invalid number for Archers Per Team.");
+			return;
+		}
+		int aptNum = Integer.parseInt(apt);
 		ArrayList<String> bowTypes = new ArrayList<String>();
 		if(chkTeamCompound.isSelected()) { bowTypes.add("Compound"); }
 		if(chkTeamRecurve.isSelected()) { bowTypes.add("Recurve"); }
 		if(chkTeamBarebow.isSelected()) { bowTypes.add("Barebow"); }
 		if(chkTeamLongbow.isSelected()) { bowTypes.add("Longbow"); }
+		if(bowTypes.isEmpty()) {
+			informationDialog("No Results", "You have not selected any bow types."); 
+			return;
+		}
 		boolean mixed = rdbGenderMixed.isSelected();
 		JasperPrint individual = results.generateIndividualResults(tID, title, date, metric, bestGold, worstWhite);
 		JasperPrint couples = null;
@@ -1397,7 +1500,7 @@ public class DashboardController extends Application {
 			couples = results.generateMarriedCoupleResults(tID, metric);
 		}
 		if(chkTeams.isSelected() && !bowTypes.isEmpty()) {
-			teams = results.generateTeamResults(tID, round, apt, bowTypes, mixed, metric);
+			teams = results.generateTeamResults(tID, round, aptNum, bowTypes, mixed, metric);
 		}
 		JasperPrint fullResults = individual;
 		if(!individual.getPages().isEmpty()) {

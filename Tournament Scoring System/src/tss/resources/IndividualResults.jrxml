@@ -19,12 +19,54 @@
 	<field name="Round" class="java.lang.String"/>
 	<field name="Category" class="java.lang.String"/>
 	<field name="Xs" class="java.lang.Integer"/>
-	<group name="Round">
+	<field name="BowType" class="java.lang.String"/>
+	<group name="Temp">
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band height="90">
+				<staticText>
+					<reportElement x="40" y="60" width="100" height="20" uuid="db853c5c-faa0-4b95-a255-7bc05de603ed">
+						<printWhenExpression><![CDATA[$P{WORST_WHITE}.length() != 0]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[Worst White:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="40" y="40" width="100" height="20" uuid="923f4832-0999-4266-8acc-328ffdd2f5f0">
+						<printWhenExpression><![CDATA[$P{BEST_GOLD}.length() != 0]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[Best Gold:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="140" y="60" width="250" height="20" uuid="82e9f5fb-030d-45ca-8218-df4dca2094f9">
+						<printWhenExpression><![CDATA[$P{WORST_WHITE}.length() != 0]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{WORST_WHITE}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="140" y="40" width="250" height="20" uuid="50d3e938-4631-4d74-8711-91975a89ca29">
+						<printWhenExpression><![CDATA[$P{BEST_GOLD}.length() != 0]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{BEST_GOLD}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Round" minHeightToStartNewPage="50">
 		<groupExpression><![CDATA[$F{Round}]]></groupExpression>
 		<groupHeader>
 			<band height="47">
 				<textField>
-					<reportElement x="20" y="21" width="100" height="20" uuid="b19e2b88-c057-49a9-9a21-e6715773736a"/>
+					<reportElement x="20" y="21" width="260" height="20" uuid="b19e2b88-c057-49a9-9a21-e6715773736a"/>
 					<textElement verticalAlignment="Middle">
 						<font size="12" isBold="true"/>
 					</textElement>
@@ -35,59 +77,37 @@
 				</line>
 			</band>
 		</groupHeader>
-		<groupFooter>
-			<band height="100">
-				<textField>
-					<reportElement x="140" y="70" width="250" height="20" uuid="e93292bb-e9f6-4706-96af-b355edb1b0b6">
-						<printWhenExpression><![CDATA[$P{WORST_WHITE}.length() != 0]]></printWhenExpression>
-					</reportElement>
-					<textElement verticalAlignment="Middle"/>
-					<textFieldExpression><![CDATA[$P{WORST_WHITE}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="40" y="70" width="100" height="20" uuid="d9bf3ba8-9b5b-4f86-8388-63890661ec41">
-						<printWhenExpression><![CDATA[$P{WORST_WHITE}.length() != 0]]></printWhenExpression>
-					</reportElement>
-					<textElement verticalAlignment="Middle">
-						<font isBold="true" isItalic="false"/>
-					</textElement>
-					<text><![CDATA[Worst White:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="40" y="50" width="100" height="20" uuid="1dd6b8ee-0502-4fbe-8890-191fd5616980">
-						<printWhenExpression><![CDATA[$P{BEST_GOLD}.length() != 0]]></printWhenExpression>
-					</reportElement>
-					<textElement verticalAlignment="Middle">
-						<font isBold="true" isItalic="false"/>
-					</textElement>
-					<text><![CDATA[Best Gold:]]></text>
-				</staticText>
-				<textField>
-					<reportElement x="140" y="50" width="250" height="20" uuid="c2f05e62-cf5c-488e-b453-acbfddc893a8">
-						<printWhenExpression><![CDATA[$P{BEST_GOLD}.length() != 0]]></printWhenExpression>
-					</reportElement>
-					<textElement verticalAlignment="Middle"/>
-					<textFieldExpression><![CDATA[$P{BEST_GOLD}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupFooter>
 	</group>
-	<group name="Category">
+	<group name="Category" minHeightToStartNewPage="50">
 		<groupExpression><![CDATA[$F{Category}]]></groupExpression>
 		<groupHeader>
-			<band height="42">
+			<band height="30">
 				<rectangle>
-					<reportElement positionType="Float" x="30" y="18" width="513" height="20" backcolor="#ECEFF8" uuid="3c38cdc0-00e0-428e-b47a-602b096001f6"/>
+					<reportElement positionType="Float" x="30" y="8" width="513" height="20" backcolor="#ECEFF8" uuid="3c38cdc0-00e0-428e-b47a-602b096001f6"/>
 					<graphicElement>
 						<pen lineColor="#FFFFFF"/>
 					</graphicElement>
 				</rectangle>
 				<textField>
-					<reportElement x="40" y="18" width="100" height="20" uuid="89f91e20-61bd-4114-a878-65733076f800"/>
+					<reportElement x="40" y="8" width="140" height="20" uuid="89f91e20-61bd-4114-a878-65733076f800"/>
 					<textElement verticalAlignment="Middle">
 						<font size="10" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Category}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="BowType" minHeightToStartNewPage="50">
+		<groupExpression><![CDATA[$F{BowType}]]></groupExpression>
+		<groupHeader>
+			<band height="25">
+				<textField>
+					<reportElement x="40" y="5" width="140" height="20" uuid="4a2793a0-a0a1-4c35-95d5-48c6879da823"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{BowType}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -179,7 +199,7 @@
 			<textField>
 				<reportElement x="40" y="0" width="25" height="20" uuid="e6884f1a-cc34-47ec-b02f-950e12030b26"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{Category_COUNT}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{BowType_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="385" y="0" width="50" height="20" uuid="72a2ab29-235b-4347-832f-1edfaaa10e0d"/>

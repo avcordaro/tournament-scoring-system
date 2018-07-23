@@ -13,5 +13,4 @@
 	<classpathentry kind="lib" path="D:/Summer Project/tournament-scoring-system/Tournament Scoring System/lib/jasperreports-6.0.0.jar"/>
 	<classpathentry kind="lib" path="D:/Summer Project/tournament-scoring-system/Tournament Scoring System/lib/jasperreports-fonts-6.0.0.jar"/>
 	<classpathentry kind="lib" path="D:/Summer Project/tournament-scoring-system/Tournament Scoring System/lib/sqlite-jdbc-3.23.1.jar"/>
-	<classpathentry kind="output" path="bin"/>
 </classpath>

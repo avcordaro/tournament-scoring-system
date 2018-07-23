@@ -1,0 +1,4 @@
+Married Couples sorted by round
+Teams with mixed bow types
+Teams with less than APT? Hmmm
+Target List not sorting properly after 10A, possibly need seperate fields for target and detail. Grrrr
