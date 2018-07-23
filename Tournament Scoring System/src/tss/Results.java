@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import javax.swing.ImageIcon;
-
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
@@ -19,7 +17,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.view.JasperViewer;
 
 public class Results {
 	
@@ -29,7 +26,7 @@ public class Results {
 		conn = c;
 	}
 	
-	public JasperPrint generateMarriedCoupleResults(int tournamentID, boolean metric, boolean preview) {
+	public JasperPrint generateMarriedCoupleResults(int tournamentID, boolean metric) {
 		JasperPrint jPrint = null;
 		try {
 			JasperReport jr = JasperCompileManager.compileReport(getClass().getResourceAsStream("resources/MarriedCoupleResults.jrxml"));
@@ -51,17 +48,10 @@ public class Results {
 		} catch(JRException e) {
 			e.printStackTrace();
 		}
-		if(preview) {
-			JasperViewer jViewer = new JasperViewer(jPrint, false);
-			jViewer.setTitle("Married Couple Results Preview");
-			ImageIcon img = new ImageIcon(getClass().getResource("resources/list.png"));
-			jViewer.setIconImage(img.getImage());
-			jViewer.setVisible(true);
-		}
 		return jPrint;
 	}
 	
-	public JasperPrint generateIndividualResults(int tournamentID, String title, String date, boolean metric, String bestGold, String worstWhite, boolean preview) {
+	public JasperPrint generateIndividualResults(int tournamentID, String title, String date, boolean metric, String bestGold, String worstWhite) {
 		JasperPrint jPrint = null;
 		try {
 			JasperReport jr = JasperCompileManager.compileReport(getClass().getResourceAsStream("resources/IndividualResults.jrxml"));
@@ -83,17 +73,10 @@ public class Results {
 		} catch(JRException e) {
 			e.printStackTrace();
 		}
-		if(preview) {
-			JasperViewer jViewer = new JasperViewer(jPrint, false);
-			jViewer.setTitle("Individual Results Preview");
-			ImageIcon img = new ImageIcon(getClass().getResource("resources/list.png"));
-			jViewer.setIconImage(img.getImage());
-			jViewer.setVisible(true);
-		}
 		return jPrint;
 	}
 	
-	public JasperPrint generateTeamResults(int tournamentID, String round, int apt, ArrayList<String> bowTypes, boolean mixed, boolean metric, boolean preview) {
+	public JasperPrint generateTeamResults(int tournamentID, String round, int apt, ArrayList<String> bowTypes, boolean mixed, boolean metric) {
 		JasperPrint jPrint = null;
 		ArrayList<TeamMember> teamResultsData = new ArrayList<TeamMember>();
 		ArrayList<String> genders = new ArrayList<String>();
@@ -175,13 +158,6 @@ public class Results {
 			e.printStackTrace();
 		} catch(JRException e) {
 			e.printStackTrace();
-		}
-		if(preview) {
-			JasperViewer jViewer = new JasperViewer(jPrint, false);
-			jViewer.setTitle("Married Couple Results Preview");
-			ImageIcon img = new ImageIcon(getClass().getResource("resources/list.png"));
-			jViewer.setIconImage(img.getImage());
-			jViewer.setVisible(true);
 		}
 		return jPrint;
 	}

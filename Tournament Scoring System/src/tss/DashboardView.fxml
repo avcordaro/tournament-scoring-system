@@ -12,7 +12,7 @@
 
 <VBox maxHeight="850.0" maxWidth="1200.0" minHeight="850.0" minWidth="1200.0" prefHeight="850.0" prefWidth="1200.0" stylesheets="@resources/DashboardStylesheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tss.DashboardController">
    <children>
-      <HBox>
+      <HBox maxHeight="375.0" minHeight="375.0" prefHeight="375.0">
          <children>
             <VBox minWidth="496.0" prefWidth="496.0">
                <children>
@@ -51,7 +51,7 @@
                               </Label>
                               <StackPane fx:id="stpTournamentDate" alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                                  <children>
-                                    <DatePicker fx:id="datePicker" maxHeight="30.0" maxWidth="150.0" minHeight="30.0">
+                                    <DatePicker fx:id="datePicker" editable="false" maxHeight="30.0" maxWidth="150.0" minHeight="30.0">
                                        <StackPane.margin>
                                           <Insets />
                                        </StackPane.margin>
@@ -207,7 +207,7 @@
                   <Insets right="145.0" />
                </HBox.margin>
             </VBox>
-            <StackPane alignment="TOP_LEFT" minWidth="559.0" prefHeight="350.0" prefWidth="559.0">
+            <StackPane alignment="TOP_LEFT" maxHeight="375.0" maxWidth="540.0" minHeight="375.0" minWidth="540.0" prefHeight="375.0" prefWidth="540.0">
                <children>
                   <ImageView fitHeight="150.0" fitWidth="540.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -220,9 +220,9 @@
                         <Insets top="295.0" />
                      </StackPane.margin>
                   </ImageView>
-                  <TitledPane fx:id="tpNewTournament" expanded="false" text="Start New Tournament">
+                  <TitledPane fx:id="tpNewTournament" maxWidth="530.0" minWidth="530.0" prefWidth="530.0" text="Start New Tournament">
                     <content>
-                        <VBox prefHeight="325.0" prefWidth="530.0">
+                        <VBox maxHeight="320.0" maxWidth="530.0" minHeight="320.0" minWidth="530.0" prefHeight="320.0" prefWidth="530.0">
                            <children>
                               <Label minHeight="30.0" minWidth="200.0" prefWidth="200.0" text="New Tournament">
                                  <font>
@@ -265,7 +265,7 @@
                                           <Insets left="30.0" top="5.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <DatePicker fx:id="newDatePicker" maxHeight="30.0" maxWidth="150.0" minHeight="30.0">
+                                    <DatePicker fx:id="newDatePicker" editable="false" maxHeight="30.0" maxWidth="150.0" minHeight="30.0">
                                        <StackPane.margin>
                                           <Insets top="5.0" />
                                        </StackPane.margin>
@@ -363,7 +363,7 @@
                               </HBox>
                               <Button fx:id="btnNewTournament" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#newTournament" prefWidth="100.0" text="Start New">
                                  <VBox.margin>
-                                    <Insets left="420.0" top="20.0" />
+                                    <Insets left="410.0" top="20.0" />
                                  </VBox.margin>
                               </Button>
                            </children>
@@ -383,7 +383,7 @@
             </StackPane>
          </children>
       </HBox>
-      <TabPane fx:id="tabPane" maxWidth="1160.0" minWidth="1160.0" prefHeight="500.0" prefWidth="1160.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabPane" maxHeight="435.0" maxWidth="1160.0" minHeight="435.0" minWidth="1160.0" prefHeight="435.0" prefWidth="1160.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab fx:id="tabArchers" text="Archers">
                <content>
@@ -852,7 +852,7 @@
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <TextField fx:id="txtScore" disable="true" maxHeight="30.0" maxWidth="230.0" minHeight="30.0" minWidth="220.0" prefWidth="220.0" promptText="Total score...">
+                                    <TextField fx:id="txtScore" disable="true" maxHeight="30.0" maxWidth="230.0" minHeight="30.0" minWidth="220.0" onKeyPressed="#enterPressedForScore" prefWidth="220.0" promptText="Total score...">
                                        <HBox.margin>
                                           <Insets right="20.0" />
                                        </HBox.margin>
@@ -875,7 +875,7 @@
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <TextField fx:id="txtHits" disable="true" maxHeight="30.0" maxWidth="230.0" minHeight="30.0" minWidth="220.0" prefWidth="220.0" promptText="Total hits...">
+                                    <TextField fx:id="txtHits" disable="true" maxHeight="30.0" maxWidth="230.0" minHeight="30.0" minWidth="220.0" onKeyPressed="#enterPressedForScore" prefWidth="220.0" promptText="Total hits...">
                                        <HBox.margin>
                                           <Insets right="20.0" />
                                        </HBox.margin>

@@ -36,7 +36,7 @@ public class Tournaments {
 		return rs;
 	}
 	
-	public int newRecord(String title, String date, String apt, String metric, String teams, String couples) {
+	public int newRecord(String title, String date, int apt, String metric, String teams, String couples) {
 		String sql = "INSERT INTO Tournament (Title, Date, ArchersPerTarget, Metric, Teams, MarriedCouples)"
 				+ " VALUES (?, ?, ?, ?, ?, ?);";
 		int newID = 0;
@@ -44,7 +44,7 @@ public class Tournaments {
 			PreparedStatement prepStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			prepStmt.setString(1, title);
 			prepStmt.setString(2, date);
-			prepStmt.setString(3, apt);
+			prepStmt.setInt(3, apt);
 			prepStmt.setString(4, metric);
 			prepStmt.setString(5, teams);
 			prepStmt.setString(6, couples);
