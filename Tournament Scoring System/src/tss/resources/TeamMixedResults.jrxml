@@ -3,6 +3,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TeamMixedResults" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b147b0e9-900f-4b5c-bd49-588caab449f4">
 	<parameter name="METRIC" class="java.lang.Boolean"/>
 	<parameter name="ROUND" class="java.lang.String"/>
+	<parameter name="MIXED_BOW" class="java.lang.Boolean"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -32,9 +33,10 @@
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<group name="BowType">
-		<groupExpression><![CDATA[$F{bowType}]]></groupExpression>
+		<groupExpression><![CDATA[$P{MIXED_BOW} != true ? $F{bowType} : null]]></groupExpression>
 		<groupHeader>
-			<band height="46">
+			<band height="42">
+				<printWhenExpression><![CDATA[$P{MIXED_BOW} != true]]></printWhenExpression>
 				<textField>
 					<reportElement x="20" y="21" width="100" height="20" uuid="190f4ceb-0bda-4afd-a176-2129f79df4f9"/>
 					<textElement verticalAlignment="Middle">
@@ -48,7 +50,7 @@
 			</band>
 		</groupHeader>
 	</group>
-	<group name="Club">
+	<group name="Club" minHeightToStartNewPage="100">
 		<groupExpression><![CDATA[$F{club}]]></groupExpression>
 		<groupHeader>
 			<band height="30">

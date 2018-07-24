@@ -26,6 +26,7 @@ import net.sf.jasperreports.view.JasperViewer;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -339,7 +340,7 @@ public class DashboardController extends Application {
 	
 	public Optional<String> searchArcherDialog(String title) {
 		TextInputDialog dialog = new TextInputDialog();
-		dialog.setTitle("Search Archers");
+		dialog.setTitle(title);
 		dialog.setHeaderText(null);
 		dialog.setContentText("Archer ID: ");
 		DialogPane dialogPane = dialog.getDialogPane();
@@ -348,6 +349,14 @@ public class DashboardController extends Application {
 		dialogStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/logo.png")));
 		Optional<String> input = dialog.showAndWait();
 		return input;
+	}
+	
+	public ButtonType confirmDeletion(String title, String message) {
+		Alert alert = new Alert(AlertType.CONFIRMATION, message, ButtonType.YES, ButtonType.NO);
+		alert.setHeaderText(null);
+		alert.setTitle(title);
+		alert.showAndWait();
+		return alert.getResult();
 	}
 	
 	public void informationDialog(String title, String message) {
@@ -537,91 +546,93 @@ public class DashboardController extends Application {
 	}
 	@FXML
 	public void deleteTournament(ActionEvent event) {
-		int id = cmbTournament.getSelectionModel().getSelectedItem().getID();
-		cmbTournament.getItems().remove(cmbTournament.getSelectionModel().getSelectedItem());
-		btnEditTournament.setDisable(true);
-		btnDeleteTournament.setDisable(true);
-		btnEditSaveTournament.setVisible(false);
-		tournaments.deleteRecord(id, archers, scores, marriedCouples);
-		txtTitle.clear();
-		txtDate.clear();
-		txtTotalArchers.clear();
-		txtArchersPerTarget.clear();
-		chkMetric.setSelected(false);
-		chkTeams.setSelected(false);
-		chkMarriedCouples.setSelected(false);
-		tbvArchers.getItems().clear();
-		tbvTargetList.getItems().clear();
-		tbvScores.getItems().clear();
-    	btnSearchArcher.setDisable(true);
-    	btnEditArcher.setDisable(true);
-    	btnDeleteArcher.setDisable(true);
-    	btnNewArcher.setDisable(true);
-		txtFirstName.clear();
-		txtLastName.clear();
-		txtClub.clear();
-		cmbCategory.getSelectionModel().clearSelection();
-		cmbBowType.getSelectionModel().clearSelection();
-		cmbRound.getSelectionModel().clearSelection();
-		cmbMarriedCouple.getSelectionModel().clearSelection();
-		btnSearchTarget.setDisable(true);
-		btnEditTarget.setDisable(true);
-		txtFirstName.clear();
-		txtLastName.clear();
-		txtClub.clear();
-		cmbCategory.getSelectionModel().clearSelection();
-		cmbBowType.getSelectionModel().clearSelection();
-		cmbRound.getSelectionModel().clearSelection();
-		cmbMarriedCouple.getSelectionModel().clearSelection();
-		btnAllocateTargets.setDisable(true);
-		btnGenerateTargetList.setDisable(true);
-		lblVenue.setDisable(true);
-		lblAssembly.setDisable(true);
-		lblSighters.setDisable(true);
-		txtVenue.setDisable(true);
-		txtAssembly.setDisable(true);
-		txtSighters.setDisable(true);
-		txtVenue.clear();
-		txtAssembly.clear();
-		txtSighters.clear();
-		btnSearchScore.setDisable(true);
-		btnEditScore.setDisable(true);
-		btnStartScores.setDisable(true);
-		btnBackScore.setDisable(true);
-		btnNextScore.setDisable(true);
-		txtScore.setDisable(true);
-		txtHits.setDisable(true);
-		txtGolds.setDisable(true);
-		txtXs.setDisable(true);
-		lblScore.setDisable(true);
-		lblHits.setDisable(true);
-		lblGolds.setDisable(true);
-		lblXs.setDisable(true);
-		lblBestGold.setDisable(true);
-		lblWorstWhite.setDisable(true);
-		cmbBestGold.setDisable(true);
-		cmbWorstWhite.setDisable(true);
-		btnGenerateIndividualResults.setDisable(true);
-		btnGenerateCoupleResults.setDisable(true);
-		cmbTeamRound.setDisable(true);
-		lblTeamRound.setDisable(true);
-		txtArchersPerTeam.setDisable(true);
-		lblArchersPerTeam.setDisable(true);
-		chkTeamCompound.setDisable(true);
-		lblTeamCompound.setDisable(true);
-		chkTeamRecurve.setDisable(true);
-		lblTeamRecurve.setDisable(true);
-		chkTeamBarebow.setDisable(true);
-		lblTeamBarebow.setDisable(true);
-		chkTeamLongbow.setDisable(true);
-		lblTeamLongbow.setDisable(true);
-		rdbGenderMixed.setDisable(true);
-		lblGenderMixed.setDisable(true);
-		rdbGenderSeparate.setDisable(true);
-		lblGenderSeparate.setDisable(true);
-		btnGenerateTeamResults.setDisable(true);
-		btnExportFullResults.setDisable(true);
-		loadTournament(event);
+		if(confirmDeletion("Delete Tournament", "Are you sure you want to delete this tournament?") == ButtonType.YES) {
+			int id = cmbTournament.getSelectionModel().getSelectedItem().getID();
+			cmbTournament.getItems().remove(cmbTournament.getSelectionModel().getSelectedItem());
+			btnEditTournament.setDisable(true);
+			btnDeleteTournament.setDisable(true);
+			btnEditSaveTournament.setVisible(false);
+			tournaments.deleteRecord(id, archers, scores, marriedCouples);
+			txtTitle.clear();
+			txtDate.clear();
+			txtTotalArchers.clear();
+			txtArchersPerTarget.clear();
+			chkMetric.setSelected(false);
+			chkTeams.setSelected(false);
+			chkMarriedCouples.setSelected(false);
+			tbvArchers.getItems().clear();
+			tbvTargetList.getItems().clear();
+			tbvScores.getItems().clear();
+	    	btnSearchArcher.setDisable(true);
+	    	btnEditArcher.setDisable(true);
+	    	btnDeleteArcher.setDisable(true);
+	    	btnNewArcher.setDisable(true);
+			txtFirstName.clear();
+			txtLastName.clear();
+			txtClub.clear();
+			cmbCategory.getSelectionModel().clearSelection();
+			cmbBowType.getSelectionModel().clearSelection();
+			cmbRound.getSelectionModel().clearSelection();
+			cmbMarriedCouple.getSelectionModel().clearSelection();
+			btnSearchTarget.setDisable(true);
+			btnEditTarget.setDisable(true);
+			txtFirstName.clear();
+			txtLastName.clear();
+			txtClub.clear();
+			cmbCategory.getSelectionModel().clearSelection();
+			cmbBowType.getSelectionModel().clearSelection();
+			cmbRound.getSelectionModel().clearSelection();
+			cmbMarriedCouple.getSelectionModel().clearSelection();
+			btnAllocateTargets.setDisable(true);
+			btnGenerateTargetList.setDisable(true);
+			lblVenue.setDisable(true);
+			lblAssembly.setDisable(true);
+			lblSighters.setDisable(true);
+			txtVenue.setDisable(true);
+			txtAssembly.setDisable(true);
+			txtSighters.setDisable(true);
+			txtVenue.clear();
+			txtAssembly.clear();
+			txtSighters.clear();
+			btnSearchScore.setDisable(true);
+			btnEditScore.setDisable(true);
+			btnStartScores.setDisable(true);
+			btnBackScore.setDisable(true);
+			btnNextScore.setDisable(true);
+			txtScore.setDisable(true);
+			txtHits.setDisable(true);
+			txtGolds.setDisable(true);
+			txtXs.setDisable(true);
+			lblScore.setDisable(true);
+			lblHits.setDisable(true);
+			lblGolds.setDisable(true);
+			lblXs.setDisable(true);
+			lblBestGold.setDisable(true);
+			lblWorstWhite.setDisable(true);
+			cmbBestGold.setDisable(true);
+			cmbWorstWhite.setDisable(true);
+			btnGenerateIndividualResults.setDisable(true);
+			btnGenerateCoupleResults.setDisable(true);
+			cmbTeamRound.setDisable(true);
+			lblTeamRound.setDisable(true);
+			txtArchersPerTeam.setDisable(true);
+			lblArchersPerTeam.setDisable(true);
+			chkTeamCompound.setDisable(true);
+			lblTeamCompound.setDisable(true);
+			chkTeamRecurve.setDisable(true);
+			lblTeamRecurve.setDisable(true);
+			chkTeamBarebow.setDisable(true);
+			lblTeamBarebow.setDisable(true);
+			chkTeamLongbow.setDisable(true);
+			lblTeamLongbow.setDisable(true);
+			rdbGenderMixed.setDisable(true);
+			lblGenderMixed.setDisable(true);
+			rdbGenderSeparate.setDisable(true);
+			lblGenderSeparate.setDisable(true);
+			btnGenerateTeamResults.setDisable(true);
+			btnExportFullResults.setDisable(true);
+			loadTournament(event);
+		}
 	}
 	
 	@FXML
@@ -875,22 +886,24 @@ public class DashboardController extends Application {
 			}
 		}
 		if(input.isPresent()) {
-			informationDialog("Archer Not Found", "Archer ID " + input.get() + "does not exist.");
+			informationDialog("Archer Not Found", "Archer ID " + input.get() + " does not exist.");
 		}
 	}
 	
 	@FXML
 	public void deleteArcher(ActionEvent event) {
-		ArcherEntry selectedArcher = tbvArchers.getSelectionModel().getSelectedItem();
-		archers.deleteRecord(selectedArcher.getID());
-		scores.deletedRecord(selectedArcher.getID());
-		marriedCouples.deleteRecord(selectedArcher.getID());
-		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
-		fillArcherTableView(tID);
-		fillTargetListTableView(tID);
-		fillScoresTableView(tID);
-		btnEditArcher.setDisable(true);
-		btnDeleteArcher.setDisable(true);
+		if(confirmDeletion("Delete Archer", "Are you sure you want to delete this archer?") == ButtonType.YES) {
+			ArcherEntry selectedArcher = tbvArchers.getSelectionModel().getSelectedItem();
+			archers.deleteRecord(selectedArcher.getID());
+			scores.deletedRecord(selectedArcher.getID());
+			marriedCouples.deleteRecord(selectedArcher.getID());
+			int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
+			fillArcherTableView(tID);
+			fillTargetListTableView(tID);
+			fillScoresTableView(tID);
+			btnEditArcher.setDisable(true);
+			btnDeleteArcher.setDisable(true);
+		}
 	}
 
 	public void fillTargetListTableView(int tournamentID) {
@@ -938,7 +951,7 @@ public class DashboardController extends Application {
 			}
 		} 
 		if(input.isPresent()) {
-			informationDialog("Archer Not Found", "Archer ID " + input.get() + "does not exist.");
+			informationDialog("Archer Not Found", "Archer ID " + input.get() + " does not exist.");
 		}
 	}
 	
@@ -1252,7 +1265,7 @@ public class DashboardController extends Application {
 			}
 		}
 		if(input.isPresent()) {
-			informationDialog("Archer Not Found", "Archer ID " + input.get() + "does not exist.");
+			informationDialog("Archer Not Found", "Archer ID " + input.get() + " does not exist.");
 		}
 	}
 	
@@ -1426,15 +1439,16 @@ public class DashboardController extends Application {
 		}
 		int aptNum = Integer.parseInt(apt);
 		ArrayList<String> bowTypes = new ArrayList<String>();
-		if(chkTeamCompound.isSelected()) { bowTypes.add("Compound"); }
-		if(chkTeamRecurve.isSelected()) { bowTypes.add("Recurve"); }
-		if(chkTeamBarebow.isSelected()) { bowTypes.add("Barebow"); }
-		if(chkTeamLongbow.isSelected()) { bowTypes.add("Longbow"); }
+		if(chkTeamCompound.isSelected()) { bowTypes.add("\"Compound\""); }
+		if(chkTeamRecurve.isSelected()) { bowTypes.add("\"Recurve\""); }
+		if(chkTeamBarebow.isSelected()) { bowTypes.add("\"Barebow\""); }
+		if(chkTeamLongbow.isSelected()) { bowTypes.add("\"Longbow\""); }
 		if(bowTypes.isEmpty()) {
 			informationDialog("No Results", "You have not selected any bow types."); 
 		} else {
-			boolean mixed = rdbGenderMixed.isSelected();
-			JasperPrint jPrint = results.generateTeamResults(tID, round, aptNum, bowTypes, mixed, metric);
+			boolean mixedGender = rdbGenderMixed.isSelected();
+			boolean mixedBow = true;
+			JasperPrint jPrint = results.generateTeamResults(tID, round, aptNum, bowTypes, mixedBow, mixedGender, metric);
 			if(jPrint.getPages().isEmpty()) { 
 				informationDialog("No Results", "Your team properties selection yielded no results."); 
 			} else {
@@ -1492,7 +1506,8 @@ public class DashboardController extends Application {
 			informationDialog("No Results", "You have not selected any bow types."); 
 			return;
 		}
-		boolean mixed = rdbGenderMixed.isSelected();
+		boolean mixedGender = rdbGenderMixed.isSelected();
+		boolean mixedBow = true;
 		JasperPrint individual = results.generateIndividualResults(tID, title, date, metric, bestGold, worstWhite);
 		JasperPrint couples = null;
 		JasperPrint teams = null;
@@ -1500,7 +1515,7 @@ public class DashboardController extends Application {
 			couples = results.generateMarriedCoupleResults(tID, metric);
 		}
 		if(chkTeams.isSelected() && !bowTypes.isEmpty()) {
-			teams = results.generateTeamResults(tID, round, aptNum, bowTypes, mixed, metric);
+			teams = results.generateTeamResults(tID, round, aptNum, bowTypes, mixedBow, mixedGender, metric);
 		}
 		JasperPrint fullResults = individual;
 		if(!individual.getPages().isEmpty()) {

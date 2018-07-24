@@ -3,6 +3,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TeamMixedResults" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b147b0e9-900f-4b5c-bd49-588caab449f4">
 	<parameter name="METRIC" class="java.lang.Boolean"/>
 	<parameter name="ROUND" class="java.lang.String"/>
+	<parameter name="MIXED_BOW" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[$P{MIXED_BOW} != true]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -49,7 +52,7 @@
 			</band>
 		</groupHeader>
 	</group>
-	<group name="Gender">
+	<group name="Gender" minHeightToStartNewPage="100">
 		<groupExpression><![CDATA[$F{gender}]]></groupExpression>
 		<groupHeader>
 			<band height="30">
