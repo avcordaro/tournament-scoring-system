@@ -969,7 +969,7 @@ public class DashboardController extends Application {
 		if(!cmbEditTarget.getSelectionModel().isEmpty() && !cmbEditTarget.getSelectionModel().getSelectedItem().equals("None")) {
 			String target1 = cmbEditTarget.getSelectionModel().getSelectedItem().split(" ")[0].trim();
 			String target2 = tbvTargetList.getSelectionModel().getSelectedItem().getTarget();
-			targets.swapTargetDetails(tID, target1, target2);
+			targets.swapTargetDetails(tID, Integer.parseInt(txtArchersPerTarget.getText()), target1, target2);
 		}
 		btnSaveEditTarget.setVisible(false);
 		btnEditTarget.setVisible(true);
@@ -996,7 +996,7 @@ public class DashboardController extends Application {
 	public void fillSwapTargetComboBox() {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		TargetEntry selectedEntry = tbvTargetList.getSelectionModel().getSelectedItem();
-		targets.fillSwapDetailsComboBox(tID, selectedEntry, cmbEditTarget);
+		targets.fillSwapDetailsComboBox(tID, selectedEntry, Integer.parseInt(txtArchersPerTarget.getText()), cmbEditTarget);
 	}
 	
 	@FXML 

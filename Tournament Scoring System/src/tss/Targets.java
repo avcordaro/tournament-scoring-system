@@ -36,7 +36,7 @@ public class Targets {
 			Statement stmt = conn.createStatement();
 			rs = stmt.executeQuery("SELECT * FROM Archer LEFT JOIN MarriedCouple ON Archer.ArcherID ="
 					+ " MarriedCouple.Archer OR Archer.ArcherID = MarriedCouple.Spouse WHERE TournamentID = "
-					+ tournamentID + " ORDER BY Target;");
+					+ tournamentID + " ORDER BY Target, Detail;");
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -50,7 +50,7 @@ public class Targets {
 			while(rs.next()) {
 	    		data.add(new TargetEntry(rs.getInt("ArcherID"), rs.getString("FirstName"), 
 	    				rs.getString("LastName"), rs.getString("Club"), rs.getString("Category"), 
-	    				rs.getString("BowType"),rs.getString("Round"), rs.getString("Target")));
+	    				rs.getString("BowType"),rs.getString("Round"), rs.getString("Target"), rs.getString("Detail")));
 	    	}
 		} catch(SQLException e) {
 			e.printStackTrace();
@@ -58,12 +58,13 @@ public class Targets {
 		return data;
 	}
 	
-	public void updateDetail(int archerID, String detail) {
-		String sql = "UPDATE Archer SET Target=? WHERE ArcherID=?;";
+	public void updateDetail(int archerID, String target, String detail) {
+		String sql = "UPDATE Archer SET Target=?, Detail=? WHERE ArcherID=?;";
 		try {
 			PreparedStatement prepStmt = conn.prepareStatement(sql);
-			prepStmt.setString(1, detail);
-			prepStmt.setInt(2, archerID);
+			prepStmt.setInt(1, Integer.parseInt(target));
+			prepStmt.setString(2, detail);
+			prepStmt.setInt(3, archerID);
 			prepStmt.execute();
 		} catch(SQLException e) {
 			e.printStackTrace();
@@ -81,15 +82,15 @@ public class Targets {
 			double detailIncrement = 1.0 / apt;
 			char detailLetter = 'A';
 			char resetLetter = (char)(detailLetter + apt);
-			String sql = "UPDATE Archer SET Target=? WHERE ArcherID=?;";
+			String sql = "UPDATE Archer SET Target=?, Detail=? WHERE ArcherID=?;";
 			PreparedStatement prepStmt = conn.prepareStatement(sql);
 			rs.next();
 			while(!rs.isAfterLast()) {
 				String round = rs.getString("Round");
 				while(!rs.isAfterLast() && rs.getString("Round").equals(round)) {
-					String detail = Integer.toString((int)detailNumber) + detailLetter;
-					prepStmt.setString(1, detail);
-					prepStmt.setInt(2, rs.getInt("ID"));
+					prepStmt.setInt(1, (int)detailNumber);
+					prepStmt.setString(2, Character.toString(detailLetter));
+					prepStmt.setInt(3, rs.getInt("ID"));
 					prepStmt.addBatch();
 					detailNumber += detailIncrement;
 					detailLetter++;
@@ -107,26 +108,27 @@ public class Targets {
 		}
 	}
 	
-	public void fillSwapDetailsComboBox(int tournamentID, TargetEntry entry, ComboBox<String> cmb) {
+	public void fillSwapDetailsComboBox(int tournamentID, TargetEntry entry, int apt, ComboBox<String> cmb) {
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Archer WHERE TournamentID = " + tournamentID 
-					+ " AND Round = \"" + entry.getRound() + "\" ORDER BY Target;");
+					+ " AND Round = \"" + entry.getRound() + "\" ORDER BY Target, Detail;");
 			if(rs.isAfterLast()) {
 				return;
 			}
-			int startingTarget = Integer.parseInt(rs.getString("Target").split("A|B|C|D")[0]);
+			char resetLetter = (char)('A' + apt);
+			int startingTarget = Integer.parseInt(rs.getString("Target").split("(?=[A-" + resetLetter + "])")[0]);
 			HashMap<String, String> targetMap = new HashMap<String, String>();
 			String archerDetail;
 			while(rs.next()) {
-				archerDetail = rs.getString("Target") + " - " + rs.getString("FirstName") + " " + rs.getString("LastName");
-				targetMap.put(rs.getString("Target"), archerDetail);
+				archerDetail = rs.getInt("Target") + rs.getString("Detail") + " - " + rs.getString("FirstName") + " " + rs.getString("LastName");
+				targetMap.put(rs.getString("Target") + rs.getString("Detail"), archerDetail);
 			}
 			int i = startingTarget;
 			String detail;
 			cmb.getItems().add("None");
 			while(!targetMap.isEmpty()) {
-				for(char c = 'A'; c < 'E'; c++) {
+				for(char c = 'A'; c < resetLetter; c++) {
 					detail = Integer.toString(i) + c;
 					archerDetail = targetMap.get(detail);
 					if(archerDetail != null) {
@@ -146,18 +148,21 @@ public class Targets {
 		}
 	}
 	
-	public void swapTargetDetails(int tournamentID, String target1, String target2) {
+	public void swapTargetDetails(int tournamentID, int apt, String target1, String target2) {
 		try {
+			char resetLetter = (char)('A' + apt);
+			String[] target1Detail = target1.split("(?=[A-" + resetLetter + "])");
+			String[] target2Detail = target2.split("(?=[A-" + resetLetter + "])");
 			Statement stmt1 = conn.createStatement();
 			ResultSet target1Archer = stmt1.executeQuery("SELECT * FROM Archer WHERE TournamentID = " + tournamentID
-					+ " AND Target = \"" + target1 + "\";");
+					+ " AND Target = \"" + target1Detail[0] + "\" AND Detail = \"" + target1Detail[1] + "\";");
 			Statement stmt2 = conn.createStatement();
 			ResultSet target2Archer = stmt2.executeQuery("SELECT * FROM Archer WHERE TournamentID = " + tournamentID
-					+ " AND Target = \"" + target2 + "\";");
+					+ " AND Target = \"" + target2Detail[0] + "\" AND Detail = \"" + target2Detail[1] + "\";");
 			if(!target1Archer.isAfterLast()) {
-				updateDetail(target1Archer.getInt("ArcherID"), target2);
+				updateDetail(target1Archer.getInt("ArcherID"), target2Detail[0], target2Detail[1]);
 			}
-			updateDetail(target2Archer.getInt("ArcherID"), target1);
+			updateDetail(target2Archer.getInt("ArcherID"), target1Detail[0], target1Detail[1]);
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}

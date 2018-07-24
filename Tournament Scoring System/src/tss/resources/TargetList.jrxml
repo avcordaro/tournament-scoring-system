@@ -11,6 +11,7 @@
 		<![CDATA[]]>
 	</queryString>
 	<field name="Target" class="java.lang.String"/>
+	<field name="Detail" class="java.lang.String"/>
 	<field name="FirstName" class="java.lang.String"/>
 	<field name="LastName" class="java.lang.String"/>
 	<field name="Club" class="java.lang.String"/>
@@ -196,7 +197,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Target}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Target} + $F{Detail}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="470" y="0" width="50" height="20" uuid="1de188f2-bba6-4b53-b608-ea384e55e09e"/>

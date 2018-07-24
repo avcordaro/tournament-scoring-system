@@ -217,7 +217,7 @@
                         <Rectangle2D width="100.0" />
                      </viewport>
                      <StackPane.margin>
-                        <Insets top="295.0" />
+                        <Insets top="290.0" />
                      </StackPane.margin>
                   </ImageView>
                   <TitledPane fx:id="tpNewTournament" expanded="false" maxWidth="530.0" minWidth="530.0" prefWidth="530.0" text="Start New Tournament">
@@ -380,6 +380,9 @@
                      </StackPane.margin>
                   </TitledPane>
                </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
             </StackPane>
          </children>
       </HBox>
@@ -1120,7 +1123,7 @@
                                           <Insets />
                                        </HBox.margin>
                                     </Label>
-                                    <ComboBox fx:id="cmbBestGold" disable="true" prefWidth="200.0" promptText="Optional..." />
+                                    <ComboBox fx:id="cmbBestGold" disable="true" prefHeight="30.0" prefWidth="200.0" promptText="Optional..." />
                                  </children>
                                  <VBox.margin>
                                     <Insets top="10.0" />
@@ -1129,7 +1132,7 @@
                               <HBox alignment="CENTER_LEFT">
                                  <children>
                                     <Label fx:id="lblWorstWhite" disable="true" prefHeight="30.0" prefWidth="150.0" text="Worst White:" />
-                                    <ComboBox fx:id="cmbWorstWhite" disable="true" prefWidth="200.0" promptText="Optional..." />
+                                    <ComboBox fx:id="cmbWorstWhite" disable="true" prefHeight="30.0" prefWidth="200.0" promptText="Optional..." />
                                  </children>
                                  <VBox.margin>
                                     <Insets top="5.0" />

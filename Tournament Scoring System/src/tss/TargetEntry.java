@@ -10,8 +10,9 @@ public class TargetEntry {
 	private String bowType;
 	private String round;
 	private String target;
+	private String detail;
 	
-	public TargetEntry(int id, String f, String l, String c, String a, String b, String r, String t) {
+	public TargetEntry(int id, String f, String l, String c, String a, String b, String r, String t, String d) {
 		ID = id;
 		firstName = f;
 		lastName = l;
@@ -19,7 +20,8 @@ public class TargetEntry {
 		category = a;
 		bowType = b;
 		round = r;
-		target = t;
+		target = t + d;
+		detail = d;
 	}
 	
 	public int getID() {
@@ -45,5 +47,8 @@ public class TargetEntry {
 	}
 	public String getTarget() {
 		return target;
+	}
+	public String getDetail() {
+		return detail;
 	}
 }
