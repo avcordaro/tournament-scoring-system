@@ -1,11 +1,8 @@
 package tss;
 
-import java.util.ArrayList;
-
 public class Team implements Comparable<Team> {
 	
 	private String club;
-	private ArrayList<Integer> archerIDs;
 	private int totalScore;
 	private int totalHits;
 	private int totalGolds;
@@ -13,10 +10,6 @@ public class Team implements Comparable<Team> {
 	
 	public Team(String c) {
 		club = c;
-		archerIDs = new ArrayList<Integer>();
-	}
-	public void addArcherID(int id) {
-		archerIDs.add(id);
 	}
 	public void incrementTotalScore(int score) {
 		totalScore += score;
@@ -32,9 +25,6 @@ public class Team implements Comparable<Team> {
 	}
 	public String getClub() {
 		return club;
-	}
-	public ArrayList<Integer> getArcherIDs() {
-		return archerIDs;
 	}
 	public int getTotalScore() {
 		return totalScore;

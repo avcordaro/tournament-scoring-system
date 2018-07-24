@@ -36,7 +36,7 @@
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<group name="BowType">
-		<groupExpression><![CDATA[$F{bowType}]]></groupExpression>
+		<groupExpression><![CDATA[$P{MIXED_BOW} != true ? $F{bowType} : null]]></groupExpression>
 		<groupHeader>
 			<band height="46">
 				<textField>

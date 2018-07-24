@@ -1018,41 +1018,79 @@
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin></Label>
-                              <HBox alignment="CENTER_LEFT">
+                              <HBox>
                                  <children>
-                                    <Label fx:id="lblTeamCompound" disable="true" prefWidth="150.0" text="Compound" />
-                                    <CheckBox fx:id="chkTeamCompound" disable="true" mnemonicParsing="false" />
+                                    <VBox maxWidth="180.0" minWidth="180.0" prefWidth="180.0">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT">
+                                             <children>
+                                                <Label fx:id="lblTeamCompound" disable="true" prefWidth="150.0" text="Compound" />
+                                                <CheckBox fx:id="chkTeamCompound" disable="true" mnemonicParsing="false" />
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets top="2.5" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT">
+                                             <children>
+                                                <Label fx:id="lblTeamRecurve" disable="true" prefWidth="150.0" text="Recurve" />
+                                                <CheckBox fx:id="chkTeamRecurve" disable="true" mnemonicParsing="false" />
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets top="2.5" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="20.0" prefWidth="125.0">
+                                             <children>
+                                                <Label fx:id="lblTeamBarebow" disable="true" prefWidth="150.0" text="Barebow" />
+                                                <CheckBox fx:id="chkTeamBarebow" disable="true" mnemonicParsing="false" />
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets top="2.5" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT">
+                                             <children>
+                                                <Label fx:id="lblTeamLongbow" disable="true" prefWidth="150.0" text="Longbow" />
+                                                <CheckBox fx:id="chkTeamLongbow" disable="true" mnemonicParsing="false" />
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets top="2.5" />
+                                             </VBox.margin>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <VBox prefWidth="170.0">
+                                       <children>
+                                          <HBox>
+                                             <children>
+                                                <Label fx:id="lblTeamMixedWComp" disable="true" prefWidth="130.0" text="Mixed with Compound" wrapText="true">
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <CheckBox fx:id="chkTeamMixedWComp" disable="true" mnemonicParsing="false" />
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets top="2.5" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox>
+                                             <children>
+                                                <Label fx:id="lblTeamMixedWOComp" disable="true" prefWidth="130.0" text="Mixed without Compound" wrapText="true">
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <CheckBox fx:id="chkTeamMixedWOComp" disable="true" mnemonicParsing="false" />
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets top="11.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
                                  </children>
-                                 <VBox.margin>
-                                    <Insets top="2.5" />
-                                 </VBox.margin>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT">
-                                 <children>
-                                    <Label fx:id="lblTeamRecurve" disable="true" prefWidth="150.0" text="Recurve" />
-                                    <CheckBox fx:id="chkTeamRecurve" disable="true" mnemonicParsing="false" />
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets top="2.5" />
-                                 </VBox.margin>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT" prefHeight="20.0" prefWidth="125.0">
-                                 <children>
-                                    <Label fx:id="lblTeamBarebow" disable="true" prefWidth="150.0" text="Barebow" />
-                                    <CheckBox fx:id="chkTeamBarebow" disable="true" mnemonicParsing="false" />
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets top="2.5" />
-                                 </VBox.margin>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT">
-                                 <children>
-                                    <Label fx:id="lblTeamLongbow" disable="true" prefWidth="150.0" text="Longbow" />
-                                    <CheckBox fx:id="chkTeamLongbow" disable="true" mnemonicParsing="false" />
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets top="2.5" />
-                                 </VBox.margin>
                               </HBox>
                               <Label text="Team Gender:">
                                  <font>
@@ -1084,7 +1122,7 @@
                               </HBox>
                               <Button fx:id="btnGenerateTeamResults" disable="true" mnemonicParsing="false" onAction="#previewTeamResults" prefHeight="30.0" prefWidth="100.0" text="Generate">
                                  <VBox.margin>
-                                    <Insets top="12.0" />
+                                    <Insets top="13.0" />
                                  </VBox.margin></Button>
                            </children>
                            <HBox.margin>

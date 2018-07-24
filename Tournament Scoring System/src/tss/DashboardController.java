@@ -176,6 +176,10 @@ public class DashboardController extends Application {
     @FXML
     private CheckBox chkTeamLongbow;
     @FXML
+    private CheckBox chkTeamMixedWComp;
+    @FXML
+    private CheckBox chkTeamMixedWOComp;
+    @FXML
     private RadioButton rdbGenderMixed;
     @FXML
     private RadioButton rdbGenderSeparate;
@@ -217,6 +221,10 @@ public class DashboardController extends Application {
     private Label lblGenderMixed;
     @FXML
     private Label lblGenderSeparate;
+    @FXML
+    private Label lblTeamMixedWComp;
+    @FXML
+    private Label lblTeamMixedWOComp;
     @FXML
     private ComboBox<TournamentMap> cmbTournament;
     @FXML
@@ -313,6 +321,37 @@ public class DashboardController extends Application {
 		});
 		tbvScores.getSelectionModel().selectedItemProperty().addListener((o, oldS, newS) -> {
 	    	btnEditScore.setDisable(false);
+		});
+		chkTeamMixedWComp.setOnAction((event) -> {
+			chkTeamCompound.setSelected(false);
+			chkTeamRecurve.setSelected(false);
+			chkTeamBarebow.setSelected(false);
+			chkTeamLongbow.setSelected(false);
+			chkTeamMixedWOComp.setSelected(false);
+		});
+		chkTeamMixedWOComp.setOnAction((event) -> {
+			chkTeamCompound.setSelected(false);
+			chkTeamRecurve.setSelected(false);
+			chkTeamBarebow.setSelected(false);
+			chkTeamLongbow.setSelected(false);
+			chkTeamMixedWComp.setSelected(false);
+			
+		});
+		chkTeamCompound.setOnAction((event) -> {
+			chkTeamMixedWComp.setSelected(false);
+			chkTeamMixedWOComp.setSelected(false);
+		});
+		chkTeamRecurve.setOnAction((event) -> {
+			chkTeamMixedWComp.setSelected(false);
+			chkTeamMixedWOComp.setSelected(false);
+		});
+		chkTeamBarebow.setOnAction((event) -> {
+			chkTeamMixedWComp.setSelected(false);
+			chkTeamMixedWOComp.setSelected(false);
+		});
+		chkTeamLongbow.setOnAction((event) -> {
+			chkTeamMixedWComp.setSelected(false);
+			chkTeamMixedWOComp.setSelected(false);
 		});
     }
     
@@ -432,6 +471,8 @@ public class DashboardController extends Application {
 			chkTeamRecurve.setSelected(false);
 			chkTeamBarebow.setSelected(false);
 			chkTeamLongbow.setSelected(false);
+			chkTeamMixedWComp.setSelected(false);
+			chkTeamMixedWOComp.setSelected(false);
 			rdbGenderMixed.setSelected(true);
 			rdbGenderSeparate.setSelected(false);
 			cmbBestGold.getSelectionModel().clearSelection();
@@ -537,6 +578,10 @@ public class DashboardController extends Application {
 		lblTeamBarebow.setDisable(true);
 		chkTeamLongbow.setDisable(true);
 		lblTeamLongbow.setDisable(true);
+		chkTeamMixedWComp.setDisable(true);
+		lblTeamMixedWComp.setDisable(true);
+		chkTeamMixedWOComp.setDisable(true);
+		lblTeamMixedWOComp.setDisable(true);
 		rdbGenderMixed.setDisable(true);
 		lblGenderMixed.setDisable(true);
 		rdbGenderSeparate.setDisable(true);
@@ -625,6 +670,10 @@ public class DashboardController extends Application {
 			lblTeamBarebow.setDisable(true);
 			chkTeamLongbow.setDisable(true);
 			lblTeamLongbow.setDisable(true);
+			chkTeamMixedWComp.setDisable(true);
+			lblTeamMixedWComp.setDisable(true);
+			chkTeamMixedWOComp.setDisable(true);
+			lblTeamMixedWOComp.setDisable(true);
 			rdbGenderMixed.setDisable(true);
 			lblGenderMixed.setDisable(true);
 			rdbGenderSeparate.setDisable(true);
@@ -1077,6 +1126,10 @@ public class DashboardController extends Application {
 		lblTeamBarebow.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
 		chkTeamLongbow.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
 		lblTeamLongbow.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		chkTeamMixedWComp.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		lblTeamMixedWComp.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		chkTeamMixedWOComp.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
+		lblTeamMixedWOComp.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
 		rdbGenderMixed.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
 		lblGenderMixed.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
 		rdbGenderSeparate.setDisable(!chkTeams.isSelected() || tableData.isEmpty() ? true : false);
@@ -1438,11 +1491,17 @@ public class DashboardController extends Application {
 			return;
 		}
 		int aptNum = Integer.parseInt(apt);
+		if(aptNum < 2) {
+			informationDialog("Invalid Details", "You cannot have less than 2 Archers Per Team.");
+			return;
+		}
 		ArrayList<String> bowTypes = new ArrayList<String>();
 		if(chkTeamCompound.isSelected()) { bowTypes.add("\"Compound\""); }
 		if(chkTeamRecurve.isSelected()) { bowTypes.add("\"Recurve\""); }
 		if(chkTeamBarebow.isSelected()) { bowTypes.add("\"Barebow\""); }
 		if(chkTeamLongbow.isSelected()) { bowTypes.add("\"Longbow\""); }
+		if(chkTeamMixedWComp.isSelected()) { bowTypes.add("\"Compound\", \"Recurve\", \"Barebow\", \"Longbow\""); }
+		if(chkTeamMixedWOComp.isSelected()) { bowTypes.add("\"Recurve\", \"Barebow\", \"Longbow\""); }
 		if(bowTypes.isEmpty()) {
 			informationDialog("No Results", "You have not selected any bow types."); 
 		} else {
@@ -1497,11 +1556,17 @@ public class DashboardController extends Application {
 			return;
 		}
 		int aptNum = Integer.parseInt(apt);
+		if(aptNum < 2) {
+			informationDialog("Invalid Details", "You cannot have less than 2 Archers Per Team.");
+			return;
+		}
 		ArrayList<String> bowTypes = new ArrayList<String>();
 		if(chkTeamCompound.isSelected()) { bowTypes.add("Compound"); }
 		if(chkTeamRecurve.isSelected()) { bowTypes.add("Recurve"); }
 		if(chkTeamBarebow.isSelected()) { bowTypes.add("Barebow"); }
 		if(chkTeamLongbow.isSelected()) { bowTypes.add("Longbow"); }
+		if(chkTeamMixedWComp.isSelected()) { bowTypes.add("\"Compound\", \"Recurve\", \"Barebow\", \"Longbow\""); }
+		if(chkTeamMixedWOComp.isSelected()) { bowTypes.add("\"Recurve\", \"Barebow\", \"Longbow\""); }
 		if(bowTypes.isEmpty()) {
 			informationDialog("No Results", "You have not selected any bow types."); 
 			return;

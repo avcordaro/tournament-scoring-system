@@ -94,11 +94,11 @@ public class Results {
 					PreparedStatement prepStmt = conn.prepareStatement(query);
 					prepStmt.setInt(1, tournamentID);
 					prepStmt.setString(2, round);
-					prepStmt.setInt(3, apt);
+					prepStmt.setInt(3, apt < 3 ? apt : apt -1);
 					ResultSet qualifyingClubs = prepStmt.executeQuery();
 					ArrayList<Team> clubTeams = new ArrayList<Team>();
 					while(qualifyingClubs.next()) {
-						String sql = "SELECT Archer.ArcherID AS ArchID, Score, Hits, Golds, Xs FROM Archer, Score, Category WHERE Archer.ArcherID ="
+						String sql = "SELECT Archer.ArcherID, Score, Hits, Golds, Xs FROM Archer, Score, Category WHERE Archer.ArcherID ="
 								+ " Score.ArcherID AND Archer.Category = Category.Name AND TournamentID=? AND Club=? AND Round=? AND BowType IN (" + bow + ") "
 								+ "AND Gender IN (" + gender + ") ORDER BY Score DESC, Hits DESC, Golds DESC, Xs DESC LIMIT ?;";
 						PreparedStatement stmt = conn.prepareStatement(sql);
@@ -109,7 +109,6 @@ public class Results {
 						ResultSet clubTeam = stmt.executeQuery();
 						Team team = new Team(qualifyingClubs.getString("Club"));
 						while(clubTeam.next()) {
-							team.addArcherID(clubTeam.getInt("ArchID"));
 							team.incrementTotalHits(clubTeam.getInt("Score"));
 							team.incrementTotalGolds(clubTeam.getInt("Golds"));
 							team.incrementTotalXs(clubTeam.getInt("Xs"));
