@@ -62,9 +62,9 @@ public class Results {
 			params.put("BEST_GOLD", bestGold);
 			params.put("WORST_WHITE", worstWhite);
 			Statement stmt = conn.createStatement();
-			String query = "SELECT * FROM Archer, Score, Round, Category WHERE TournamentID = " + tournamentID + " AND Archer.ArcherID ="
-					+ " Score.ArcherID AND Archer.Round = Round.Name and Archer.Category = Category.Name ORDER BY Round.Precedence,"
-					+ " Category.Precedence, Score DESC, Hits DESC, Golds DESC, Xs DESC;";
+			String query = "SELECT * FROM Archer, Score, Round, Category, BowType WHERE TournamentID = " + tournamentID + " AND Archer.ArcherID ="
+					+ " Score.ArcherID AND Archer.Round = Round.Name and Archer.Category = Category.Name AND Archer.BowType = BowType.Name ORDER BY Round.Precedence,"
+					+ " Category.Precedence, BowType.Precedence, Score DESC, Hits DESC, Golds DESC, Xs DESC;";
 			ResultSet rs = stmt.executeQuery(query);
 			JRDataSource jrDataSource = new JRResultSetDataSource(rs);
 			jPrint = JasperFillManager.fillReport(jr, params, jrDataSource);

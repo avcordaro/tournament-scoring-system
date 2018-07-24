@@ -1,3 +1,2 @@
-Married Couples sorted by round
-Teams with mixed bow types
-Teams with less than APT? Hmmm
+Married Couples sorted by round? How does it work
+Add all rounds to database

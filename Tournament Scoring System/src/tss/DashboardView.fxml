@@ -515,7 +515,7 @@
                                           </Label>
                                        </children>
                                     </VBox>
-                                    <VBox prefHeight="200.0" prefWidth="190.0">
+                                    <VBox fx:id="vboxNewArcher" prefHeight="200.0" prefWidth="190.0">
                                        <children>
                                           <TextField fx:id="txtFirstName" maxHeight="30.0" minHeight="30.0">
                                              <VBox.margin>

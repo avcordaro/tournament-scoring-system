@@ -20,11 +20,11 @@ public class Scores {
 		try {
 			Statement stmt = conn.createStatement();
 			String query = "SELECT * FROM Archer, Score WHERE Archer.TournamentID = " + tournamentID
-					+ " AND Score.ArcherID = Archer.ArcherID ORDER BY Target";
+					+ " AND Score.ArcherID = Archer.ArcherID ORDER BY Target, Detail";
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()) {
 				data.add(new ScoreEntry(rs.getInt("ArcherID"), rs.getString("FirstName"), 
-						rs.getString("LastName"), rs.getString("Target"), rs.getInt("Score"), 
+						rs.getString("LastName"), rs.getString("Target") + rs.getString("Detail"), rs.getInt("Score"), 
 						rs.getInt("Hits"), rs.getInt("Golds"), rs.getInt("Xs")));
 			}
 		} catch(SQLException e) {

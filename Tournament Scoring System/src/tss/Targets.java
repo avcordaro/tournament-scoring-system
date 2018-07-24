@@ -48,9 +48,11 @@ public class Targets {
 		ArrayList<TargetEntry> data = new ArrayList<TargetEntry>();
 		try {
 			while(rs.next()) {
+				String target = rs.getString("Target") == null ? "" : rs.getString("Target");
+				String detail = rs.getString("Detail") == null ? "" : rs.getString("Detail");
 	    		data.add(new TargetEntry(rs.getInt("ArcherID"), rs.getString("FirstName"), 
 	    				rs.getString("LastName"), rs.getString("Club"), rs.getString("Category"), 
-	    				rs.getString("BowType"),rs.getString("Round"), rs.getString("Target"), rs.getString("Detail")));
+	    				rs.getString("BowType"),rs.getString("Round"), target, detail));
 	    	}
 		} catch(SQLException e) {
 			e.printStackTrace();

@@ -244,7 +244,7 @@ public class DashboardController extends Application {
     @FXML
     private ComboBox<String> cmbTeamRound;
     @FXML
-    private VBox vboxTournament;
+    private VBox vboxNewArcher;
     @FXML
     private TableColumn<ScoreEntry, Integer> tbcXs;
     @FXML
@@ -309,6 +309,12 @@ public class DashboardController extends Application {
 		tbvScores.getColumns().get(7).setCellValueFactory(new PropertyValueFactory<>("Xs"));
 		fillTournamentComboBox();
     	fillArcherEditorComboBoxes();
+    	vboxNewArcher.setOnKeyPressed((event) -> {
+    		if(event.getCode().equals(KeyCode.ENTER)) {
+    			btnNewArcher.fire();
+    			txtFirstName.requestFocus();
+    		}
+    	});
 		tbvArchers.getSelectionModel().selectedItemProperty().addListener((o, oldS, newS) -> {
 	    	btnEditArcher.setDisable(false);
 	    	btnDeleteArcher.setDisable(false);
@@ -510,6 +516,7 @@ public class DashboardController extends Application {
 		chkNewMetric.setSelected(false);
 		chkNewTeams.setSelected(false);
 		chkNewMarriedCouples.setSelected(false);
+		tpNewTournament.setExpanded(false);
 		btnDeleteTournament.setDisable(false);
 		btnEditTournament.setDisable(false);
 		tbvArchers.getItems().clear();
