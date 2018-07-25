@@ -79,6 +79,8 @@ public class DashboardController extends Application {
     private Button btnSaveEditTarget;
     @FXML 
     private Button btnAllocateTargets;
+    @FXML
+    private Button btnCustomTargets;
     @FXML 
     private Button btnGenerateTargetList;
     @FXML
@@ -296,8 +298,8 @@ public class DashboardController extends Application {
 		tbvTargetList.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("lastName"));
 		tbvTargetList.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("club"));
 		tbvTargetList.getColumns().get(4).setCellValueFactory(new PropertyValueFactory<>("category"));
-		tbvTargetList.getColumns().get(5).setCellValueFactory(new PropertyValueFactory<>("round"));
-		tbvTargetList.getColumns().get(6).setCellValueFactory(new PropertyValueFactory<>("bowType"));
+		tbvTargetList.getColumns().get(5).setCellValueFactory(new PropertyValueFactory<>("bowType"));
+		tbvTargetList.getColumns().get(6).setCellValueFactory(new PropertyValueFactory<>("round"));
 		tbvTargetList.getColumns().get(7).setCellValueFactory(new PropertyValueFactory<>("target"));
 		tbvScores.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("ID"));
 		tbvScores.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -383,11 +385,11 @@ public class DashboardController extends Application {
 		launch(args);
 	}
 	
-	public Optional<String> searchArcherDialog(String title) {
+	public Optional<String> textInputDialog(String title, String header, String label) {
 		TextInputDialog dialog = new TextInputDialog();
 		dialog.setTitle(title);
-		dialog.setHeaderText(null);
-		dialog.setContentText("Archer ID: ");
+		dialog.setHeaderText(header);
+		dialog.setContentText(label);
 		DialogPane dialogPane = dialog.getDialogPane();
 		dialogPane.getStylesheets().add(getClass().getResource("resources/DashboardStylesheet.css").toExternalForm());
 		Stage dialogStage = (Stage)dialog.getDialogPane().getScene().getWindow();
@@ -461,6 +463,7 @@ public class DashboardController extends Application {
 			btnSearchTarget.setDisable(true);
 			btnEditTarget.setDisable(true);
 			btnAllocateTargets.setDisable(true);
+			btnCustomTargets.setDisable(true);
 			btnGenerateTargetList.setDisable(true);
 			lblVenue.setDisable(false);
 			lblAssembly.setDisable(false);
@@ -544,6 +547,7 @@ public class DashboardController extends Application {
 		btnSearchTarget.setDisable(true);
 		btnEditTarget.setDisable(true);
 		btnAllocateTargets.setDisable(true);
+		btnCustomTargets.setDisable(true);
 		btnGenerateTargetList.setDisable(true);
 		lblVenue.setDisable(true);
 		lblAssembly.setDisable(true);
@@ -636,6 +640,7 @@ public class DashboardController extends Application {
 			cmbRound.getSelectionModel().clearSelection();
 			cmbMarriedCouple.getSelectionModel().clearSelection();
 			btnAllocateTargets.setDisable(true);
+			btnCustomTargets.setDisable(true);
 			btnGenerateTargetList.setDisable(true);
 			lblVenue.setDisable(true);
 			lblAssembly.setDisable(true);
@@ -930,7 +935,7 @@ public class DashboardController extends Application {
 	
 	@FXML
 	public void searchArcher(ActionEvent event) {
-		Optional<String> input = searchArcherDialog("Search Archer");
+		Optional<String> input = textInputDialog("Search Archer", null, "Archer ID: ");
 		if(input.isPresent() && input.get().matches("\\d+")) {
 			int id = Integer.parseInt(input.get());
 			for(ArcherEntry archer: tbvArchers.getItems()) {
@@ -967,6 +972,7 @@ public class DashboardController extends Application {
 		ArrayList<TargetEntry> data = targets.getDataForTable(tournamentID);
 		btnSearchTarget.setDisable(data.isEmpty() ? true : false);
 		btnAllocateTargets.setDisable(data.isEmpty() ? true : false);
+		btnCustomTargets.setDisable(data.isEmpty() ? true : false);
 		btnGenerateTargetList.setDisable(data.isEmpty() ? true : false);
 		lblVenue.setDisable(data.isEmpty() ? true : false);
 		lblAssembly.setDisable(data.isEmpty() ? true : false);
@@ -994,8 +1000,34 @@ public class DashboardController extends Application {
 	}
 	
 	@FXML
+	public void customTargetDetails(ActionEvent event) {
+		for(TargetEntry entry : tbvTargetList.getItems()) {
+			tbvTargetList.getSelectionModel().select(entry);
+			String header = "ID: " + entry.getID() + "\nName: " + entry.getFirstName() + " " + entry.getLastName() + "\nClub: " + entry.getClub();
+			char resetLetter = (char)('A' + Integer.parseInt(txtArchersPerTarget.getText()));
+			boolean validationPassed = false;
+			while(!validationPassed) {
+				Optional<String> input = textInputDialog("Custom Target Details", header, "Target Detail");
+				if(!input.isPresent()) {
+					return;
+				}
+				if(Validation.validateAsTargetDetail(input.get())) {
+					validationPassed = true;
+					String[] targetDetail = input.get().split("(?=[A-" + resetLetter + "])");
+					targets.updateDetail(entry.getID(), targetDetail[0], targetDetail[1]);
+					entry.setTarget(targetDetail[0] + targetDetail[1]);
+					entry.setDetail(targetDetail[1]);
+					tbvTargetList.refresh();
+				} else {
+					informationDialog("Invalid Target Detail", "You have entered an invalid target detail. An example of a detail would be '5B'. "
+							+ "Detail letters must be uppercase.");
+				}
+			}
+		}
+	}
+	@FXML
 	public void searchArcherTarget(ActionEvent event) {
-		Optional<String> input = searchArcherDialog("Search Archer's Target");
+		Optional<String> input = textInputDialog("Search Archer's Target", null, "Archer ID: ");
 		if(input.isPresent() && input.get().matches("^\\d+$")) {
 			int id = Integer.parseInt(input.get());
 			for(TargetEntry entry: tbvTargetList.getItems()) {
@@ -1022,6 +1054,7 @@ public class DashboardController extends Application {
 		tabResults.setDisable(true);
 		btnSearchTarget.setDisable(true);
 		btnAllocateTargets.setDisable(true);
+		btnCustomTargets.setDisable(true);
 		btnGenerateTargetList.setDisable(true);
 		btnSaveEditTarget.setVisible(true);
 		btnEditTarget.setVisible(false);
@@ -1038,7 +1071,8 @@ public class DashboardController extends Application {
 		if(!cmbEditTarget.getSelectionModel().isEmpty() && !cmbEditTarget.getSelectionModel().getSelectedItem().equals("None")) {
 			String target1 = cmbEditTarget.getSelectionModel().getSelectedItem().split(" ")[0].trim();
 			String target2 = tbvTargetList.getSelectionModel().getSelectedItem().getTarget();
-			targets.swapTargetDetails(tID, Integer.parseInt(txtArchersPerTarget.getText()), target1, target2);
+			int target2ArcherID = tbvTargetList.getSelectionModel().getSelectedItem().getID();
+			targets.swapTargetDetails(tID, Integer.parseInt(txtArchersPerTarget.getText()), target1, target2, target2ArcherID);
 		}
 		btnSaveEditTarget.setVisible(false);
 		btnEditTarget.setVisible(true);
@@ -1059,6 +1093,7 @@ public class DashboardController extends Application {
 		tabResults.setDisable(false);
 		btnSearchTarget.setDisable(false);
 		btnAllocateTargets.setDisable(false);
+		btnCustomTargets.setDisable(false);
 		btnGenerateTargetList.setDisable(false);
 	}
 	
@@ -1067,6 +1102,13 @@ public class DashboardController extends Application {
 		TargetEntry selectedEntry = tbvTargetList.getSelectionModel().getSelectedItem();
 		targets.fillSwapDetailsComboBox(tID, selectedEntry, Integer.parseInt(txtArchersPerTarget.getText()), cmbEditTarget);
 	}
+	
+	@FXML
+    public void enterPressedForTargetList(KeyEvent event) {
+        if(event.getCode().equals(KeyCode.ENTER) && btnNextScore.isVisible()) {
+             btnGenerateTargetList.fire();
+        }
+    }
 	
 	@FXML 
 	public void previewTargetList(ActionEvent event) {
@@ -1307,13 +1349,12 @@ public class DashboardController extends Application {
     public void enterPressedForScore(KeyEvent event) {
         if(event.getCode().equals(KeyCode.ENTER) && btnNextScore.isVisible()) {
              btnNextScore.fire();
-             event.consume();
         }
     }
 	
 	@FXML
 	public void searchArcherScore(ActionEvent event) {
-		Optional<String> input = searchArcherDialog("Search Archer's Score");
+		Optional<String> input = textInputDialog("Search Archer's Score", null, "Archer ID: ");
 		if(input.isPresent() && input.get().matches("\\d+")) {
 			int id = Integer.parseInt(input.get());
 			for(ScoreEntry score: tbvScores.getItems()) {

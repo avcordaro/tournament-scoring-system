@@ -647,7 +647,7 @@
                                     <Insets left="20.0" right="20.0" top="15.0" />
                                  </VBox.margin>
                               </Label>
-                              <Label text="Automatic detail allocation by the system. Reallocation is needed upon archer changes." textAlignment="JUSTIFY" wrapText="true">
+                              <Label text="Automatic detail allocation by the system. Alternatively, custom details can be used." textAlignment="JUSTIFY" wrapText="true">
                                  <VBox.margin>
                                     <Insets left="20.0" right="20.0" top="5.0" />
                                  </VBox.margin>
@@ -655,12 +655,16 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <HBox alignment="TOP_RIGHT">
+                              <HBox>
                                  <children>
-                                    <Button fx:id="btnAllocateTargets" disable="true" mnemonicParsing="false" onAction="#allocateTargetDetails" prefWidth="100.0" text="Allocate">
+                                    <Button fx:id="btnAllocateTargets" disable="true" mnemonicParsing="false" onAction="#allocateTargetDetails" prefWidth="100.0" text="Allocate" />
+                                    <Button fx:id="btnCustomTargets" disable="true" mnemonicParsing="false" onAction="#customTargetDetails" prefWidth="100.0" text="Custom">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
+                                       <HBox.margin>
+                                          <Insets left="20.0" />
+                                       </HBox.margin>
                                     </Button>
                                  </children>
                                  <VBox.margin>
@@ -690,7 +694,7 @@
                                           <Font size="16.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtVenue" disable="true" maxHeight="30.0" minHeight="30.0" promptText="Optional...">
+                                    <TextField fx:id="txtVenue" disable="true" maxHeight="30.0" minHeight="30.0" onKeyPressed="#enterPressedForTargetList" promptText="Optional...">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
@@ -710,7 +714,7 @@
                                           <Font size="16.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtAssembly" disable="true" maxHeight="30.0" minHeight="30.0" promptText="Optional...">
+                                    <TextField fx:id="txtAssembly" disable="true" maxHeight="30.0" minHeight="30.0" onKeyPressed="#enterPressedForTargetList" promptText="Optional...">
                                        <VBox.margin>
                                           <Insets top="5.0" />
                                        </VBox.margin>
@@ -730,7 +734,7 @@
                                           <Font size="16.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtSighters" disable="true" maxHeight="30.0" minHeight="30.0" promptText="Optional...">
+                                    <TextField fx:id="txtSighters" disable="true" maxHeight="30.0" minHeight="30.0" onKeyPressed="#enterPressedForTargetList" promptText="Optional...">
                                        <VBox.margin>
                                           <Insets top="5.0" />
                                        </VBox.margin>

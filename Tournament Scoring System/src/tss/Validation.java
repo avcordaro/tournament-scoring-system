@@ -38,4 +38,11 @@ public final class Validation {
 		}
 		return false;
 	}
+	
+	public static boolean validateAsTargetDetail(String input) {
+		if(input.matches("^[0-9]+[A-Z]$")) {
+			return true;
+		}
+		return false;
+	}
 }

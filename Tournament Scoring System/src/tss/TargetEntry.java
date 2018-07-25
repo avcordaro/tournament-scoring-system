@@ -48,7 +48,13 @@ public class TargetEntry {
 	public String getTarget() {
 		return target;
 	}
+	public void setTarget(String target) {
+		this.target = target;
+	}
 	public String getDetail() {
 		return detail;
+	}
+	public void setDetail(String detail) {
+		this.detail = detail;
 	}
 }

@@ -150,7 +150,7 @@ public class Targets {
 		}
 	}
 	
-	public void swapTargetDetails(int tournamentID, int apt, String target1, String target2) {
+	public void swapTargetDetails(int tournamentID, int apt, String target1, String target2, int target2ArcherID) {
 		try {
 			char resetLetter = (char)('A' + apt);
 			String[] target1Detail = target1.split("(?=[A-" + resetLetter + "])");
@@ -160,7 +160,8 @@ public class Targets {
 					+ " AND Target = \"" + target1Detail[0] + "\" AND Detail = \"" + target1Detail[1] + "\";");
 			Statement stmt2 = conn.createStatement();
 			ResultSet target2Archer = stmt2.executeQuery("SELECT * FROM Archer WHERE TournamentID = " + tournamentID
-					+ " AND Target = \"" + target2Detail[0] + "\" AND Detail = \"" + target2Detail[1] + "\";");
+					+ " AND ArcherID = " + target2ArcherID + " AND Target = \"" + target2Detail[0] + "\" AND Detail = "
+					+ "\"" + target2Detail[1] + "\";");
 			if(!target1Archer.isAfterLast()) {
 				updateDetail(target1Archer.getInt("ArcherID"), target2Detail[0], target2Detail[1]);
 			}
