@@ -34,12 +34,13 @@ public class Results {
 			params.put("METRIC", metric);
 			Statement stmt = conn.createStatement();
 			String query = "SELECT *, (ArcherScore + SpouseScore) AS TotalScore, (ArcherHits + SpouseHits) AS TotalHits, (ArcherGolds + SpouseGolds)"
-					+ " AS TotalGolds, (ArcherXs + SpouseXs) AS TotalXs FROM (SELECT ArcherFirstName, ArcherLastName, ArcherScore, ArcherHits, ArcherGolds,"
-					+ " ArcherXs, FirstName AS SpouseFirstName, LastName AS SpouseLastName, Score AS SpouseScore, Hits AS SpouseHits, Golds AS SpouseGolds,"
-					+ " Xs AS SpouseXs FROM (SELECT Archer, Spouse, FirstName AS ArcherFirstName, LastName AS ArcherLastName, Score AS ArcherScore, Hits AS"
-					+ " ArcherHits, Golds AS ArcherGolds, Xs AS ArcherXs FROM MarriedCouple, Archer, Score WHERE TournamentID = " + tournamentID + " AND"
-					+ " MarriedCouple.Archer = Archer.ArcherID AND Archer.ArcherID = Score.ArcherID) AS FirstPartner, Archer, Score WHERE FirstPartner.Spouse"
-					+ " = Archer.ArcherID AND Archer.ArcherID = Score.ArcherID) ORDER BY TotalScore DESC, TotalHits DESC, TotalGolds DESC, TotalXs DESC;";
+					+ " AS TotalGolds, (ArcherXs + SpouseXs) AS TotalXs FROM (SELECT ArcherFirstName, ArcherLastName, ArcherRound, ArcherScore, ArcherHits,"
+					+ " ArcherGolds, ArcherXs, FirstName AS SpouseFirstName, LastName AS SpouseLastName, Round AS SpouseRound, Score AS SpouseScore, Hits AS"
+					+ " SpouseHits, Golds AS SpouseGolds, Xs AS SpouseXs FROM (SELECT Archer, Spouse, FirstName AS ArcherFirstName, LastName AS ArcherLastName,"
+					+ " Round AS ArcherRound, Score AS ArcherScore, Hits AS ArcherHits, Golds AS ArcherGolds, Xs AS ArcherXs FROM MarriedCouple, Archer, Score WHERE TournamentID = "
+					+ tournamentID + " AND MarriedCouple.Archer = Archer.ArcherID AND Archer.ArcherID = Score.ArcherID AND Archer.BowType IN ('Recurve', 'Barebow',"
+					+ " 'Longbow')) AS FirstPartner, Archer, Score WHERE FirstPartner.Spouse = Archer.ArcherID AND Archer.ArcherID = Score.ArcherID AND Archer.BowType"
+					+ " IN ('Recurve', 'Barebow', 'Longbow')) WHERE ArcherRound = SpouseRound ORDER BY TotalScore DESC, TotalHits DESC, TotalGolds DESC, TotalXs DESC;";
 			ResultSet rs = stmt.executeQuery(query);
 			JRDataSource jrDataSource = new JRResultSetDataSource(rs);
 			jPrint = JasperFillManager.fillReport(jr, params, jrDataSource);
