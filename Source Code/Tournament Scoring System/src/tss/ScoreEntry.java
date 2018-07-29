@@ -1,5 +1,9 @@
 package tss;
 
+/**
+ * ScoreEntry objects are used for filling the tbvScores TableView element.
+ * @author Alex Cordaro
+ */
 public class ScoreEntry {
 	
 	private int ID;

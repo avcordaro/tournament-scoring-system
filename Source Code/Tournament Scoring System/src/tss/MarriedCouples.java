@@ -6,6 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Utility class containing methods to do with creating, retrieving and updating married couple data.
+ * @author Alex Cordaro
+ */
 public class MarriedCouples {
 	
 	private Connection conn;
@@ -14,6 +18,11 @@ public class MarriedCouples {
 		conn = c;
 	}
 	
+	/**
+	 * Creates new married couple record in the database
+	 * @param archerID id of the first archer
+	 * @param spouseID id of their spouse
+	 */
 	public void newRecord(int archerID, int spouseID) {
 		String sql = "INSERT INTO MarriedCouple (Archer, Spouse) VALUES (?, ?);";
 		try {
@@ -26,6 +35,11 @@ public class MarriedCouples {
 		}
 	}
 	
+	/**
+	 * Retrieves a given married couple record.
+	 * @param recordID id of either of the archer or their spouse
+	 * @return ResultSet of all the necessary data from the query result.
+	 */
 	public ResultSet getRecord(int recordID) {
 		ResultSet rs = null;
 		try {
@@ -40,6 +54,11 @@ public class MarriedCouples {
 		return rs;
 	}
 	
+	/**
+	 * Updates a given married couple record
+	 * @param archerID the id of first archer
+	 * @param selection the newly selected spouse
+	 */
 	public void updateRecord(int archerID, String selection) {
 		ResultSet rs = getRecord(archerID);
 		try {
@@ -64,6 +83,10 @@ public class MarriedCouples {
 		}
 	}
 	
+	/**
+	 * Deletes a given married couple record
+	 * @param archerID the id of either the archer or their spouse.
+	 */
 	public void deleteRecord(int archerID) {
 		try {
 			Statement stmt = conn.createStatement();

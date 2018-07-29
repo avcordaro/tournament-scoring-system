@@ -7,6 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Utility class containing methods to do with creating, retrieving and updating score data.
+ * @author Alex Cordaro
+ */
 public class Scores {
 	
 	Connection conn;
@@ -15,6 +19,11 @@ public class Scores {
 		conn = c;
 	}
 	
+	/**
+	 * Retrieves an array list of ScoreEntry objects, used to fill the scores TableView.
+	 * @param tournamentID id of the tournament to retrieve scores for
+	 * @return the array list of ScoreEntry's
+	 */
 	public ArrayList<ScoreEntry> getDataForTable(int tournamentID) {
 		ArrayList<ScoreEntry> data = new ArrayList<ScoreEntry>();
 		try {
@@ -33,6 +42,10 @@ public class Scores {
 		return data;
 	}
 	
+	/**
+	 * Creates a new score record in the database.
+	 * @param archerID the id of the archer whom the score belongs to
+	 */
 	public void newRecord(int archerID) {
 		String sql = "INSERT INTO Score (ArcherID, Score, Hits, Golds, Xs) VALUES (?, ?, ?, ?, ?);";
 		try {
@@ -48,6 +61,13 @@ public class Scores {
 		}
 	}
 	
+	/**
+	 * Updates a given score record in the database, as an imperial score.
+	 * @param archerID the id of the archer whom the score belongs to
+	 * @param score the updated score
+	 * @param hits the updated number of hits
+	 * @param golds the updated number of golds
+	 */
 	public void updateRecord(int archerID, int score, int hits, int golds)  {
 		String sql = "UPDATE Score SET Score=?, Hits=?, Golds=? WHERE ArcherID=?";
 		try {
@@ -62,6 +82,14 @@ public class Scores {
 		}
 	}
 	
+	/**
+	 * Updates a given score record in the database, as metric score.
+	 * @param archerID the id of the archer whom the score belongs to
+	 * @param score the updated score
+	 * @param hits the updated number of hits
+	 * @param golds the updated number of golds
+	 * @param Xs the updated number of Xs
+	 */
 	public void updateRecord(int archerID, int score, int hits, int golds, int Xs) {
 		String sql = "UPDATE Score SET Score=?, Hits=?, Golds=?, Xs=? WHERE ArcherID=?";
 		try {
@@ -77,6 +105,10 @@ public class Scores {
 		}
 	}
 	
+	/**
+	 * Deletes a given score record from the database.
+	 * @param archerID the id of the archer whom the score belongs to
+	 */
 	public void deletedRecord(int archerID) {
 		try {
 			Statement stmt = conn.createStatement();

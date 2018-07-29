@@ -1,6 +1,8 @@
 package tss;
 
-
+/**
+ * Utility class containing methods to do with creating, retrieving and updating target list data.
+ */
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,6 +32,11 @@ public class Targets {
 		conn = c;
 	}
 	
+	/**
+	 * Retrieves archer records from the database, ordered by their target detail.
+	 * @param tournamentID the id of the tournament to retrieve archers for
+	 * @return ResultSet of the query result
+	 */
 	public ResultSet getOrderedArcherRecords(int tournamentID) {
 		ResultSet rs = null;
 		try {
@@ -43,6 +50,11 @@ public class Targets {
 		return rs;
 	}
 	
+	/**
+	 * Retrieves an array list of TargetEntry objects, used to fill the target list TableView.
+	 * @param tournamentID the id of the tournament to retrieve archers for
+	 * @return the array list of TargetEntry's
+	 */
 	public ArrayList<TargetEntry> getDataForTable(int tournamentID) {
 		ResultSet rs = getOrderedArcherRecords(tournamentID);
 		ArrayList<TargetEntry> data = new ArrayList<TargetEntry>();
@@ -60,6 +72,12 @@ public class Targets {
 		return data;
 	}
 	
+	/**
+	 * Updates a given archer record's target detail.
+	 * @param archerID the id of the archer
+	 * @param target the updated target number
+	 * @param detail the updated detail letter
+	 */
 	public void updateDetail(int archerID, String target, String detail) {
 		String sql = "UPDATE Archer SET Target=?, Detail=? WHERE ArcherID=?;";
 		try {
@@ -73,6 +91,11 @@ public class Targets {
 		}
 	}
 	
+	/**
+	 * Automatic allocation algorithm, for assigning all archers their target detail for a given tournament.
+	 * @param tournamentID the id of the tournament
+	 * @param apt the max number of archers per target
+	 */
 	public void assignAllDetails(int tournamentID, int apt) {
 		try {
 			Statement stmt = conn.createStatement();
@@ -110,6 +133,13 @@ public class Targets {
 		}
 	}
 	
+	/**
+	 * Fills the ComboBox used for selecting which target detail to swap a given archer with.
+	 * @param tournamentID the id of the tournament
+	 * @param entry the selected entry in the target list TableView
+	 * @param apt the max number of archers per target
+	 * @param cmb the ComboBox object
+	 */
 	public void fillSwapDetailsComboBox(int tournamentID, TargetEntry entry, int apt, ComboBox<String> cmb) {
 		try {
 			Statement stmt = conn.createStatement();
@@ -150,6 +180,14 @@ public class Targets {
 		}
 	}
 	
+	/**
+	 * Swaps two given archer's target details in the database.
+	 * @param tournamentID the id of the tournament
+	 * @param apt the max number of archer's per target
+	 * @param target1 the target detail for the first archer
+	 * @param target2 the target detail for the second archer
+	 * @param target2ArcherID the id of the second archer
+	 */
 	public void swapTargetDetails(int tournamentID, int apt, String target1, String target2, int target2ArcherID) {
 		try {
 			char resetLetter = (char)('A' + apt);
@@ -171,6 +209,15 @@ public class Targets {
 		}
 	}
 	
+	/**
+	 * Generates and presents a preview of the target list report, using JasperReports.
+	 * @param tournamentID the id of the tournament
+	 * @param title the title of the tournament
+	 * @param date the date of the tournament
+	 * @param venue the optional venue of the tournament
+	 * @param assembly the optional assembly time of the tournament
+	 * @param sighters the optional sighters time of the tournament
+	 */
 	public void previewTargetList(int tournamentID, String title, String date, String venue, String assembly, String sighters) {
 		try {
 			JasperReport jr = JasperCompileManager.compileReport(getClass().getResourceAsStream("resources/TargetList.jrxml"));

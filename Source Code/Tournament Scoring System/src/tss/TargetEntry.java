@@ -1,5 +1,9 @@
 package tss;
 
+/**
+ * TargetEntry objects are used to fill the tbvTargetList TableView element.
+ * @author Alex Cordaro
+ */
 public class TargetEntry {
 	
 	private int ID;

@@ -1,5 +1,10 @@
 package tss;
 
+/**
+ * ArcherEntry objects are used for filling the archers TableView element.  
+ * @author Alex Cordaro
+ *
+ */
 public class ArcherEntry {
 	
 	private int ID;
