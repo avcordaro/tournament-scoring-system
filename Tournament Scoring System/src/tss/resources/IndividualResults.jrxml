@@ -26,6 +26,7 @@
 		</groupHeader>
 		<groupFooter>
 			<band height="90">
+				<printWhenExpression><![CDATA[$P{BEST_GOLD}.length() != 0 || $P{WORST_WHITE}.length() != 0]]></printWhenExpression>
 				<staticText>
 					<reportElement x="40" y="60" width="100" height="20" uuid="db853c5c-faa0-4b95-a255-7bc05de603ed">
 						<printWhenExpression><![CDATA[$P{WORST_WHITE}.length() != 0]]></printWhenExpression>
