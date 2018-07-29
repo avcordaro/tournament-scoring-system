@@ -51,6 +51,11 @@ import javafx.scene.layout.VBox;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
+/**
+ * Controller class for mediating between the Dashboard GUI view and the system's model classes.
+ * @author Alex Cordaro
+ *
+ */
 public class DashboardController extends Application {
 
     @FXML
@@ -277,6 +282,10 @@ public class DashboardController extends Application {
     private static Results results;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
     
+    /**
+     * Renders all FXML GUI elements, creates objects of all the system utility classes, sets up the 
+     * table views, as well as various event handlers.
+     */
     @FXML
     public void initialize() {
 		conn = SQLiteConnection.getConnection();
@@ -363,6 +372,9 @@ public class DashboardController extends Application {
 		});
     }
     
+    /**
+     * Creates and displays the primary stage of the application, using the FXML file for the GUI.
+     */
 	public void start(Stage primaryStage) {
 		try {
 			Pane root = (Pane)FXMLLoader.load(getClass().getResource("DashboardView.fxml"));
@@ -385,6 +397,13 @@ public class DashboardController extends Application {
 		launch(args);
 	}
 	
+	/**
+	 * Displays a text input dialog, with the given text information.
+	 * @param title title of the dialog
+	 * @param header context header of the dialog
+	 * @param label label text before the text field
+	 * @return the text input given by the user
+	 */
 	public Optional<String> textInputDialog(String title, String header, String label) {
 		TextInputDialog dialog = new TextInputDialog();
 		dialog.setTitle(title);
@@ -398,6 +417,12 @@ public class DashboardController extends Application {
 		return input;
 	}
 	
+	/**
+	 * Displays a Yes No dialog for confirming the deletion of certain data.
+	 * @param title the title of the dialog
+	 * @param message the message within the dialog
+	 * @return the button type clicked by the user
+	 */
 	public ButtonType confirmDeletion(String title, String message) {
 		Alert alert = new Alert(AlertType.CONFIRMATION, message, ButtonType.YES, ButtonType.NO);
 		alert.setHeaderText(null);
@@ -406,6 +431,11 @@ public class DashboardController extends Application {
 		return alert.getResult();
 	}
 	
+	/**
+	 * Displays an dialog that presents certain information to the user.
+	 * @param title the title of the dialog
+	 * @param message the information to present to the user
+	 */
 	public void informationDialog(String title, String message) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle(title);
@@ -419,6 +449,9 @@ public class DashboardController extends Application {
 		alert.showAndWait();	
 	}
 	
+	/**
+	 * Fills the ComboBox element of the UI which presents all tournament records in the system.
+	 */
 	public void fillTournamentComboBox() {
     	ResultSet rs = tournaments.getAllRecords();
     	try {
@@ -431,6 +464,11 @@ public class DashboardController extends Application {
 		}
 	}
 	
+	/**
+	 * Retrieves the necessary data for the given tournament record, and disables/enables all UI 
+	 * elements as necessary.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void loadTournament(ActionEvent event) {
 		if(!cmbTournament.getSelectionModel().isEmpty()) {
@@ -492,6 +530,11 @@ public class DashboardController extends Application {
 		}
 	}
 	
+	/**
+	 * Creates a new tournament from the given details passed by the user, then loads the tournament,
+	 * enabling/disabling UI elements as necessary.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void newTournament(ActionEvent event) {
 		String title = txtNewTitle.getText();
@@ -600,6 +643,12 @@ public class DashboardController extends Application {
 		btnGenerateTeamResults.setDisable(true);
 		btnExportFullResults.setDisable(true);
 	}
+	
+	/**
+	 * Deletes a given tournament, with all its associated data, from the database. Enables/disables
+	 * UI elements as necessary.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void deleteTournament(ActionEvent event) {
 		if(confirmDeletion("Delete Tournament", "Are you sure you want to delete this tournament?") == ButtonType.YES) {
@@ -696,6 +745,11 @@ public class DashboardController extends Application {
 		}
 	}
 	
+	/**
+	 * Adjusts the UI elements disabled/visibility properties to allow a tournament's details 
+	 * to be edited by the user.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void beginEditTournament(ActionEvent event) {
 		tabPane.setDisable(true);
@@ -715,6 +769,11 @@ public class DashboardController extends Application {
 		chkMarriedCouples.setDisable(false);
 	}
 	
+	/**
+	 * Saves the user's updated details for a tournament to the database. Disabled/visibility properties
+	 * of the UI elements returned to preview values before editing.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void saveEditTournament(ActionEvent event) {
 		btnEditTournament.setVisible(true);
@@ -751,6 +810,10 @@ public class DashboardController extends Application {
 		loadTournament(event);
 	}
 	
+	/**
+	 * Fills the archer TableView on the UI for the given tournament, as well as the married couples ComboBox.
+	 * @param tournamentID id of the tournament to retrieve archers for
+	 */
 	public void fillArcherTableView(int tournamentID) {
 		tbvArchers.getItems().clear();
 		cmbMarriedCouple.getItems().clear();
@@ -782,6 +845,10 @@ public class DashboardController extends Application {
     	btnNewArcher.setDisable(false);
 	}
 	
+	/**
+	 * Fills in all the ComboBox elements in the Archer Editor section of the UI with the necessary data
+	 * from the database.
+	 */
 	public void fillArcherEditorComboBoxes() {
 		ResultSet rs = archers.getCategories();
 		try {
@@ -801,6 +868,10 @@ public class DashboardController extends Application {
 		}
 	}
 	
+	/**
+	 * Creates a new archer in the database using the user's inputs.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void newArcher(ActionEvent event) {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
@@ -842,6 +913,11 @@ public class DashboardController extends Application {
 		tbvArchers.scrollTo(tbvArchers.getSelectionModel().getSelectedItem());
 	}
 	
+	/**
+	 * Adjusts the disabled/visibility properties of the UI elements to allow the user to begin
+	 * editing a given archer's details.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void beginEditArcher(ActionEvent event) {
 		cmbTournament.setDisable(true);
@@ -883,6 +959,11 @@ public class DashboardController extends Application {
 		stpSaveArcher.getChildren().get(0).toFront();
 	}
 	
+	/**
+	 * Saves the user's updated details for the given archer to database. Disabled/visibility properties
+	 * for the UI elements are returned to their previous values.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void saveEditArcher(ActionEvent event) {
 		btnSaveEditArcher.setVisible(false);
@@ -933,6 +1014,10 @@ public class DashboardController extends Application {
 		btnSearchArcher.setDisable(false);
 	}
 	
+	/**
+	 * Presents a text input dialog to the user, before searching for an archer based on the ID input given.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void searchArcher(ActionEvent event) {
 		Optional<String> input = textInputDialog("Search Archer", null, "Archer ID: ");
@@ -951,6 +1036,10 @@ public class DashboardController extends Application {
 		}
 	}
 	
+	/**
+	 * Deletes a given archer from the database, once the user has confirmed this action.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void deleteArcher(ActionEvent event) {
 		if(confirmDeletion("Delete Archer", "Are you sure you want to delete this archer?") == ButtonType.YES) {
@@ -967,6 +1056,10 @@ public class DashboardController extends Application {
 		}
 	}
 
+	/**
+	 * Fills the target list TableView element for the given tournament.
+	 * @param tournamentID the id of the tournament to retrieve data for
+	 */
 	public void fillTargetListTableView(int tournamentID) {
 		tbvTargetList.getItems().clear();
 		ArrayList<TargetEntry> data = targets.getDataForTable(tournamentID);
@@ -991,6 +1084,11 @@ public class DashboardController extends Application {
     	cmbTeamRound.getItems().addAll(roundsSet);
 	}
 	
+	/**
+	 * Uses the system's automatic allocation algorithm to assign all archers in the given tournament
+	 * their target detail.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void allocateTargetDetails(ActionEvent event) {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
@@ -999,6 +1097,11 @@ public class DashboardController extends Application {
 		fillScoresTableView(tID);
 	}
 	
+	/**
+	 * Cycles through all archers in the tournament, presenting the user with a text input dialog,
+	 * to allow the user to enter their own custom target details for each user.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void customTargetDetails(ActionEvent event) {
 		for(TargetEntry entry : tbvTargetList.getItems()) {
@@ -1025,6 +1128,11 @@ public class DashboardController extends Application {
 			}
 		}
 	}
+	
+	/**
+	 * Presents a text input dialog to the user, before searching for an archer with the given ID input.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void searchArcherTarget(ActionEvent event) {
 		Optional<String> input = textInputDialog("Search Archer's Target", null, "Archer ID: ");
@@ -1043,6 +1151,11 @@ public class DashboardController extends Application {
 		}
 	}
 	
+	/**
+	 * Adjusts the disabled/visibility properties of the UI elements to allow the user to begin
+	 * editing a target detail.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void beginEditTargetDetail(ActionEvent event) {
 		cmbTournament.setDisable(true);
@@ -1065,6 +1178,11 @@ public class DashboardController extends Application {
 		cmbEditTarget.setDisable(false);
 	}
 	
+	/**
+	 * Saves the updated target detail entered by the user to the database. Disabled/visibility properties
+	 * are returned to their preview values before editing.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void saveEditTargetDetail(ActionEvent event) {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
@@ -1097,19 +1215,30 @@ public class DashboardController extends Application {
 		btnGenerateTargetList.setDisable(false);
 	}
 	
+	/**
+	 * Fills the ComboBox elements which holds all possible target details an archer can swap with.
+	 */
 	public void fillSwapTargetComboBox() {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
 		TargetEntry selectedEntry = tbvTargetList.getSelectionModel().getSelectedItem();
 		targets.fillSwapDetailsComboBox(tID, selectedEntry, Integer.parseInt(txtArchersPerTarget.getText()), cmbEditTarget);
 	}
 	
+	/**
+	 * Used an the event handler for when the user hits the ENTER key to generate the target list report.
+	 * @param event passed by the application
+	 */
 	@FXML
     public void enterPressedForTargetList(KeyEvent event) {
-        if(event.getCode().equals(KeyCode.ENTER) && btnNextScore.isVisible()) {
+        if(event.getCode().equals(KeyCode.ENTER)) {
              btnGenerateTargetList.fire();
         }
     }
 	
+	/**
+	 * Displays the generated target list report to the user.
+	 * @param event passed by the application
+	 */
 	@FXML 
 	public void previewTargetList(ActionEvent event) {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
@@ -1147,6 +1276,10 @@ public class DashboardController extends Application {
 		targets.previewTargetList(tID, title, date, venue, assembly, sighters);
 	}
 	
+	/**
+	 * Fills the scores TableView element for the given tournament.
+	 * @param tournamentID id of the tournament
+	 */
 	public void fillScoresTableView(int tournamentID) {
 		tbvScores.getItems().clear();
 		btnEditScore.setDisable(true);
@@ -1187,6 +1320,11 @@ public class DashboardController extends Application {
 		btnExportFullResults.setDisable(tableData.isEmpty() ? true : false);
 	}
 	
+	/**
+	 * Adjusts the disabled/visibility properties of the UI elements to allow the user to begin
+	 * entering scores into the system.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void startScoring(ActionEvent event) {
 		cmbTournament.setDisable(true);
@@ -1226,6 +1364,11 @@ public class DashboardController extends Application {
 		txtScore.requestFocus();
 	}
 	
+	/**
+	 * Adjusts the disabled/visibility properties of the UI elements back to how they were before
+	 * scoring began. 
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void stopScoring(ActionEvent event) {
 		cmbTournament.setDisable(false);
@@ -1258,6 +1401,10 @@ public class DashboardController extends Application {
 		fillScoresTableView(cmbTournament.getSelectionModel().getSelectedItem().getID());
 	}
 	
+	/**
+	 * Cycles to the next score entry to be filled in by the user.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void nextScore(ActionEvent event) {
 		ScoreEntry currentEntry = tbvScores.getSelectionModel().getSelectedItem();
@@ -1325,6 +1472,10 @@ public class DashboardController extends Application {
 		}
 	}
 	
+	/**
+	 * Cycles back to the preview score entry that was filled in by the user.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void backScore(ActionEvent event) {
 		int currentIndex = tbvScores.getSelectionModel().getSelectedIndex();
@@ -1345,6 +1496,10 @@ public class DashboardController extends Application {
 		txtScore.requestFocus();
 	}
 	
+	/**
+	 * Acts as an event handler for when the ENTER key is pressed by the user during scoring.
+	 * @param event passed by the application
+	 */
 	@FXML
     public void enterPressedForScore(KeyEvent event) {
         if(event.getCode().equals(KeyCode.ENTER) && btnNextScore.isVisible()) {
@@ -1352,6 +1507,10 @@ public class DashboardController extends Application {
         }
     }
 	
+	/**
+	 * Presents a text input dialog to the user, before searching for the archer with the given ID input.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void searchArcherScore(ActionEvent event) {
 		Optional<String> input = textInputDialog("Search Archer's Score", null, "Archer ID: ");
@@ -1370,6 +1529,11 @@ public class DashboardController extends Application {
 		}
 	}
 	
+	/**
+	 * Adjusts the disabled/visibility properties of the UI elements to allow the user to begin editing
+	 * a given archer's score.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void beginEditArcherScore(ActionEvent event) {
 		cmbTournament.setDisable(true);
@@ -1405,6 +1569,11 @@ public class DashboardController extends Application {
 		}
 	}
 	
+	/**
+	 * Saves the updated score given by the user to database, and adjusts the disabled/visibility
+	 * properties of the UI elements back to their previous values before editing.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void saveEditArcherScore(ActionEvent event) {
 		ScoreEntry selectedEntry = tbvScores.getSelectionModel().getSelectedItem();
@@ -1471,6 +1640,10 @@ public class DashboardController extends Application {
 		lblGolds.setDisable(true);
 	}
 	
+	/**
+	 * Displays the generated individual results report to the user.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void previewIndividualResults(ActionEvent event) {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
@@ -1504,6 +1677,10 @@ public class DashboardController extends Application {
 		}
 	}
 	
+	/**
+	 * Displays the generated married couple results report.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void previewMarriedCoupleResults(ActionEvent event) {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
@@ -1520,6 +1697,10 @@ public class DashboardController extends Application {
 		}
 	}
 	
+	/**
+	 * Displays the generated team results report.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void previewTeamResults(ActionEvent event) {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
@@ -1568,6 +1749,10 @@ public class DashboardController extends Application {
 		}
 	}
 	
+	/**
+	 * Displays all results reports necessary for the tournament, as a combined report.
+	 * @param event passed by the application
+	 */
 	@FXML
 	public void previewFullResults(ActionEvent event) {
 		int tID = cmbTournament.getSelectionModel().getSelectedItem().getID();
