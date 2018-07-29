@@ -18,6 +18,12 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
+/**
+ * Utility class for generating the reports of the results for Individuals, Teams and 
+ * Married Couples. Uses the JasperReports library.
+ * @author Alex Cordaro
+ *
+ */
 public class Results {
 	
 	Connection conn;
@@ -26,6 +32,12 @@ public class Results {
 		conn = c;
 	}
 	
+	/**
+	 * Generates the report for the married couple results.
+	 * @param tournamentID the id of the tournament
+	 * @param metric whether the tournament uses metric rounds
+	 * @return the report for the results as a JasperPrint object
+	 */
 	public JasperPrint generateMarriedCoupleResults(int tournamentID, boolean metric) {
 		JasperPrint jPrint = null;
 		try {
@@ -52,6 +64,16 @@ public class Results {
 		return jPrint;
 	}
 	
+	/**
+	 * Generates the report for the individual results.
+	 * @param tournamentID the id of the tournament
+	 * @param title the title of the tournament
+	 * @param date the date of the tournament
+	 * @param metric whether the tournament uses metric rounds
+	 * @param bestGold optional winner of the Best Gold award
+	 * @param worstWhite optional winner of the Worst White award
+	 * @return the report for the results as a JasperPrint object
+	 */
 	public JasperPrint generateIndividualResults(int tournamentID, String title, String date, boolean metric, String bestGold, String worstWhite) {
 		JasperPrint jPrint = null;
 		try {
@@ -77,6 +99,17 @@ public class Results {
 		return jPrint;
 	}
 	
+	/**
+	 * Generates the report for the team results.
+	 * @param tournamentID the id of the tournament
+	 * @param round the round to use for the teams
+	 * @param apt the max number of archers per team
+	 * @param bowTypes the allowed bow types in a team
+	 * @param mixedBow whether the results will use mixed bow types
+	 * @param mixedGender whether the results will use mixed genders
+	 * @param metric whether the results are using metric rounds
+	 * @return the report for the results as JasperPrint object
+	 */
 	public JasperPrint generateTeamResults(int tournamentID, String round, int apt, ArrayList<String> bowTypes, boolean mixedBow, boolean mixedGender, boolean metric) {
 		JasperPrint jPrint = null;
 		ArrayList<TeamMember> teamResultsData = new ArrayList<TeamMember>();

@@ -1,5 +1,10 @@
 package tss;
 
+/**
+ * Custom Map class used to map tournament names to their tournament ID's
+ * @author Alex Cordaro
+ *
+ */
 public class TournamentMap {
 	
 	private String title;

@@ -1,5 +1,11 @@
 package tss;
 
+/**
+ * Team objects are used during the calculation of the team results, to rank the teams
+ * in descending order based on their scoring data.
+ * @author Alex Cordaro
+ *
+ */
 public class Team implements Comparable<Team> {
 	
 	private String club;

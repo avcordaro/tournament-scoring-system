@@ -2,6 +2,7 @@ package tss;
 
 /**
  * Utility class containing methods to do with creating, retrieving and updating target list data.
+ * @author Alex Cordaro
  */
 import java.sql.Connection;
 import java.sql.PreparedStatement;

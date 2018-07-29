@@ -1554,7 +1554,7 @@ public class DashboardController extends Application {
 			informationDialog("No Results", "You have not selected any bow types."); 
 		} else {
 			boolean mixedGender = rdbGenderMixed.isSelected();
-			boolean mixedBow = true;
+			boolean mixedBow = chkTeamMixedWComp.isSelected() || chkTeamMixedWOComp.isSelected();
 			JasperPrint jPrint = results.generateTeamResults(tID, round, aptNum, bowTypes, mixedBow, mixedGender, metric);
 			if(jPrint.getPages().isEmpty()) { 
 				informationDialog("No Results", "Your team properties selection yielded no results."); 
@@ -1620,7 +1620,8 @@ public class DashboardController extends Application {
 			return;
 		}
 		boolean mixedGender = rdbGenderMixed.isSelected();
-		boolean mixedBow = true;
+		boolean mixedBow = chkTeamMixedWComp.isSelected() || chkTeamMixedWOComp.isSelected();
+		System.out.println(chkTeamMixedWComp.isSelected() || chkTeamMixedWOComp.isSelected());
 		JasperPrint individual = results.generateIndividualResults(tID, title, date, metric, bestGold, worstWhite);
 		JasperPrint couples = null;
 		JasperPrint teams = null;

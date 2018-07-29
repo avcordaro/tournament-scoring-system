@@ -2,6 +2,12 @@ package tss;
 
 import java.io.Serializable;
 
+/**
+ * TeamMember objects are Java Beans used to fill the data in the team results report generated 
+ * by JasperReports.
+ * @author Alex Cordaro
+ *
+ */
 public class TeamMember implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

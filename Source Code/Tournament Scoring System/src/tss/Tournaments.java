@@ -6,6 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Utility class containing methods to do with creating, retrieving and updating tournament data.
+ * @author Alex Cordaro
+ */
 public class Tournaments {
 	
 	private Connection conn;
@@ -14,6 +18,10 @@ public class Tournaments {
 		conn = c;
 	}
 	
+	/**
+	 * Retrieves all tournament records from the database.
+	 * @return ResultSet of the query result
+	 */
 	public ResultSet getAllRecords() {
 		ResultSet rs = null;
 		try {
@@ -24,7 +32,12 @@ public class Tournaments {
 		}
 		return rs;
 	}
-
+	
+	/**
+	 * Retrieves a given tournament record from the database.
+	 * @param recordID id of the tournament
+	 * @return ResultSet of the tournament's data
+	 */
 	public ResultSet getRecord(int recordID) {
 		ResultSet rs = null;
 		try {
@@ -36,6 +49,16 @@ public class Tournaments {
 		return rs;
 	}
 	
+	/**
+	 * Creates a new tournament record in the database.
+	 * @param title the tournament's title
+	 * @param date date of the tournament
+	 * @param apt max number of archers per target 
+	 * @param metric whether the tournament uses metric rounds or not
+	 * @param teams whether the tournament requires team results
+	 * @param couples whether the tournament will have a married couples award
+	 * @return the id of the newly created record in the database
+	 */
 	public int newRecord(String title, String date, int apt, String metric, String teams, String couples) {
 		String sql = "INSERT INTO Tournament (Title, Date, ArchersPerTarget, Metric, Teams, MarriedCouples)"
 				+ " VALUES (?, ?, ?, ?, ?, ?);";
@@ -56,6 +79,13 @@ public class Tournaments {
 		return newID;
 	}
 	
+	/**
+	 * Deletes the given tournament record, along with all other associated data in the database.
+	 * @param recordID the id the tournament
+	 * @param archers an Archers object to perform archer record deletions
+	 * @param scores a Scores object to perform score record deletions
+	 * @param marriedCouples a MarriedCouples object to perform married couple record deletions
+	 */
 	public void deleteRecord(int recordID, Archers archers, Scores scores, MarriedCouples marriedCouples) {
 		try {
 			Statement stmt = conn.createStatement();
@@ -72,6 +102,16 @@ public class Tournaments {
 		}
 	}
 	
+	/**
+	 * Updates a given record in the database.
+	 * @param recordID the id of the tournament
+	 * @param title the updated title
+	 * @param date the updated date
+	 * @param apt the updated max number of archers per target
+	 * @param metric whether the tournament uses metric rounds
+	 * @param teams whether the tournament requires team results
+	 * @param couples whether the tournament will have a married couples award
+	 */
 	public void updateRecord(int recordID, String title, String date, int apt, String metric, String teams, String couples) {
 		String update = "UPDATE Tournament SET Title=?, Date=?, ArchersPerTarget=?, Metric=?, Teams=?, "
 				+ "MarriedCouples=? WHERE TournamentID = " + recordID + ";";
