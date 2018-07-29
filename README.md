@@ -25,5 +25,4 @@ The application requires Java 1.8+ installed to run. To run the application, nav
 
 ## Development
 
-The source code for the application can be imported as an Eclipse project, in order to develop and debug the program. The Eclipse project folder can be found in 'source-code/tournament-scoring-system'. This directory also includes all documentation in the '/doc' folder. 
-
+The source code for the application can be imported as an Eclipse project, in order to develop and debug the program. The Eclipse project folder can be found in 'source-code/tournament-scoring-system'. This directory also includes all documentation in the '/doc' folder.
