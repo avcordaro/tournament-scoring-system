@@ -23,6 +23,8 @@ Archer tournaments require a heavy amount of organisation to run. The Tournament
 
 The application requires Java 1.8+ installed to run. To run the application, navigate into the folder 'Tournament Scoring System v1.0', and double click the 'Tournament Scoring System.jar' file. Please ensure that the 'TSSDatabase.db' file stays in the same directory as the jar file. 
 
+![screenshot](https://imgur.com/ch2xr0J)
+
 ## Development
 
 The source code for the application can be imported as an Eclipse project, in order to develop and debug the program. The Eclipse project folder can be found in 'source-code/tournament-scoring-system'. This directory also includes all documentation in the '/doc' folder.
