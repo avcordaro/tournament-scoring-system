@@ -1,4 +1,6 @@
-# Tournament Scoring System
+# Tournament Scoring 
+Standalone application built using Java + JavaFX + SQLite
+
 Archer tournaments require a heavy amount of organisation to run. The Tournament Scoring System is designed to assist tournament organisers with storing information and results calculation. It offers the following features:
 
 (Version 1.0)
